@@ -1,6 +1,6 @@
 --- 
-title: "A Minimal Book Example"
-author: "John Doe"
+title: "Naslund Chapter 1 Analysis"
+author: "Laura Naslund"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book

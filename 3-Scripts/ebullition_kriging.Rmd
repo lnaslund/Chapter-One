@@ -1,0 +1,70 @@
+---
+title: "ebullition_kriging"
+author: "L. Naslund"
+date: "2022-11-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(mapview)
+library(tidyverse)
+library(sf)
+library(stars)
+library(lubridate)
+
+locations <- read.csv("../1-Raw Data/ebullition-trap-locations.csv") %>% st_as_sf(coords=c("Longitude", "Latitude"), crs=4326)
+conc <- read.csv("../1-Raw Data/ebullition_concentrations.csv")
+vols <- read.csv("../1-Raw Data/ebullition-gas-volumes.csv")
+events <- read.csv("../1-Raw Data/sampling-events.csv")
+```
+
+```{r}
+# mean CH4 concentration in collected bubbles for each sampling event
+conc_mean <-conc %>% 
+  left_join(events %>% 
+    mutate(Site_Event = paste(Site, Event, sep = "_")) %>% 
+    pivot_longer(cols = c(Start.Date, End.Date), names_to = "Date.Type", values_to = "Collection.Date") %>% 
+    select(Site_Event, Collection.Date), by = "Collection.Date") %>% 
+   group_by(Site_Event) %>% 
+  summarize(ch4_conc_ppm = mean(Undiluted.CH4.conc.ppm)) %>% 
+  mutate(ch4_conc_ugL = ch4_conc_ppm * (1/(0.0821 * 298.15)) * 16.04)
+
+eb_calc <- vols %>% 
+  mutate(Area_m2 = 0.0254469, Collection.Date = eb_end %>% ymd_hms() %>% date()) %>%  
+  left_join(events %>% 
+    mutate(Site_Event = paste(Site, Event, sep = "_")) %>% 
+    pivot_longer(cols = c(Start.Date, End.Date), names_to = "Date.Type", values_to = "Collection.Date") %>% 
+    select(Site_Event, Collection.Date) %>% 
+      mutate(Collection.Date = mdy(Collection.Date)), by = "Collection.Date") %>% 
+  left_join(conc_mean, by = "Site_Event") %>% 
+mutate(flux_mg_m2day = (gas_accumulated * ch4_conc_ugL* 10^-3 * 10^-3)/(Area_m2 * (time_hr/24))) %>% 
+  arrange(desc(flux_mg_m2day))
+
+mean(eb_calc$flux_mg_m2day, na.rm = T)
+
+
+test <- locations %>% 
+              filter(str_sub(Name, 1, 1)=="D", str_sub(Name,1,2)!="De") %>% 
+              rename(Trap = Name) %>% 
+  left_join(eb_calc %>% filter(Site_Event == "Deans_1", period == "1~2"),by = "Trap") %>% 
+  select(Trap, GeometryType, flux_mg_m2day, geometry) %>% 
+  st_transform(crs= 5070)
+
+
+mapview(test)
+
+bbox <- st_bbox(test)
+cell_size <- 1
+
+x <- seq(bbox$xmin, bbox$xmax, by = cell_size)
+y <- seq(bbox$ymin, bbox$ymax, by = cell_size)
+
+deans_grid <- expand.grid(x=x, y=x)
+plot(deans_grid$x, deans_grid$y, pch=19, cex=0.1)
+
+deans_grid$temp <- 1
+deans_grid <- st_as_stars(deans_grid, crs= st_crs(test))
+```
+

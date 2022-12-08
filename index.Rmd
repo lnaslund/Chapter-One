@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
-# url: your book url like https://bookdown.org/yihui/bookdown
+# url: your book url like https://naslund-chapter-one-analysis.netlify.app
 # cover-image: path to the social sharing image like images/cover.jpg
 description: |
   This is a minimal example of using the bookdown package to write a book.
@@ -15,42 +15,7 @@ link-citations: yes
 github-repo: rstudio/bookdown-demo
 ---
 
-# About
-
-This is a _sample_ book written in **Markdown**. You can use anything that Pandoc's Markdown supports; for example, a math equation $a^2 + b^2 = c^2$.
-
-## Usage 
-
-Each **bookdown** chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter *must* start with a first-level heading: `# A good chapter`, and can contain one (and only one) first-level heading.
-
-Use second-level and higher headings within chapters like: `## A short section` or `### An even shorter section`.
-
-The `index.Rmd` file is required, and is also your first book chapter. It will be the homepage when you render the book.
-
-## Render book
-
-You can render the HTML version of this example book without changing anything:
-
-1. Find the **Build** pane in the RStudio IDE, and
-
-1. Click on **Build Book**, then select your output format, or select "All formats" if you'd like to use multiple formats from the same book source files.
-
-Or build the book from the R console:
-
-```{r, eval=FALSE}
-bookdown::render_book()
-```
-
-To render this example to PDF as a `bookdown::pdf_book`, you'll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <https://yihui.org/tinytex/>.
-
-## Preview book
-
-As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in "Preview book", or from the R console:
-
-```{r eval=FALSE}
-bookdown::serve_book()
-```
-
+# Sampling scheme
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
@@ -58,3 +23,138 @@ knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
 ```
+```{r left over minimal example text, include=F}
+#This is a _sample_ book written in **Markdown**. You can use anything that Pandoc's Markdown supports; for example, a math equation $a^2 + b^2 = c^2$.
+```
+
+```{r about setup, include=F}
+library(tidyverse)
+library(mapview)
+library(lubridate)
+library(sf)
+library(data.table)
+library(dygraphs)
+library(xts)
+
+trap_locations <- read.csv("2-Clean Data/ebullition-trap-locations.csv") %>% 
+  filter(str_sub(Name, 2,2) %>% str_detect("[:alpha:]")==F) %>% 
+  st_as_sf(coords = c("Longitude", "Latitude"), crs=4326) %>% st_transform(crs = 32617)%>% 
+  mutate(Site = case_when(
+    str_sub(Name, 1, 1) == "P" ~"Pick",
+    str_sub(Name, 1, 1) == "D" ~"Deans",
+    str_sub(Name, 1, 1) == "S" ~"Sister3",
+    str_sub(Name, 1, 1) == "C" ~"Catfish",
+  )) %>% 
+  select(-Description)
+
+inlet_locations <- read.csv("2-Clean Data/inlet-locations.csv") %>% 
+  st_as_sf(coords = c("Longitude", "Latitude"), crs=4326) %>% st_transform(crs = 32617)
+
+deans <- read_sf("2-Clean Data/site_shapefiles/Deans.shp") %>% st_transform(crs = 32617)
+catfish <- read_sf("2-Clean Data/site_shapefiles/Catfish.shp") %>% st_transform(crs = 32617)
+sister3 <- read_sf("2-Clean Data/Site_Shapefiles/Sister3.shp") %>% st_transform(crs = 32617)
+pick <- read_sf("2-Clean Data/Site_Shapefiles/Pick.shp") %>% st_transform(crs = 32617)
+
+trap_locations %>% mutate(Site = case_when(
+  str_sub(Name, 1, 1) == "P" ~"Pick",
+  str_sub(Name, 1, 1) == "D" ~"Deans",
+  str_sub(Name, 1, 1) == "S" ~"Sister3",
+  str_sub(Name, 1, 1) == "C" ~"Catfish",
+)) %>% tail()
+```
+
+```{r, include = F}
+
+q <- read.csv("2-Clean Data/discharge.csv") %>% 
+  mutate(q = ((Vol_ml*10^-6)/Time_s), 
+         Vol_m3 = case_when(Site == "Deans" ~ st_area(deans) %>% as.numeric()*2.03, 
+                             Site == "Catfish" ~ st_area(catfish) %>% as.numeric()*0.8, 
+                             Site == "Sister3" ~ st_area(sister3) %>% as.numeric()*1.25, 
+                             Site == "Pick" ~ st_area(pick) %>% as.numeric()*1.58), 
+         res_time_day = (Vol_m3/q)* (1/86400))
+
+st_area(deans) %>% as.numeric() *1e-6
+st_area(catfish) %>% as.numeric() *1e-6
+st_area(sister3) %>% as.numeric() *1e-6
+st_area(pick) %>% as.numeric() *1e-6
+
+
+```
+
+We sampled 4 sites over at least one 24 hr period. We installed 25 ebullition traps across 5 transects in each impoundment. Every 3 hours, we recorded the volume of gas accumulated in each ebullition trap and took a diffusive flux measurement immediately adjacent to 10 if the ebullition traps across the impoundment. To determine impoundment area, I digitized the impoundments using high resolution (0.5 ft) orthoimagery captured during the leaf off period. Pick has a beaver dam on the inlet stream and I delineated only to the beaver dam.
+
+```{r render map, echo = F}
+mapview(deans, col.regions = "#C9007B", alpha.regions = 1)+
+  mapview(catfish, col.regions = "#A5E200", alpha.regions = 1)+
+  mapview(sister3, col.regions = "#6C6B9F", alpha.regions = 1)+
+  mapview(pick, col.regions = "#00B6B0", alpha.regions = 1)+
+  mapview(trap_locations, col.regions = "grey", alpha.regions = 1, legend = F)+
+  mapview(inlet_locations, col.regions = "yellow", alpha.regions = 1)
+```
+
+
+|Site      |Area (km^2^)|Max Depth (m)|Mean Depth (m)|Residence Time|Dates Sampled  |
+|----------|------------|-------------|--------------|--------------|---------------|
+|Deans     |0.0041      |3.52         |2.03          |              |8/16/22 - 8/17/22<br />8/30/22 - 8/31/22|
+|Sister 3  |0.0012      |2.27         |1.25          |              |8/22/22 - 8/23/22|
+|Catfish   |0.0018      |1.98         |0.80          |              |9/6/22 - 9/7/22<br />9/18/22 - 9/19/22|
+|Pick      |0.0077      |3.80         |1.58          |              |8/22/22 - 8/23/22|
+
+
+## Dissolved oxygen 
+
+We recorded dissolved oxygen every 15 minutes 0.25 m below the surface in every impoundment. From 6/20/22 to 7/13/22, we also recorded dissolved oxygen 0.1m from the bottom of Pick in the deepest location in the impoundment. Because dissolved oxygen was consistently 0 mg/L, we reallocated our oxygen sensors and installed both a top and bottom DO sensor in Sister 3. 
+
+```{r read do data, include = F}
+do_list <- list.files("2-Clean Data/do")
+
+for(i in 1:length(do_list)){
+  temporary <- fread(paste0("2-Clean Data/do/", do_list[i])) %>% 
+  slice(-1) %>% 
+  mutate(DO_mgL = as.numeric(DO_mgL), Date_Time = ymd_hms(Date_Time, tz="America/New_York"))
+  
+  assign(str_extract(do_list[i], ".*(?=\\.)"), 
+         as.xts(temporary$DO_mgL, order.by = temporary$Date_Time)
+         )
+}
+```
+
+### Deans
+```{r Deans DO plot, echo = F}
+dygraph(Deans_DO_Top) %>% 
+  dyOptions(colors = "#DCE319FF")
+```
+
+### Catfish
+```{r Catfish DO plot, echo = F}
+dygraph(Catfish_DO_Top) %>% 
+  dyOptions(colors = "#55C667FF")
+```
+
+### Sister 3
+```{r Sister DO plot, echo = F}
+Sister_DO <- cbind(Sister_DO_Top, Sister_DO_Bottom)
+
+pal <- c("#440154FF", "#AF97B5")
+dygraph(Sister_DO) %>% 
+  dyOptions(colors = pal)
+```
+
+### Pick
+```{r Pick DO plot, echo = F}
+Pick_DO <- cbind(Pick_DO_Top, Pick_DO_Bottom)
+
+pal <- c("#2D708EFF","#a3cdff")
+dygraph(Pick_DO) %>% 
+  dyOptions(colors = pal)
+```
+
+### All impoundments top DO
+```{r all do, echo = F}
+pal <- c("#DCE319FF",  "#55C667FF", "#440154FF", "#2D708EFF")
+
+all_DO <- cbind(Deans_DO_Top, Catfish_DO_Top, Sister_DO_Top, Pick_DO_Top)
+dygraph(all_DO) %>% 
+   dyOptions(colors = pal)
+```
+

@@ -1,0 +1,317 @@
+# Diffusive emissions
+
+```{r, include = F}
+# All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (`#`) per .Rmd file.
+# 
+# ## A section
+# 
+# All chapter sections start with a second-level (`##`) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter.
+# 
+# ### An unnumbered section {-}
+# 
+# Chapters and sections are numbered by default. To un-number a heading, add a `{.unnumbered}` or the shorter `{-}` at the end of the heading, like in this section.
+```
+
+```{r diffusive visualization setup, echo = F}
+library(lubridate)
+library(stars)
+library(gstat)
+library(automap)
+library(tidyverse)
+library(viridis)
+library(tmap)
+
+# reads in g/m2/day
+
+diffusion <- read.csv("2-Clean Data/diffusive-flux-estimates.csv") %>% 
+  mutate(start_time = ymd_hms(start_time), flux_ch4_g_hr = flux_ch4_g/24, flux_co2_g_hr = flux_co2_g/24)
+
+deans_pts <- trap_locations%>% 
+  filter(Site == "Deans") %>% 
+  select(Name, GeometryType, geometry) %>% 
+  rename(location = Name)
+
+catfish_pts <- trap_locations%>% 
+  filter(Site == "Catfish") %>% 
+  select(Name, GeometryType, geometry) %>% 
+  rename(location = Name)
+
+pick_pts <- trap_locations%>% 
+  filter(Site == "Pick") %>% 
+  select(Name, GeometryType, geometry) %>% 
+  rename(location = Name)
+
+sister3_pts <- trap_locations%>% 
+  filter(Site == "Sister3") %>% 
+  select(Name, GeometryType, geometry) %>% 
+  rename(location = Name)
+
+deans_16 <- diffusion %>% 
+  filter(site == "Deans", date(start_time)==mdy("08-16-2022") |  date(start_time)==mdy("08-17-2022")) %>% 
+  select(-X) %>% 
+  mutate(trip_wr =factor(case_when(trip == 1 ~ "10AM", 
+                             trip == 2 ~ "1PM", 
+                             trip == 3 ~ "4PM", 
+                             trip == 4 ~ "7PM", 
+                             trip == 5 ~ "10PM", 
+                             trip == 6 ~ "1AM", 
+                             trip == 7 ~ "4AM", 
+                             trip == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM")))
+
+deans_pts_16 <- deans_pts %>% full_join(deans_16, by = "location") %>% filter(is.na(flux_ch4_mmol)==F)
+
+deans_30 <- diffusion %>% 
+  filter(site == "Deans", date(start_time)==mdy("08-30-2022") |  date(start_time)==mdy("08-31-2022")) %>% 
+  select(-X) %>% 
+  mutate(trip_wr =factor(case_when(trip == 1 ~ "10AM", 
+                             trip == 2 ~ "1PM", 
+                             trip == 3 ~ "4PM", 
+                             trip == 4 ~ "7PM", 
+                             trip == 5 ~ "10PM", 
+                             trip == 6 ~ "1AM", 
+                             trip == 7 ~ "4AM", 
+                             trip == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM")))
+
+deans_pts_30 <- deans_pts %>% full_join(deans_30, by = "location") %>% filter(is.na(flux_ch4_mmol)==F)
+
+catfish_06 <- diffusion %>% 
+  filter(site == "Catfish", date(start_time)==mdy("09-06-2022") |  date(start_time)==mdy("09-07-2022")) %>% 
+  select(-X) %>% 
+  mutate(trip_wr =factor(case_when(trip == 1 ~ "10AM", 
+                             trip == 2 ~ "1PM", 
+                             trip == 3 ~ "4PM", 
+                             trip == 4 ~ "7PM", 
+                             trip == 5 ~ "10PM", 
+                             trip == 6 ~ "1AM", 
+                             trip == 7 ~ "4AM", 
+                             trip == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM")))
+
+catfish_pts_06 <- catfish_pts %>% full_join(catfish_06, by = "location") %>% filter(is.na(flux_ch4_mmol)==F)
+
+
+catfish_18 <- diffusion %>% 
+  filter(site == "Catfish", date(start_time)==mdy("09-18-2022") |  date(start_time)==mdy("09-19-2022")) %>% 
+  select(-X) %>% 
+  mutate(trip_wr =factor(case_when(trip == 1 ~ "10AM", 
+                             trip == 2 ~ "1PM", 
+                             trip == 3 ~ "4PM", 
+                             trip == 4 ~ "7PM", 
+                             trip == 5 ~ "10PM", 
+                             trip == 6 ~ "1AM", 
+                             trip == 7 ~ "4AM", 
+                             trip == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM")))
+catfish_pts_18 <- catfish_pts %>% full_join(catfish_18, by = "location") %>% filter(is.na(flux_ch4_mmol)==F)
+
+pick_13 <- diffusion %>% 
+  filter(site == "Picks", date(start_time)==mdy("09-13-2022") |  date(start_time)==mdy("09-14-2022")) %>% 
+  select(-X) %>% 
+  mutate(trip_wr =factor(case_when(trip == 1 ~ "10AM", 
+                             trip == 2 ~ "1PM", 
+                             trip == 3 ~ "4PM", 
+                             trip == 4 ~ "7PM", 
+                             trip == 5 ~ "10PM", 
+                             trip == 6 ~ "1AM", 
+                             trip == 7 ~ "4AM", 
+                             trip == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM")))
+pick_pts_13 <- pick_pts %>% full_join(pick_13, by = "location") %>% filter(is.na(flux_ch4_mmol)==F)
+
+sister3_22 <- diffusion %>% 
+  filter(site == "Sisters3", date(start_time)==mdy("08-22-2022") |  date(start_time)==mdy("08-23-2022")) %>% 
+  select(-X) %>% 
+  mutate(trip_wr =factor(case_when(trip == 1 ~ "10AM", 
+                             trip == 2 ~ "1PM", 
+                             trip == 3 ~ "4PM", 
+                             trip == 4 ~ "7PM", 
+                             trip == 5 ~ "10PM", 
+                             trip == 6 ~ "1AM", 
+                             trip == 7 ~ "4AM", 
+                             trip == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM")))
+sister3_pts_22 <- sister3_pts %>% full_join(sister3_22, by = "location") %>% filter(is.na(flux_ch4_mmol)==F)
+```
+
+```{r, include = F}
+# grid <- st_as_stars(st_bbox(deans), dx = 1, dy = 1)
+# grid <- grid[deans]
+# 
+# mapview(deans_pts, zcol = "flux_ch4_g")
+# 
+# names(deans_pts)
+# 
+# plot(deans %>% select(geometry))
+# plot(deans_pts$geometry, col = deans_pts$flux_co2_g,  pch=16, add =T)
+
+```
+
+```{r, include = F}
+#png("4-Figures/deans_20220816_ch4_g.png", width = 8, height = 6, units = "in", res = 300)
+```
+
+## Deans 8/16/22-8/17/22
+```{r, width = 5, units = "in",  echo = F}
+tm_shape(deans)+
+  tm_polygons(col = "white")+
+tm_shape(deans_pts_16, bbox = st_bbox(deans) %>% st_as_sfc())+
+  tm_dots("flux_ch4_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CH4 flux (g/m2/hr)", breaks = c(-0.002, -0.001, 0, 0.001, 0.002, 0.003))+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
+
+#breaks for g/m2day  breaks = c(-0.04, -0.02, 0, 0.02, 0.04, 0.06))
+```
+
+
+```{r, echo = F}
+tm_shape(deans)+
+  tm_polygons(col = "white")+
+tm_shape(deans_pts_16, bbox = st_bbox(deans) %>% st_as_sfc())+
+  tm_dots("flux_co2_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CO2 flux (g/m2/hr)", breaks = c(0, 0.1, 0.2, 0.3, 0.4, 0.5))+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
+
+# breaks for g/m2day , breaks = c(0,2,4,6,8,10,12)
+```
+
+## Deans 8/30/22-8/31/22
+```{r, echo = F}
+tm_shape(deans)+
+  tm_polygons(col = "white")+
+tm_shape(deans_pts_30, bbox = st_bbox(deans) %>% st_as_sfc())+
+  tm_dots("flux_ch4_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CH4 flux (g/m2/hr)",  breaks = c(-0.002, -0.001, 0, 0.001, 0.002, 0.003))+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
+
+# , breaks = c(-0.04, -0.02, 0, 0.02, 0.04, 0.06)
+```
+```{r, include = F}
+#png("4-Figures/deans_20220816_ch4_g.png", width = 8, height = 6, units = "in", res = 300)
+```
+
+```{r, echo = F}
+tm_shape(deans)+
+  tm_polygons(col = "white")+
+tm_shape(deans_pts_30, bbox = st_bbox(deans) %>% st_as_sfc())+
+  tm_dots("flux_co2_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CO2 flux (g/m2/hr)", breaks = c(0, 0.1, 0.2, 0.3, 0.4, 0.5))+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
+
+#, breaks = c(0,2,4,6,8,10,12)
+```
+
+## Catfish 9/6/22-9/7/22 
+```{r, echo = F}
+tm_shape(catfish)+
+  tm_polygons(col = "white")+
+tm_shape(catfish_pts_06, bbox = st_bbox(catfish) %>% st_as_sfc())+
+  tm_dots("flux_ch4_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CH4 flux (g/m2/hr)", breaks = c(-0.003, 0, 0.003, 0.006, 0.009))+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
+
+#, breaks = c(-0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2)
+```
+
+```{r, echo = F}
+tm_shape(catfish)+
+  tm_polygons(col = "white")+
+tm_shape(catfish_pts_06, bbox = st_bbox(catfish) %>% st_as_sfc())+
+  tm_dots("flux_co2_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CO2 flux (g/m2/hr)", breaks = c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6))+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
+
+#, breaks = c(0,2,4,6,8,10,12,14)
+```
+
+## Catfish 9/18/22-9/19/22 (Sunny)
+```{r, echo = F}
+tm_shape(catfish)+
+  tm_polygons(col = "white")+
+tm_shape(catfish_pts_18, bbox = st_bbox(catfish) %>% st_as_sfc())+
+  tm_dots("flux_ch4_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CH4 flux (g/m2/hr)", breaks = c(-0.003, 0, 0.003, 0.006, 0.009))+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
+
+# , breaks = c(-0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2)
+```
+
+```{r, echo = F}
+tm_shape(catfish)+
+  tm_polygons(col = "white")+
+tm_shape(catfish_pts_18, bbox = st_bbox(catfish) %>% st_as_sfc())+
+  tm_dots("flux_co2_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CO2 flux (g/m2/hr)", breaks = c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6))+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
+
+# , breaks = c(0,2,4,6,8,10,12,14)
+```
+
+## Pick 9/13/22- 9/14/22
+```{r, echo = F}
+tm_shape(pick)+
+  tm_polygons(col = "white")+
+tm_shape(pick_pts_13, bbox = st_bbox(catfish) %>% st_as_sfc())+
+  tm_dots("flux_ch4_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CH4 flux (g/m2/hr)")+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
+```
+
+```{r, echo = F}
+tm_shape(pick)+
+  tm_polygons(col = "white")+
+tm_shape(pick_pts_13, bbox = st_bbox(catfish) %>% st_as_sfc())+
+  tm_dots("flux_co2_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CO2 flux (g/m2/hr)")+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
+```
+
+## Sister3 8/22/22-8/23/22
+```{r, echo = F}
+tm_shape(sister3)+
+  tm_polygons(col = "white")+
+tm_shape(sister3_pts_22, bbox = st_bbox(catfish) %>% st_as_sfc())+
+  tm_dots("flux_ch4_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CH4 flux (g/m2/hr)")+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=2)
+```
+
+```{r, echo = F}
+tm_shape(sister3)+
+  tm_polygons(col = "white")+
+tm_shape(sister3_pts_22, bbox = st_bbox(catfish) %>% st_as_sfc())+
+  tm_dots("flux_co2_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CO2 flux (g/m2/hr)")+
+tm_layout(scale = 1.5, legend.outside = T)+
+tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=2) 
+```
+
+
+```{r, include = F}
+#png("4-Figures/deans_20220816_ch4_g.png", width = 8, height = 6, units = "in", res = 300)
+```
+
+
+```{r, include = F}
+# what does it mean for the kriging procedure when the variogram looks like there is no real pattern
+# v_emp_ok <- variogram(flux_ch4_mmol ~ 1, deans_pts)
+# 
+# plot(v_emp_ok)
+```
+
+```{r, include = F}
+# v_mod_ok = autofitVariogram(flux_ch4_mmol ~ 1, as(deans_pts, "Spatial"))
+# plot(v_mod_ok)
+# 
+# v_mod_ok$var_model
+```
+
+```{r, include = F}
+# g <- gstat(formula = flux_ch4_mmol ~ 1, model = v_mod_ok$var_model, data = deans_pts)
+# z <- predict(g, grid)
+# z <- z["var1.pred",,]
+# names(z) = "flux_ch4_mmol"
+# 
+# range(z$flux_ch4_mmol,na.rm=T)
+# 
+# b <- seq(-0.08083437, 4.27675993, by = 0.4357594)
+# 
+# plot(z, breaks = b, col = hcl.colors(length(b)-1, "Spectral"), reset = FALSE)
+# plot(st_geometry(deans_pts), pch = 3, add = TRUE)
+# contour(z, breaks = b, add = TRUE)
+```
+

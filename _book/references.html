@@ -29,7 +29,7 @@ set in the _output.yml file.</p>" />
 <meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2022-11-11" />
+<meta name="date" content="2022-12-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -58,6 +58,29 @@ set in the _output.yml file.</p>" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
 
 
 <style type="text/css">
@@ -98,7 +121,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -111,7 +134,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -164,41 +187,52 @@ div.csl-indent {
 <li><a href="./">Naslund Chapter 1 Analysis</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Sampling scheme</a></li>
+<li class="chapter" data-level="2" data-path="table.html"><a href="table.html"><i class="fa fa-check"></i><b>2</b> Table</a></li>
+<li class="chapter" data-level="3" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html"><i class="fa fa-check"></i><b>3</b> Dissolved oxygen</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#usage"><i class="fa fa-check"></i><b>1.1</b> Usage</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#render-book"><i class="fa fa-check"></i><b>1.2</b> Render book</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#preview-book"><i class="fa fa-check"></i><b>1.3</b> Preview book</a></li>
+<li class="chapter" data-level="3.1" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#deans"><i class="fa fa-check"></i><b>3.1</b> Deans</a></li>
+<li class="chapter" data-level="3.2" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#catfish"><i class="fa fa-check"></i><b>3.2</b> Catfish</a></li>
+<li class="chapter" data-level="3.3" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#sister-3"><i class="fa fa-check"></i><b>3.3</b> Sister 3</a></li>
+<li class="chapter" data-level="3.4" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#pick"><i class="fa fa-check"></i><b>3.4</b> Pick</a></li>
+<li class="chapter" data-level="3.5" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#all-impoundments-top-do"><i class="fa fa-check"></i><b>3.5</b> All impoundments top DO</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="hello-bookdown.html"><a href="hello-bookdown.html"><i class="fa fa-check"></i><b>2</b> Hello bookdown</a>
+<li class="chapter" data-level="4" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html"><i class="fa fa-check"></i><b>4</b> Diffusive emissions</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="hello-bookdown.html"><a href="hello-bookdown.html#a-section"><i class="fa fa-check"></i><b>2.1</b> A section</a>
-<ul>
-<li class="chapter" data-level="" data-path="hello-bookdown.html"><a href="hello-bookdown.html#an-unnumbered-section"><i class="fa fa-check"></i>An unnumbered section</a></li>
+<li class="chapter" data-level="4.1" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-81622-81722"><i class="fa fa-check"></i><b>4.1</b> Deans 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="4.2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-83022-83122"><i class="fa fa-check"></i><b>4.2</b> Deans 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="4.3" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-9622-9722"><i class="fa fa-check"></i><b>4.3</b> Catfish 9/6/22-9/7/22</a></li>
+<li class="chapter" data-level="4.4" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-91822-91922-sunny"><i class="fa fa-check"></i><b>4.4</b> Catfish 9/18/22-9/19/22 (Sunny)</a></li>
+<li class="chapter" data-level="4.5" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#pick-91322--91422"><i class="fa fa-check"></i><b>4.5</b> Pick 9/13/22- 9/14/22</a></li>
+<li class="chapter" data-level="4.6" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#sister3-82222-82322"><i class="fa fa-check"></i><b>4.6</b> Sister3 8/22/22-8/23/22</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>3</b> Cross-references</a>
+<li class="chapter" data-level="5" data-path="ebullition.html"><a href="ebullition.html"><i class="fa fa-check"></i><b>5</b> Ebullition</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="cross.html"><a href="cross.html#chapters-and-sub-chapters"><i class="fa fa-check"></i><b>3.1</b> Chapters and sub-chapters</a></li>
-<li class="chapter" data-level="3.2" data-path="cross.html"><a href="cross.html#captioned-figures-and-tables"><i class="fa fa-check"></i><b>3.2</b> Captioned figures and tables</a></li>
+<li class="chapter" data-level="5.1" data-path="ebullition.html"><a href="ebullition.html#deans-81622-81722-1"><i class="fa fa-check"></i><b>5.1</b> Deans 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="5.2" data-path="ebullition.html"><a href="ebullition.html#deans-83022-83122-1"><i class="fa fa-check"></i><b>5.2</b> Deans 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="5.3" data-path="ebullition.html"><a href="ebullition.html#catfish-90622-90722-clouds-cleared-by-9am-sparce-clouds-until-4-cleared-around-7-overcast-the-next-morning"><i class="fa fa-check"></i><b>5.3</b> Catfish 9/06/22-9/07/22 (Clouds cleared by 9AM, sparce clouds until ~ 4, cleared around 7, overcast the next morning)</a></li>
+<li class="chapter" data-level="5.4" data-path="ebullition.html"><a href="ebullition.html#catfish-91822-91922-cloudless-until-12-3-pretty-cloudy"><i class="fa fa-check"></i><b>5.4</b> Catfish 9/18/22-9/19/22 (cloudless until 12-3 pretty cloudy)</a></li>
+<li class="chapter" data-level="5.5" data-path="ebullition.html"><a href="ebullition.html#pick-91322-91422"><i class="fa fa-check"></i><b>5.5</b> Pick 9/13/22-9/14/22</a></li>
+<li class="chapter" data-level="5.6" data-path="ebullition.html"><a href="ebullition.html#sister-3-82222-82322"><i class="fa fa-check"></i><b>5.6</b> Sister 3 8/22/22-8/23/22</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="parts.html"><a href="parts.html"><i class="fa fa-check"></i><b>4</b> Parts</a></li>
-<li class="chapter" data-level="5" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html"><i class="fa fa-check"></i><b>5</b> Footnotes and citations</a>
+<li class="chapter" data-level="6" data-path="ordinary-kriging-just-in-space.html"><a href="ordinary-kriging-just-in-space.html"><i class="fa fa-check"></i><b>6</b> Ordinary kriging just in space</a></li>
+<li class="chapter" data-level="7" data-path="ok-with-structural-model-and-sampling-variance.html"><a href="ok-with-structural-model-and-sampling-variance.html"><i class="fa fa-check"></i><b>7</b> OK with structural model and sampling variance</a></li>
+<li class="chapter" data-level="8" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html"><i class="fa fa-check"></i><b>8</b> Footnotes and citations</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#footnotes"><i class="fa fa-check"></i><b>5.1</b> Footnotes</a></li>
-<li class="chapter" data-level="5.2" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#citations"><i class="fa fa-check"></i><b>5.2</b> Citations</a></li>
+<li class="chapter" data-level="8.1" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#footnotes"><i class="fa fa-check"></i><b>8.1</b> Footnotes</a></li>
+<li class="chapter" data-level="8.2" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#citations"><i class="fa fa-check"></i><b>8.2</b> Citations</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>6</b> Blocks</a>
+<li class="chapter" data-level="9" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>9</b> Blocks</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="blocks.html"><a href="blocks.html#equations"><i class="fa fa-check"></i><b>6.1</b> Equations</a></li>
-<li class="chapter" data-level="6.2" data-path="blocks.html"><a href="blocks.html#theorems-and-proofs"><i class="fa fa-check"></i><b>6.2</b> Theorems and proofs</a></li>
-<li class="chapter" data-level="6.3" data-path="blocks.html"><a href="blocks.html#callout-blocks"><i class="fa fa-check"></i><b>6.3</b> Callout blocks</a></li>
+<li class="chapter" data-level="9.1" data-path="blocks.html"><a href="blocks.html#equations"><i class="fa fa-check"></i><b>9.1</b> Equations</a></li>
+<li class="chapter" data-level="9.2" data-path="blocks.html"><a href="blocks.html#theorems-and-proofs"><i class="fa fa-check"></i><b>9.2</b> Theorems and proofs</a></li>
+<li class="chapter" data-level="9.3" data-path="blocks.html"><a href="blocks.html#callout-blocks"><i class="fa fa-check"></i><b>9.3</b> Callout blocks</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>7</b> Sharing your book</a>
+<li class="chapter" data-level="10" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>10</b> Sharing your book</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>7.1</b> Publishing</a></li>
-<li class="chapter" data-level="7.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>7.2</b> 404 pages</a></li>
-<li class="chapter" data-level="7.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>7.3</b> Metadata for sharing</a></li>
+<li class="chapter" data-level="10.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>10.1</b> Publishing</a></li>
+<li class="chapter" data-level="10.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>10.2</b> 404 pages</a></li>
+<li class="chapter" data-level="10.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>10.3</b> Metadata for sharing</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Ordinary kriging just in space | Naslund Chapter 1 Analysis</title>
+  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Ordinary kriging just in space | Naslund Chapter 1 Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Ordinary kriging just in space | Naslund Chapter 1 Analysis" />
+  
+  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  
+
+<meta name="author" content="Laura Naslund" />
+
+
+<meta name="date" content="2022-12-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ebullition.html"/>
+<link rel="next" href="ok-with-structural-model-and-sampling-variance.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Naslund Chapter 1 Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Sampling scheme</a></li>
+<li class="chapter" data-level="2" data-path="table.html"><a href="table.html"><i class="fa fa-check"></i><b>2</b> Table</a></li>
+<li class="chapter" data-level="3" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html"><i class="fa fa-check"></i><b>3</b> Dissolved oxygen</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#deans"><i class="fa fa-check"></i><b>3.1</b> Deans</a></li>
+<li class="chapter" data-level="3.2" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#catfish"><i class="fa fa-check"></i><b>3.2</b> Catfish</a></li>
+<li class="chapter" data-level="3.3" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#sister-3"><i class="fa fa-check"></i><b>3.3</b> Sister 3</a></li>
+<li class="chapter" data-level="3.4" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#pick"><i class="fa fa-check"></i><b>3.4</b> Pick</a></li>
+<li class="chapter" data-level="3.5" data-path="dissolved-oxygen.html"><a href="dissolved-oxygen.html#all-impoundments-top-do"><i class="fa fa-check"></i><b>3.5</b> All impoundments top DO</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html"><i class="fa fa-check"></i><b>4</b> Diffusive emissions</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-81622-81722"><i class="fa fa-check"></i><b>4.1</b> Deans 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="4.2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-83022-83122"><i class="fa fa-check"></i><b>4.2</b> Deans 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="4.3" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-9622-9722"><i class="fa fa-check"></i><b>4.3</b> Catfish 9/6/22-9/7/22</a></li>
+<li class="chapter" data-level="4.4" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-91822-91922-sunny"><i class="fa fa-check"></i><b>4.4</b> Catfish 9/18/22-9/19/22 (Sunny)</a></li>
+<li class="chapter" data-level="4.5" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#pick-91322--91422"><i class="fa fa-check"></i><b>4.5</b> Pick 9/13/22- 9/14/22</a></li>
+<li class="chapter" data-level="4.6" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#sister3-82222-82322"><i class="fa fa-check"></i><b>4.6</b> Sister3 8/22/22-8/23/22</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ebullition.html"><a href="ebullition.html"><i class="fa fa-check"></i><b>5</b> Ebullition</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ebullition.html"><a href="ebullition.html#deans-81622-81722-1"><i class="fa fa-check"></i><b>5.1</b> Deans 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="5.2" data-path="ebullition.html"><a href="ebullition.html#deans-83022-83122-1"><i class="fa fa-check"></i><b>5.2</b> Deans 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="5.3" data-path="ebullition.html"><a href="ebullition.html#catfish-90622-90722-clouds-cleared-by-9am-sparce-clouds-until-4-cleared-around-7-overcast-the-next-morning"><i class="fa fa-check"></i><b>5.3</b> Catfish 9/06/22-9/07/22 (Clouds cleared by 9AM, sparce clouds until ~ 4, cleared around 7, overcast the next morning)</a></li>
+<li class="chapter" data-level="5.4" data-path="ebullition.html"><a href="ebullition.html#catfish-91822-91922-cloudless-until-12-3-pretty-cloudy"><i class="fa fa-check"></i><b>5.4</b> Catfish 9/18/22-9/19/22 (cloudless until 12-3 pretty cloudy)</a></li>
+<li class="chapter" data-level="5.5" data-path="ebullition.html"><a href="ebullition.html#pick-91322-91422"><i class="fa fa-check"></i><b>5.5</b> Pick 9/13/22-9/14/22</a></li>
+<li class="chapter" data-level="5.6" data-path="ebullition.html"><a href="ebullition.html#sister-3-82222-82322"><i class="fa fa-check"></i><b>5.6</b> Sister 3 8/22/22-8/23/22</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ordinary-kriging-just-in-space.html"><a href="ordinary-kriging-just-in-space.html"><i class="fa fa-check"></i><b>6</b> Ordinary kriging just in space</a></li>
+<li class="chapter" data-level="7" data-path="ok-with-structural-model-and-sampling-variance.html"><a href="ok-with-structural-model-and-sampling-variance.html"><i class="fa fa-check"></i><b>7</b> OK with structural model and sampling variance</a></li>
+<li class="chapter" data-level="8" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html"><i class="fa fa-check"></i><b>8</b> Footnotes and citations</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#footnotes"><i class="fa fa-check"></i><b>8.1</b> Footnotes</a></li>
+<li class="chapter" data-level="8.2" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#citations"><i class="fa fa-check"></i><b>8.2</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>9</b> Blocks</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="blocks.html"><a href="blocks.html#equations"><i class="fa fa-check"></i><b>9.1</b> Equations</a></li>
+<li class="chapter" data-level="9.2" data-path="blocks.html"><a href="blocks.html#theorems-and-proofs"><i class="fa fa-check"></i><b>9.2</b> Theorems and proofs</a></li>
+<li class="chapter" data-level="9.3" data-path="blocks.html"><a href="blocks.html#callout-blocks"><i class="fa fa-check"></i><b>9.3</b> Callout blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>10</b> Sharing your book</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>10.1</b> Publishing</a></li>
+<li class="chapter" data-level="10.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>10.2</b> 404 pages</a></li>
+<li class="chapter" data-level="10.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>10.3</b> Metadata for sharing</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Naslund Chapter 1 Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ordinary-kriging-just-in-space" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Ordinary kriging just in space<a href="ordinary-kriging-just-in-space.html#ordinary-kriging-just-in-space" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="ordinary-kriging-just-in-space.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb9-2"><a href="ordinary-kriging-just-in-space.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span>
+<span id="cb9-3"><a href="ordinary-kriging-just-in-space.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stars)</span>
+<span id="cb9-4"><a href="ordinary-kriging-just-in-space.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gstat)</span>
+<span id="cb9-5"><a href="ordinary-kriging-just-in-space.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(automap)</span>
+<span id="cb9-6"><a href="ordinary-kriging-just-in-space.html#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb9-7"><a href="ordinary-kriging-just-in-space.html#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sp)</span>
+<span id="cb9-8"><a href="ordinary-kriging-just-in-space.html#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="ordinary-kriging-just-in-space.html#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">11</span>)</span>
+<span id="cb9-10"><a href="ordinary-kriging-just-in-space.html#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="ordinary-kriging-just-in-space.html#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># how many moles of gas were in that volume </span></span>
+<span id="cb9-12"><a href="ordinary-kriging-just-in-space.html#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="ordinary-kriging-just-in-space.html#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># create fake data</span></span>
+<span id="cb9-14"><a href="ordinary-kriging-just-in-space.html#cb9-14" aria-hidden="true" tabindex="-1"></a>n_pts <span class="ot">&lt;-</span> <span class="dv">15</span></span>
+<span id="cb9-15"><a href="ordinary-kriging-just-in-space.html#cb9-15" aria-hidden="true" tabindex="-1"></a>conc <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">1</span>)<span class="sc">*</span><span class="dv">100</span><span class="sc">*</span><span class="dv">10000</span> <span class="co"># conc in ppm </span></span>
+<span id="cb9-16"><a href="ordinary-kriging-just-in-space.html#cb9-16" aria-hidden="true" tabindex="-1"></a>area <span class="ot">=</span> <span class="fl">0.0254469</span></span>
+<span id="cb9-17"><a href="ordinary-kriging-just-in-space.html#cb9-17" aria-hidden="true" tabindex="-1"></a>time <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb9-18"><a href="ordinary-kriging-just-in-space.html#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="ordinary-kriging-just-in-space.html#cb9-19" aria-hidden="true" tabindex="-1"></a>pts <span class="ot">&lt;-</span></span>
+<span id="cb9-20"><a href="ordinary-kriging-just-in-space.html#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb9-21"><a href="ordinary-kriging-just-in-space.html#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">vol =</span> <span class="fu">rgamma</span>(n_pts,<span class="dv">1</span>),</span>
+<span id="cb9-22"><a href="ordinary-kriging-just-in-space.html#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> <span class="fu">rnorm</span>(n_pts, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb9-23"><a href="ordinary-kriging-just-in-space.html#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">long =</span> <span class="fu">rnorm</span>(n_pts, <span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-24"><a href="ordinary-kriging-just-in-space.html#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">conc_sampled =</span> <span class="fu">sample</span>(conc, n_pts, <span class="at">replace =</span> <span class="cn">TRUE</span>), <span class="co"># random sampling of conc vector</span></span>
+<span id="cb9-25"><a href="ordinary-kriging-just-in-space.html#cb9-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">flux =</span> vol <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>area) <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>time)<span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">9</span>) <span class="sc">*</span> conc_sampled <span class="sc">*</span> <span class="fl">16.04</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="fl">0.0821</span>)<span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="fl">293.15</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-26"><a href="ordinary-kriging-just-in-space.html#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;long&quot;</span>, <span class="st">&quot;lat&quot;</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb9-27"><a href="ordinary-kriging-just-in-space.html#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="ordinary-kriging-just-in-space.html#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="fu">mapview</span>(<span class="fu">st_bbox</span>(pts)) <span class="sc">+</span> <span class="fu">mapview</span>(pts, <span class="at">zcol =</span> <span class="st">&quot;flux&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-a36a27dbe496e2f0bc64" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a36a27dbe496e2f0bc64">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["polygon",420]},{"method":"addPolygons","args":[[[[{"lng":[-1.46118472823257,1.06435937635972,1.06435937635972,-1.46118472823257,-1.46118472823257],"lat":[-0.866792654975266,-0.866792654975266,0.72120272079156,0.72120272079156,-0.866792654975266]}]]],null,"st_bbox(pts)",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"polygon","stroke":true,"color":"#333333","weight":0.5,"opacity":0.9,"fill":true,"fillColor":"#6666ff","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},"1",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},{"stroke":true,"weight":1,"opacity":0.9,"fillOpacity":0.28,"bringToFront":false,"sendToBack":false}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[-1.46118472823257,-0.866792654975266,1.06435937635972,0.72120272079156,true,"st_bbox(pts)","Zoom to st_bbox(pts)","<strong> st_bbox(pts) <\/strong>","bottomright"]},{"method":"createMapPane","args":["point",440]},{"method":"addCircleMarkers","args":[[-0.825613003132558,0.0896793091197589,-0.433448427975194,-0.771181006024381,-0.00927783070970505,-0.719470974599796,-0.204187518604568,0.382351286754576,-0.753743892394082,0.72120272079156,-0.0592826037189167,-0.708511035863574,-0.866792654975266,-0.761852338098436,0.459799522384792],[-0.230493343016006,-0.631111241816878,0.644588745263585,-1.06660931936641,-1.3410305096181,0.923304133245535,-0.516459704881013,-0.129204929131247,-0.689637004942457,-0.555399242136799,-0.952053344861783,-1.46118472823257,1.06435937635972,0.334196536626605,0.472855846006122],6,null,"pts - flux",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"point","stroke":true,"color":"#333333","weight":1,"opacity":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9],"fill":true,"fillColor":["#006290","#00AC8E","#006290","#471D67","#1E4D85","#3C3777","#4B0055","#1E4D85","#007796","#3C3777","#A6DA42","#FDE333","#3C3777","#471D67","#006290"],"fillOpacity":[0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6]},null,null,["<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>1.87391350&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>159219.9&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>2.604726e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>1.03951417&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>676030.1&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>6.134958e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.46819164&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>676030.1&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>2.763153e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>4&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.46539439&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>159219.9&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>6.468949e-04&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>5&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.28401536&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>936565.7&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>2.322177e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>6&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.47034394&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>298035.9&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>1.223769e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>7&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.01745946&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>298035.9&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>4.542706e-05&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>8&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.23419954&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>936565.7&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>1.914871e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>9&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>1.32478398&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>298035.9&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>3.446901e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>10&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.16894495&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>936565.7&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>1.381334e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>11&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>3.63095940&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>298035.9&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>9.447244e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>12&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>1.79610183&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>676030.1&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>1.060015e-02&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>13&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.37614514&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>434135.6&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>1.425595e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>14&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.40444861&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>159219.9&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>5.621807e-04&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>15&emsp;<\/td><\/tr><tr><td>1<\/td><th>vol&emsp;<\/th><td>0.68292171&emsp;<\/td><\/tr><tr><td>2<\/td><th>conc_sampled&emsp;<\/th><td>434135.6&emsp;<\/td><\/tr><tr><td>3<\/td><th>flux&emsp;<\/th><td>2.588281e-03&emsp;<\/td><\/tr><tr><td>4<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["0.00260472630911059","0.00613495841900387","0.00276315253999354","0.000646894860059931","0.00232217665709866","0.00122376862428457","4.54270636980161e-05","0.00191487069182725","0.00344690113684473","0.00138133383069979","0.00944724445978401","0.0106001537917337","0.00142559450304032","0.000562180662835844","0.00258828130360398"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addHomeButton","args":[-1.46118472823257,-0.866792654975266,1.06435937635972,0.72120272079156,true,"pts - flux","Zoom to pts - flux","<strong> pts - flux <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","CartoDB.DarkMatter","OpenStreetMap","Esri.WorldImagery","OpenTopoMap"],["st_bbox(pts)","pts - flux"],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addLegend","args":[{"colors":["#4B0055 , #2E447F 18.5184608438057%, #017C97 37.4673171385647%, #01AA8F 56.4161734333237%, #59CD65 75.3650297280827%, #DDE12E 94.3138860228416%, #FDE333 "],"labels":["0.002","0.004","0.006","0.008","0.010"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"numeric","title":"pts - flux","extra":{"p_1":0.185184608438057,"p_n":0.943138860228416},"layerId":null,"className":"info legend","group":"pts - flux"}]},{"method":"addHomeButton","args":[-1.46118472823257,-0.866792654975266,1.06435937635972,0.72120272079156,true,null,"Zoom to full extent","<strong>Zoom full<\/strong>","bottomleft"]}],"limits":{"lat":[-0.866792654975266,0.72120272079156],"lng":[-1.46118472823257,1.06435937635972]},"fitBounds":[-0.866792654975266,-1.46118472823257,0.72120272079156,1.06435937635972,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="ordinary-kriging-just-in-space.html#cb10-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(<span class="fu">st_bbox</span>(pts), <span class="at">dx =</span> <span class="fl">0.1</span>, <span class="at">dy =</span> <span class="fl">0.1</span>)</span>
+<span id="cb10-2"><a href="ordinary-kriging-just-in-space.html#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="ordinary-kriging-just-in-space.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate empirical variogram</span></span>
+<span id="cb10-4"><a href="ordinary-kriging-just-in-space.html#cb10-4" aria-hidden="true" tabindex="-1"></a>v_emp_ok <span class="ot">&lt;-</span> <span class="fu">variogram</span>(flux <span class="sc">~</span> <span class="dv">1</span>, pts)</span>
+<span id="cb10-5"><a href="ordinary-kriging-just-in-space.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v_emp_ok)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="ordinary-kriging-just-in-space.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># auto fitting of variogram</span></span>
+<span id="cb11-2"><a href="ordinary-kriging-just-in-space.html#cb11-2" aria-hidden="true" tabindex="-1"></a>v_mod_ok <span class="ot">=</span> <span class="fu">autofitVariogram</span>(flux <span class="sc">~</span> <span class="dv">1</span>, <span class="fu">as</span>(pts, <span class="st">&quot;Spatial&quot;</span>))</span>
+<span id="cb11-3"><a href="ordinary-kriging-just-in-space.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v_mod_ok)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="ordinary-kriging-just-in-space.html#cb12-1" aria-hidden="true" tabindex="-1"></a>v_mod_ok<span class="sc">$</span>var_model</span></code></pre></div>
+<pre><code>##   model        psill    range
+## 1   Nug 3.694563e-06  0.00000
+## 2   Sph 8.695035e-06 33.14612</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="ordinary-kriging-just-in-space.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v_emp_ok, v_mod_ok<span class="sc">$</span>var_model)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-31-3.png" width="672" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="ordinary-kriging-just-in-space.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manual fitting of variogram</span></span>
+<span id="cb15-2"><a href="ordinary-kriging-just-in-space.html#cb15-2" aria-hidden="true" tabindex="-1"></a>test_var <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(v_emp_ok, <span class="fu">vgm</span>(<span class="st">&quot;Sph&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning in fit.variogram(v_emp_ok, vgm(&quot;Sph&quot;)): linear model has singular covariance
+## matrix</code></pre>
+<pre><code>## Warning in fit.variogram(v_emp_ok, vgm(&quot;Sph&quot;)): singular model in variogram fit</code></pre>
+<pre><code>## [1] &quot;a possible solution MIGHT be to scale semivariances and/or distances&quot;</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="ordinary-kriging-just-in-space.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(v_emp_ok, test_var)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-31-4.png" width="672" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="ordinary-kriging-just-in-space.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use variogram for kriging interpolation</span></span>
+<span id="cb20-2"><a href="ordinary-kriging-just-in-space.html#cb20-2" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula =</span> flux <span class="sc">~</span> <span class="dv">1</span>, <span class="at">model =</span> test_var, <span class="at">data =</span> pts)</span>
+<span id="cb20-3"><a href="ordinary-kriging-just-in-space.html#cb20-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">predict</span>(g, grid)</span></code></pre></div>
+<pre><code>## [using ordinary kriging]</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="ordinary-kriging-just-in-space.html#cb22-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> z[<span class="st">&quot;var1.pred&quot;</span>,,]</span>
+<span id="cb22-2"><a href="ordinary-kriging-just-in-space.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(z) <span class="ot">=</span> <span class="st">&quot;flux&quot;</span></span>
+<span id="cb22-3"><a href="ordinary-kriging-just-in-space.html#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="ordinary-kriging-just-in-space.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot interpolated data</span></span>
+<span id="cb22-5"><a href="ordinary-kriging-just-in-space.html#cb22-5" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">range</span>(z<span class="sc">$</span>flux)[<span class="dv">1</span>], <span class="fu">range</span>(z<span class="sc">$</span>flux)[<span class="dv">2</span>], <span class="at">by =</span> (<span class="fu">range</span>(z<span class="sc">$</span>flux)[<span class="dv">2</span>]<span class="sc">-</span><span class="fu">range</span>(z<span class="sc">$</span>flux)[<span class="dv">1</span>])<span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb22-6"><a href="ordinary-kriging-just-in-space.html#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="ordinary-kriging-just-in-space.html#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(z, <span class="at">breaks =</span> b, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="fu">length</span>(b)<span class="sc">-</span><span class="dv">1</span>, <span class="st">&quot;Spectral&quot;</span>), <span class="at">reset =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-8"><a href="ordinary-kriging-just-in-space.html#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(pts), <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-9"><a href="ordinary-kriging-just-in-space.html#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(z, <span class="at">breaks =</span> b, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-31-5.png" width="672" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="ordinary-kriging-just-in-space.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># leave-one-out cross validation </span></span>
+<span id="cb23-2"><a href="ordinary-kriging-just-in-space.html#cb23-2" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">krige.cv</span>(flux <span class="sc">~</span> <span class="dv">1</span>, pts, v_mod_ok<span class="sc">$</span>var_model, <span class="at">nmax =</span> <span class="dv">10</span>, <span class="at">nfold =</span> <span class="fu">nrow</span>(pts))</span></code></pre></div>
+<pre><code>## 
+  |                                                                                     
+  |                                                                               |   0%
+  |                                                                                     
+  |======                                                                         |   7%
+  |                                                                                     
+  |===========                                                                    |  14%
+  |                                                                                     
+  |=================                                                              |  21%
+  |                                                                                     
+  |=======================                                                        |  29%
+  |                                                                                     
+  |============================                                                   |  36%
+  |                                                                                     
+  |==================================                                             |  43%
+  |                                                                                     
+  |========================================                                       |  50%
+  |                                                                                     
+  |=============================================                                  |  57%
+  |                                                                                     
+  |===================================================                            |  64%
+  |                                                                                     
+  |========================================================                       |  71%
+  |                                                                                     
+  |==============================================================                 |  79%
+  |                                                                                     
+  |====================================================================           |  86%
+  |                                                                                     
+  |=========================================================================      |  93%
+  |                                                                                     
+  |===============================================================================| 100%</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="ordinary-kriging-just-in-space.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>(out<span class="sc">$</span>residual<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div>
+<pre><code>## [1] 0.003145635</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="ordinary-kriging-just-in-space.html#cb27-1" aria-hidden="true" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">krige.cv</span>(flux <span class="sc">~</span> <span class="dv">1</span>, pts, test_var, <span class="at">nmax =</span> <span class="dv">10</span>, <span class="at">nfold =</span> <span class="fu">nrow</span>(pts))</span></code></pre></div>
+<pre><code>## 
+  |                                                                                     
+  |                                                                               |   0%
+  |                                                                                     
+  |======                                                                         |   7%
+  |                                                                                     
+  |===========                                                                    |  14%
+  |                                                                                     
+  |=================                                                              |  21%
+  |                                                                                     
+  |=======================                                                        |  29%
+  |                                                                                     
+  |============================                                                   |  36%
+  |                                                                                     
+  |==================================                                             |  43%
+  |                                                                                     
+  |========================================                                       |  50%
+  |                                                                                     
+  |=============================================                                  |  57%
+  |                                                                                     
+  |===================================================                            |  64%
+  |                                                                                     
+  |========================================================                       |  71%
+  |                                                                                     
+  |==============================================================                 |  79%
+  |                                                                                     
+  |====================================================================           |  86%
+  |                                                                                     
+  |=========================================================================      |  93%
+  |                                                                                     
+  |===============================================================================| 100%</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="ordinary-kriging-just-in-space.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>(out2<span class="sc">$</span>residual<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div>
+<pre><code>## [1] 0.003145991</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="ordinary-kriging-just-in-space.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at NEON suggested sampling time </span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="ordinary-kriging-just-in-space.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(v_emp_ok)</span></span>
+<span id="cb32-2"><a href="ordinary-kriging-just-in-space.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-3"><a href="ordinary-kriging-just-in-space.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># test_var &lt;- fit.variogram(v_emp_ok, vgm(psill = 1e-5, &quot;Ste&quot;))</span></span>
+<span id="cb32-4"><a href="ordinary-kriging-just-in-space.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># test_var_2 &lt;- fit.variogram(v_emp_ok, vgm(&quot;Ste&quot;))</span></span>
+<span id="cb32-5"><a href="ordinary-kriging-just-in-space.html#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># test_var_3 &lt;- fit.variogram(v_emp_ok, vgm(psill = 1e-5, &quot;Ste&quot;, nugget = 1e-7))</span></span>
+<span id="cb32-6"><a href="ordinary-kriging-just-in-space.html#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co"># auto_var &lt;- fit.variogram(v_emp_ok, vgm(psill = 1.195905e-05, &quot;Ste&quot;, range = 89.90412, kappa = 10))</span></span>
+<span id="cb32-7"><a href="ordinary-kriging-just-in-space.html#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># test_var_4 &lt;- fit.variogram(v_emp_ok, vgm(psill = 1.25e-5, &quot;Exp&quot;))</span></span>
+<span id="cb32-8"><a href="ordinary-kriging-just-in-space.html#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-9"><a href="ordinary-kriging-just-in-space.html#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co"># str(pts)</span></span>
+<span id="cb32-10"><a href="ordinary-kriging-just-in-space.html#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># test_var_4</span></span>
+<span id="cb32-11"><a href="ordinary-kriging-just-in-space.html#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="co"># pts_sdf &lt;- as_Spatial(pts)</span></span>
+<span id="cb32-12"><a href="ordinary-kriging-just-in-space.html#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-13"><a href="ordinary-kriging-just-in-space.html#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># pts_flat &lt;- st_drop_geometry(pts)</span></span>
+<span id="cb32-14"><a href="ordinary-kriging-just-in-space.html#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="co"># class(st_coordinates(pts))</span></span>
+<span id="cb32-15"><a href="ordinary-kriging-just-in-space.html#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="co"># pts_flat$x &lt;- st_coordinates(pts)[,1]</span></span>
+<span id="cb32-16"><a href="ordinary-kriging-just-in-space.html#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="co"># pts_flat$y &lt;- st_coordinates(pts)[,2]</span></span>
+<span id="cb32-17"><a href="ordinary-kriging-just-in-space.html#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-18"><a href="ordinary-kriging-just-in-space.html#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co"># test_var_gls &lt;- fit.variogram.gls(flux~1,pts_sdf, model = vgm(1.191844e-05, &quot;Sph&quot;, 45), maxiter = 20, plot = F)</span></span>
+<span id="cb32-19"><a href="ordinary-kriging-just-in-space.html#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-20"><a href="ordinary-kriging-just-in-space.html#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(test_var_gls)</span></span>
+<span id="cb32-21"><a href="ordinary-kriging-just-in-space.html#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-22"><a href="ordinary-kriging-just-in-space.html#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="co"># fit.variogram.reml(log(zinc)~1, ~x+y, meuse, model = vgm(1, &quot;Sph&quot;, 900,1))</span></span>
+<span id="cb32-23"><a href="ordinary-kriging-just-in-space.html#cb32-23" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-24"><a href="ordinary-kriging-just-in-space.html#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="co"># class(pts)</span></span>
+<span id="cb32-25"><a href="ordinary-kriging-just-in-space.html#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-26"><a href="ordinary-kriging-just-in-space.html#cb32-26" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(v_emp_ok, test_var)</span></span>
+<span id="cb32-27"><a href="ordinary-kriging-just-in-space.html#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(v_emp_ok, test_var_2)</span></span>
+<span id="cb32-28"><a href="ordinary-kriging-just-in-space.html#cb32-28" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(v_emp_ok, test_var_3)</span></span>
+<span id="cb32-29"><a href="ordinary-kriging-just-in-space.html#cb32-29" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(v_emp_ok, auto_var)</span></span>
+<span id="cb32-30"><a href="ordinary-kriging-just-in-space.html#cb32-30" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(v_emp_ok, test_var_4)</span></span>
+<span id="cb32-31"><a href="ordinary-kriging-just-in-space.html#cb32-31" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(v_emp_ok, test_var_gls)</span></span>
+<span id="cb32-32"><a href="ordinary-kriging-just-in-space.html#cb32-32" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-33"><a href="ordinary-kriging-just-in-space.html#cb32-33" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-34"><a href="ordinary-kriging-just-in-space.html#cb32-34" aria-hidden="true" tabindex="-1"></a><span class="co"># # residual sum of squares </span></span>
+<span id="cb32-35"><a href="ordinary-kriging-just-in-space.html#cb32-35" aria-hidden="true" tabindex="-1"></a><span class="co"># test_var_fit &lt;- variogramLine(test_var, maxdist = max(v_emp_ok$dist), dist_vector = v_emp_ok$dist)</span></span>
+<span id="cb32-36"><a href="ordinary-kriging-just-in-space.html#cb32-36" aria-hidden="true" tabindex="-1"></a><span class="co"># residual = test_var_fit$gamma - v_emp_ok$gamma</span></span>
+<span id="cb32-37"><a href="ordinary-kriging-just-in-space.html#cb32-37" aria-hidden="true" tabindex="-1"></a><span class="co"># sqrt(mean(residual^2))</span></span>
+<span id="cb32-38"><a href="ordinary-kriging-just-in-space.html#cb32-38" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb32-39"><a href="ordinary-kriging-just-in-space.html#cb32-39" aria-hidden="true" tabindex="-1"></a><span class="co"># test_var_fit_2 &lt;- variogramLine(test_var_2, maxdist = max(v_emp_ok$dist), dist_vector = v_emp_ok$dist)</span></span>
+<span id="cb32-40"><a href="ordinary-kriging-just-in-space.html#cb32-40" aria-hidden="true" tabindex="-1"></a><span class="co"># residual_2 = test_var_fit_2$gamma - v_emp_ok$gamma</span></span>
+<span id="cb32-41"><a href="ordinary-kriging-just-in-space.html#cb32-41" aria-hidden="true" tabindex="-1"></a><span class="co"># sqrt(mean(residual_2^2))</span></span></code></pre></div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ebullition.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ok-with-structural-model-and-sampling-variance.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-kriging.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

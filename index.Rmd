@@ -4,15 +4,15 @@ author: "Laura Naslund"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
-bibliography: [book.bib, packages.bib]
-# url: your book url like https://naslund-chapter-one-analysis.netlify.app
-# cover-image: path to the social sharing image like images/cover.jpg
+bibliography:
+- book.bib
+- packages.bib
 description: |
   This is a minimal example of using the bookdown package to write a book.
-  The HTML output format for this example is bookdown::gitbook,
   set in the _output.yml file.
+  The HTML output format for this example is bookdown::gitbook,
 link-citations: yes
-github-repo: rstudio/bookdown-demo
+github-repo: "rstudio/bookdown-demo"
 ---
 
 # Sampling scheme
@@ -84,12 +84,12 @@ st_area(pick) %>% as.numeric() *1e-6
 We sampled 4 sites over at least one 24 hr period. We installed 25 ebullition traps across 5 transects in each impoundment. Every 3 hours, we recorded the volume of gas accumulated in each ebullition trap and took a diffusive flux measurement immediately adjacent to 10 if the ebullition traps across the impoundment. To determine impoundment area, I digitized the impoundments using high resolution (0.5 ft) orthoimagery captured during the leaf off period. Pick has a beaver dam on the inlet stream and I delineated only to the beaver dam.
 
 ```{r render map, echo = F}
-mapview(deans, col.regions = "#C9007B", alpha.regions = 1)+
-  mapview(catfish, col.regions = "#A5E200", alpha.regions = 1)+
-  mapview(sister3, col.regions = "#6C6B9F", alpha.regions = 1)+
-  mapview(pick, col.regions = "#00B6B0", alpha.regions = 1)+
+mapview(deans, col.regions = "#DCE319FF", alpha.regions = 1)+
+  mapview(catfish, col.regions = "#55C667FF", alpha.regions = 1)+
+  mapview(sister3, col.regions = "#440154FF", alpha.regions = 1)+
+  mapview(pick, col.regions = "#2D708EFF", alpha.regions = 1)+
   mapview(trap_locations, col.regions = "grey", alpha.regions = 1, legend = F)+
-  mapview(inlet_locations, col.regions = "yellow", alpha.regions = 1)
+  mapview(inlet_locations, col.regions = "black", alpha.regions = 1)
 ```
 
 
@@ -122,13 +122,15 @@ for(i in 1:length(do_list)){
 ### Deans
 ```{r Deans DO plot, echo = F}
 dygraph(Deans_DO_Top) %>% 
-  dyOptions(colors = "#DCE319FF")
+  dyOptions(colors = "#DCE319FF") %>% 
+  dyAxis("y", label = "Dissolved Oxygen (mg/L)")
 ```
 
 ### Catfish
 ```{r Catfish DO plot, echo = F}
 dygraph(Catfish_DO_Top) %>% 
-  dyOptions(colors = "#55C667FF")
+  dyOptions(colors = "#55C667FF")%>% 
+  dyAxis("y", label = "Dissolved Oxygen (mg/L)")
 ```
 
 ### Sister 3
@@ -137,7 +139,8 @@ Sister_DO <- cbind(Sister_DO_Top, Sister_DO_Bottom)
 
 pal <- c("#440154FF", "#AF97B5")
 dygraph(Sister_DO) %>% 
-  dyOptions(colors = pal)
+  dyOptions(colors = pal)%>% 
+  dyAxis("y", label = "Dissolved Oxygen (mg/L)")
 ```
 
 ### Pick
@@ -146,7 +149,8 @@ Pick_DO <- cbind(Pick_DO_Top, Pick_DO_Bottom)
 
 pal <- c("#2D708EFF","#a3cdff")
 dygraph(Pick_DO) %>% 
-  dyOptions(colors = pal)
+  dyOptions(colors = pal)%>% 
+  dyAxis("y", label = "Dissolved Oxygen (mg/L)")
 ```
 
 ### All impoundments top DO
@@ -155,6 +159,122 @@ pal <- c("#DCE319FF",  "#55C667FF", "#440154FF", "#2D708EFF")
 
 all_DO <- cbind(Deans_DO_Top, Catfish_DO_Top, Sister_DO_Top, Pick_DO_Top)
 dygraph(all_DO) %>% 
-   dyOptions(colors = pal)
+   dyOptions(colors = pal)%>% 
+  dyAxis("y", label = "Dissolved Oxygen (mg/L)")
+```
+
+## Temperature
+
+```{r read temperature data, echo = F}
+temp_list <- list.files("2-Clean Data/temperature")
+
+for(i in 1:length(temp_list)){
+  temporary <- read.csv(paste0("2-Clean Data/temperature/", temp_list[i])) %>% 
+  mutate(temp = as.numeric(temp), date = ymd_hms(date, tz="America/New_York"))
+  
+  assign(str_extract(temp_list[i], ".*(?=\\.)"), 
+         temporary %>% filter(is.na(temp)==F)
+         )
+}
+```
+
+
+### Deans
+```{r Deans temp, echo = F}
+deans_vec <- temp_list %>% str_subset("deans") %>% str_extract(".*(?=\\.)")
+
+deans_date <- NULL
+for(i in 1:length(deans_vec)){
+  deans_date <- deans_date %>% bind_rows(eval(sym(deans_vec[i])) %>% select(date))
+}
+deans_date <- tibble(distinct(deans_date))
+  
+for(i in 1:length(deans_vec)){
+  temporary <- eval(sym(deans_vec[i])) %>% 
+    full_join(deans_date, by = "date")  %>% arrange(date) %>% na.locf()
+  
+  assign(paste0(deans_vec[i], "_xts"), as.xts(temporary$temp, order.by = temporary$date))
+}
+
+
+deans_temp <- cbind(deans_0.25_xts, deans_0.75_xts, deans_1.25_xts, deans_2.75_xts)
+dygraph(deans_temp) %>% 
+  dyOptions(connectSeparatedPoints = TRUE) %>% 
+  dyAxis("y", label = "Temperature (C)")
+```
+
+### Catfish
+```{r Catfish temp, echo = F}
+catfish_vec <- temp_list %>% str_subset("catfish") %>% str_extract(".*(?=\\.)")
+
+catfish_date <- NULL
+for(i in 1:length(catfish_vec)){
+  catfish_date <- catfish_date %>% bind_rows(eval(sym(catfish_vec[i])) %>% select(date))
+}
+catfish_date <- tibble(distinct(catfish_date))
+  
+for(i in 1:length(catfish_vec)){
+  temporary <- eval(sym(catfish_vec[i])) %>% 
+    full_join(catfish_date, by = "date")  %>% arrange(date) %>% na.locf()
+  
+  assign(paste0(catfish_vec[i], "_xts"), as.xts(temporary$temp, order.by = temporary$date))
+}
+
+# something weird is happening in the middle of the time series
+catfish_temp <- cbind(catfish_0.25_xts, catfish_1.25_xts, catfish_1.75_xts)
+dygraph(catfish_temp) %>% 
+  dyOptions(connectSeparatedPoints = TRUE)%>% 
+  dyAxis("y", label = "Temperature (C)")
+```
+
+### Sister 3
+```{r Sister3 temp, echo = F}
+sister_vec <- temp_list %>% str_subset("sister") %>% str_extract(".*(?=\\.)")
+
+sister_date <- NULL
+for(i in 1:length(sister_vec)){
+  sister_date <- sister_date %>% bind_rows(eval(sym(sister_vec[i])) %>% select(date))
+}
+sister_date <- tibble(distinct(sister_date))
+  
+for(i in 1:length(sister_vec)){
+  temporary <- eval(sym(sister_vec[i])) %>% 
+    full_join(sister_date, by = "date")  %>% arrange(date) %>% na.locf()
+  
+  assign(paste0(sister_vec[i], "_xts"), as.xts(temporary$temp, order.by = temporary$date))
+}
+
+# something weird is happening in the middle of the time series
+sister_temp <- cbind(sister_0.25_xts, sister_0.75_xts, sister_1.50_xts, sister_2.00_xts)
+dygraph(sister_temp) %>% 
+  dyOptions(connectSeparatedPoints = TRUE)%>% 
+  dyAxis("y", label = "Temperature (C)")
+```
+
+### Pick
+```{r Pick temp, echo = F}
+pick_vec <- temp_list %>% str_subset("pick") %>% str_extract(".*(?=\\.)")
+
+pick_date <- NULL
+for(i in 1:length(pick_vec)){
+  pick_date <- pick_date %>% bind_rows(eval(sym(pick_vec[i])) %>% select(date))
+}
+pick_date <- tibble(distinct(pick_date))
+  
+for(i in 1:length(pick_vec)){
+  temporary <- eval(sym(pick_vec[i])) %>% 
+    full_join(pick_date, by = "date")  %>% arrange(date) %>% na.locf() %>% filter(date < ymd_hms("2022-11-09 10:00:00", tz = "America/New_York")) %>% filter(!(date > ymd_hms("2022-07-07 10:16:00", tz = "America/New_York") & date < ymd_hms("2022-07-07 11:16:00", tz = "America/New_York")))
+  
+  if(temporary$depth[1]==3){
+    temporary <- temporary %>% filter(date < ymd_hms("2022-07-07 10:15:00", tz = "America/New_York"))
+  }
+  
+  assign(paste0(pick_vec[i], "_xts"), as.xts(temporary$temp, order.by = temporary$date))
+}
+
+pick_temp <- cbind(pick_0.25_xts, pick_0.75_xts, pick_1.75_xts, pick_2.25_xts, pick_3.00_xts)
+dygraph(pick_temp) %>% 
+  dyOptions(connectSeparatedPoints = TRUE)%>% 
+  dyAxis("y", label = "Temperature (C)")
 ```
 

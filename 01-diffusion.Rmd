@@ -109,6 +109,12 @@ sister3_22 <- diffusion %>%
 sister3_pts_22 <- sister3_pts %>% full_join(sister3_22, by = "location") %>% filter(is.na(flux_ch4_mmol)==F)
 ```
 
+## Deans Cloud Comparison
+```{r, echo = F}
+library("vembedr")
+embed_url("https://youtu.be/oMqE6EcmbUg")
+```
+
 ## Deans 8/16/22-8/17/22
 ```{r deans diff ch4 8.16, width = 5, units = "in",  echo = F}
 tm_shape(deans)+
@@ -153,6 +159,11 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 
 #, breaks = c(0,2,4,6,8,10,12)
+```
+
+## Catfish Cloud Comparison
+```{r, echo = F}
+embed_url("https://youtu.be/y2M4VBIx9a0")
 ```
 
 ## Catfish 9/6/22-9/7/22 
@@ -238,34 +249,3 @@ tm_shape(sister3_pts_22, bbox = st_bbox(catfish) %>% st_as_sfc())+
 tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=2) 
 ```
-
-```{r, echo = F}
-# library("magick")
-# av_video_images("2-Clean Data/Catfish_20220906.mp4", destdir = tempfile(pattern = "file", tmpdir = "2-Clean Data/Catfish_20220906"), format = "jpg", fps = NULL) 
-# 
-# av_video_images("2-Clean Data/Catfish_20220918.mp4", destdir = tempfile(pattern = "file", tmpdir = "2-Clean Data/Catfish_20220918"), format = "jpg", fps = NULL) 
-# 
-# cat_06_pic <- paste0("2-Clean Data/Catfish_20220906/file228c1bcb3c22/", list.files("2-Clean Data/Catfish_20220906/file228c1bcb3c22"))
-# cat_18_pic <- paste0("2-Clean Data/Catfish_20220918/file228c371336/", list.files("2-Clean Data/Catfish_20220918/file228c371336"))
-# 
-# 
-# 
-# 
-# test <- c(image_read(cat_06_pic[1]), image_read(cat_18_pic[1]))
-# 
-# image_append(image_scale(test, "x300"))
-# 
-# image_write(image_append(image_scale(test, "x300")), paste0("2-Clean Data/Catfish_stitch/catfish", 1, ".jpg"), format = "jpg")
-# 
-# # for(i in 1:length(cat_06_pic)){
-# #   temp <- c(image_read(cat_06_pic[i]), image_read(cat_18_pic[i]))
-# #   image_write(image_append(image_scale(temp, "x300")), paste0("2-Clean Data/Catfish_stitch/catfish", i, ".jpg"), format = "jpg")
-# # }
-# 
-# imgs <- paste0("2-Clean Data/Catfish_stitch/", list.files("2-Clean Data/Catfish_stitch"))
-# image_list <- lapply(imgs, image_read)
-# image_joined <- image_join(image_list)
-# img_animated <- image_animate(image_joined)
-# image_write(image = img_animated, path = "cat.gif")
-```
-

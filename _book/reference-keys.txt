@@ -15,7 +15,7 @@ diffusive-emissions
 deans-81622-81722
 deans-83022-83122
 catfish-9622-9722
-catfish-91822-91922-sunny
+catfish-91822-91922
 pick-91322--91422
 sister3-82222-82322
 ebullition
@@ -28,8 +28,5 @@ sister-3-82222-82322
 simple-kriging-just-in-space
 diffusive-analysis
 ebullition-analysis
-sharing-your-book
-publishing
-pages
-metadata-for-sharing
-catfish-91822-91922
+deans-cloud-comparison
+catfish-cloud-comparison

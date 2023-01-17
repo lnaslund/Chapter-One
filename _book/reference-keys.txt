@@ -1,5 +1,3 @@
-eq:binom
-thm:tri
 sampling-scheme
 dissolved-oxygen
 deans
@@ -12,6 +10,7 @@ deans-1
 catfish-1
 sister-3-1
 pick-1
+label
 diffusive-emissions
 deans-81622-81722
 deans-83022-83122
@@ -26,16 +25,11 @@ catfish-90622-90722-clouds-cleared-by-9am-sparce-clouds-until-4-cleared-around-7
 catfish-91822-91922-cloudless-until-12-3-pretty-cloudy
 pick-91322-91422
 sister-3-82222-82322
-ordinary-kriging-just-in-space
-ok-with-structural-model-and-sampling-variance
-footnotes-and-citations
-footnotes
-citations
-blocks
-equations
-theorems-and-proofs
-callout-blocks
+simple-kriging-just-in-space
+diffusive-analysis
+ebullition-analysis
 sharing-your-book
 publishing
 pages
 metadata-for-sharing
+catfish-91822-91922

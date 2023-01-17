@@ -1,197 +1,171 @@
-# Ordinary kriging just in space
+# Simple kriging just in space
 
-```{r}
-library(sf)
-library(mapview)
-library(stars)
-library(gstat)
-library(automap)
-library(tidyverse)
-library(sp)
 
-set.seed(11)
+```{r transform data}
+test_data <- pick_pts_13 %>% filter(trip == 2)
 
-# how many moles of gas were in that volume 
+# Detrend before normal score
 
-# create fake data
-n_pts <- 15
-conc <- rbeta(5, 2, 1)*100*10000 # conc in ppm 
-area = 0.0254469
-time = 3
+# create x y trend model and pull residuals to krige
+test_data$x <- st_coordinates(test_data) %>% as.data.frame() %>% pull(X)
+test_data$y <- st_coordinates(test_data) %>% as.data.frame() %>% pull(Y)
 
-pts <-
-  data.frame(
-    vol = rgamma(n_pts,1),
-    lat = rnorm(n_pts, 0, 1),
-    long = rnorm(n_pts, 0, 1)) %>% 
-  mutate(conc_sampled = sample(conc, n_pts, replace = TRUE), # random sampling of conc vector
-         flux = vol * (1/area) * (1/time)* (1/10^9) * conc_sampled * 16.04 * (1/0.0821)* (1/293.15)) %>% 
-  st_as_sf(coords = c("long", "lat"), crs = 4326)
+func_trend <- as.formula(flux_co2_g_hr ~ x + y)
+lm_trend <- lm(func_trend, data = test_data)
 
-mapview(st_bbox(pts)) + mapview(pts, zcol = "flux")
+summary(lm_trend)
 
-grid <- st_as_stars(st_bbox(pts), dx = 0.1, dy = 0.1)
+test_data$resid_co2_g_hr <- residuals(lm_trend)
 
-# calculate empirical variogram
-v_emp_ok <- variogram(flux ~ 1, pts)
-plot(v_emp_ok)
+hist(test_data$resid_co2_g_hr)
 
-# auto fitting of variogram
-v_mod_ok = autofitVariogram(flux ~ 1, as(pts, "Spatial"))
-plot(v_mod_ok)
-
-v_mod_ok$var_model
-
-plot(v_emp_ok, v_mod_ok$var_model)
-
-# manual fitting of variogram
-test_var <- fit.variogram(v_emp_ok, vgm("Sph"))
-plot(v_emp_ok, test_var)
-
-# use variogram for kriging interpolation
-g <- gstat(formula = flux ~ 1, model = test_var, data = pts)
-z <- predict(g, grid)
-z <- z["var1.pred",,]
-names(z) = "flux"
-
-# plot interpolated data
-b <- seq(range(z$flux)[1], range(z$flux)[2], by = (range(z$flux)[2]-range(z$flux)[1])/10)
-
-plot(z, breaks = b, col = hcl.colors(length(b)-1, "Spectral"), reset = FALSE)
-plot(st_geometry(pts), pch = 16, add = TRUE)
-contour(z, breaks = b, add = TRUE)
-
-# leave-one-out cross validation 
-out <- krige.cv(flux ~ 1, pts, v_mod_ok$var_model, nmax = 10, nfold = nrow(pts))
-sqrt(mean(out$residual^2))
-
-out2 <- krige.cv(flux ~ 1, pts, test_var, nmax = 10, nfold = nrow(pts))
-sqrt(mean(out2$residual^2))
-
-# Look at NEON suggested sampling time 
-
-```
-
-```{r}
-# plot(v_emp_ok)
-# 
-# test_var <- fit.variogram(v_emp_ok, vgm(psill = 1e-5, "Ste"))
-# test_var_2 <- fit.variogram(v_emp_ok, vgm("Ste"))
-# test_var_3 <- fit.variogram(v_emp_ok, vgm(psill = 1e-5, "Ste", nugget = 1e-7))
-# auto_var <- fit.variogram(v_emp_ok, vgm(psill = 1.195905e-05, "Ste", range = 89.90412, kappa = 10))
-# test_var_4 <- fit.variogram(v_emp_ok, vgm(psill = 1.25e-5, "Exp"))
-# 
-# str(pts)
-# test_var_4
-# pts_sdf <- as_Spatial(pts)
-# 
-# pts_flat <- st_drop_geometry(pts)
-# class(st_coordinates(pts))
-# pts_flat$x <- st_coordinates(pts)[,1]
-# pts_flat$y <- st_coordinates(pts)[,2]
-# 
-# test_var_gls <- fit.variogram.gls(flux~1,pts_sdf, model = vgm(1.191844e-05, "Sph", 45), maxiter = 20, plot = F)
-# 
-# summary(test_var_gls)
-# 
-# fit.variogram.reml(log(zinc)~1, ~x+y, meuse, model = vgm(1, "Sph", 900,1))
-# 
-# class(pts)
-# 
-# plot(v_emp_ok, test_var)
-# plot(v_emp_ok, test_var_2)
-# plot(v_emp_ok, test_var_3)
-# plot(v_emp_ok, auto_var)
-# plot(v_emp_ok, test_var_4)
-# plot(v_emp_ok, test_var_gls)
-# 
-# 
-# # residual sum of squares 
-# test_var_fit <- variogramLine(test_var, maxdist = max(v_emp_ok$dist), dist_vector = v_emp_ok$dist)
-# residual = test_var_fit$gamma - v_emp_ok$gamma
-# sqrt(mean(residual^2))
-# 
-# test_var_fit_2 <- variogramLine(test_var_2, maxdist = max(v_emp_ok$dist), dist_vector = v_emp_ok$dist)
-# residual_2 = test_var_fit_2$gamma - v_emp_ok$gamma
-# sqrt(mean(residual_2^2))
-```
-
-# OK with structural model and sampling variance
-```{r}
-set.seed(11)
-
-# create fake data
-n_pts <- 15
-conc <- rbeta(5, 2, 1)*100*10000 # conc in ppm 
-depth <- rbeta(n_pts, 5, 15) * 10 # fake depths
-area <- 0.0254469
-time <- 3
-vol = rgamma(n_pts,1)
-lat = rnorm(n_pts, 0, 1)
-long = rnorm(n_pts, 0, 1)
-
-# monte carlo parameters
-n_sims <- 10
-flux_summary <- NULL
-rmse <- NULL
-
-for(i in 1:n_sims){
-# assign concentrations to volumes and calculate raw flux
-  pts <-
-  data.frame(
-    vol =vol,
-    lat = lat,
-    long = long) %>% 
-  mutate(conc_sampled = sample(conc, n_pts, replace = TRUE), 
-         depth = depth, 
-         flux_raw = vol * (1/area) * (1/time)* (1/10^9) * conc_sampled * 16.04 * (1/0.0821)* (1/293.15)) %>% 
-  st_as_sf(coords = c("long", "lat"), crs = 4326)
-
-# correct "observed" flux values using residual standard error from depth model
-  rse <- summary(lm(flux_raw ~ depth, data = pts))$sigma
-  # Question: This allows fluxes to be negative which doesn't make sense for ebullition. Should I write in an additional constraint that flux_corr must be positive?
-  pts <- pts %>% mutate(flux_corr= flux_raw %>% map_dbl(~rnorm(1, mean = .x, sd =rse)))
-  
-# create grid for kriging
-  grid <- st_as_stars(st_bbox(pts), dx = 0.1, dy = 0.1)
-  
-  # calculate empirical variogram
-  v_emp_ok <- variogram(flux_corr ~ 1, pts)
-  plot(v_emp_ok)
-
-  # fit modeled variogram
-  # Question: if you are fitting the variogram "manually" (not using autofit), you need to give the function starting parameters, and from what I gather from the internet, people typically eyeball the empirical variogram to get those starting parameters (e.g., sill, nugget, range), so I am not sure how to randomize manual fits except to autofit first and then maybe extract parameters from the model IDed by autofit as having the smallest rss and then applying them to randomly selected model. Because the data are changing by accounting for sampling variance and ebullition concentrations, does this even make sense? Presumably different model runs will have different variogram models using autofit.
-  # auto fitting of variogram
-  v_mod_ok = autofitVariogram(flux_corr ~ 1, as(pts, "Spatial"))
-  plot(v_mod_ok)
-
-  # apply modeled variogram and krige
-  g <- gstat(formula = flux_corr ~ 1, model = v_mod_ok$var_model, data = pts)
-  z <- predict(g, grid)
-  z <- z["var1.pred",,]
-  names(z) = "flux"
-  
-  # sum cells in the grid to get total flux
-  flux_summary <- c(flux_summary, sum(z$flux))
-  
-  # plot kriged grid
-  b <- seq(range(z$flux)[1], range(z$flux)[2], by = (range(z$flux)[2]-range(z$flux)[1])/10)
-
-  plot(z, breaks = b, col = hcl.colors(length(b)-1, "Spectral"), reset = FALSE)
-  plot(st_geometry(pts), pch = 16, add = TRUE)
-  contour(z, breaks = b, add = TRUE)
-
-  # leave-one-out cross validation 
-  ou2 <- krige.cv(flux_corr ~ 1, pts, v_mod_ok$var_model, nmax = n_pts, nfold = nrow(pts))
-  rmse <- c(rmse, sqrt(mean(out2$residual^2)))
+# function to return table with normal scores and original values to use for backtransform later
+nscore <- function(x) {                       
+  nscore <- qqnorm(x, plot.it = FALSE)$x  # normal score 
+  trn.table <- data.frame(x=sort(x),nscore=sort(nscore))
+  return (trn.table)
 }
- 
-# total fluxes from simulation runs
-flux_summary
-# RMSE from leave-one-out cross validation from simulation runs
-rmse
 
-names(mtcars)
-summary(lm(mpg~cyl, data = mtcars))
-cov(mtcars[1:2])
+# quantile-quantile normal score transform data
+test_data$resid_norm_co2_g_hr <- qqnorm(test_data$resid_co2_g_hr, plot.it = F)$x
+
+nscore.tab <- nscore(test_data$resid_co2_g_hr)
+
+plot(x~nscore, data=nscore.tab)
+
+plot(ecdf(test_data$resid_co2_g_hr))
+plot(ecdf(test_data$resid_norm_co2_g_hr))
+
+hist(test_data$resid_co2_g_hr)
+hist(test_data$resid_norm_co2_g_hr)
+
+mapview(test_data, zcol = "resid_norm_co2_g_hr")
 ```
+
+```{r variograms}
+# create isotropic variogram
+# width = lag distance (approximately minimum non zero data spacing)
+# cutoff = number of lags * lag distance (number of lags = 1/2 major axis/lag distance)
+# think about how cutoff and width parameters are impacting variogram calculation
+var.norm.iso <- variogram(resid_norm_co2_g_hr~1, test_data ,cutoff = 70 ,width = 14)
+var.norm.th.iso <- vgm(psill = 1, "Exp", range = 17) # no nugget
+
+# plot theoretical with experimental variogram
+vm.norm.sim <- variogramLine(var.norm.th.iso,maxdist=100,min=0.0001,n=100, covariance=FALSE)
+plot(var.norm.iso$dist,var.norm.iso$gamma, xlim = c(0,100))
+lines(vm.norm.sim$dist,vm.norm.sim$gamma,col="blue") 
+
+# create anisotropic variogram (doesn't appear to be enough data to do this/not well supported with residuals of gaussian transformed model)
+var.norm.045 = variogram(resid_norm_co2_g_hr~1,test_data,cutoff = 70,width =14,alpha = 45.0,tol.hor=22.5) # 045 directional 
+var.norm.135 = variogram(resid_norm_co2_g_hr~1,test_data,cutoff = 70,width =14,alpha = 135.0,tol.hor=22.5) # 135 directional
+var.norm.th.ani<- vgm(psill = 1, "Exp", 17, anis = c(135, 0.5))
+
+# plot theoretical anisotropic variograms with experimental variograms
+unit_vector = c(sin(45*pi/180),sin(45*pi/180),0) # unit vector for 035 azimuth
+vm.norm.sim.an.45 <- variogramLine(var.norm.th.ani, maxdist=100,min=0.0001,n=100, covariance=FALSE, dir=unit_vector)
+unit_vector = c(sin(45*pi/180),-sin(45*pi/180),0) # unit vector for 035 azimuth
+vm.norm.sim.an.135 <- variogramLine(var.norm.th.ani, maxdist=100,min=0.0001,n=100, covariance=FALSE, dir=unit_vector)
+
+
+plot(var.norm.135$dist, var.norm.135$gamma, col = "green")
+points(var.norm.045$dist, var.norm.045$gamma, col = "red")
+lines(vm.norm.sim.an.45$dist, vm.norm.sim.an.45$gamma, col ="red")
+lines(vm.norm.sim.an.135$dist, vm.norm.sim.an.135$gamma, col ="green")
+```
+
+```{r kriging with isotropic variogram}
+# create interpolation grid
+grid <- st_as_stars(st_bbox(pick), dx = 1, dy = 1)
+grid <- grid[pick]
+
+# ordinary kriging (assumption of stationarity of the mean is relaxed, mean is estimated locally)
+co2.kriged = krige(resid_norm_co2_g_hr~1, test_data, grid, model = var.norm.th.iso,maxdist = Inf,nmin = 0,omax=Inf) 
+
+# simple kriging (mean is stationary)
+co2.kriged.sk = krige(resid_norm_co2_g_hr~1, test_data, grid, model = var.norm.th.iso,maxdist = Inf,nmin = 0,omax=Inf, beta = mean(test_data$resid_norm_co2_g_hr)) 
+
+# ordinary and simple kriging (yield very similar results in this example)
+range(co2.kriged$var1.pred, na.rm = T)
+range(co2.kriged.sk$var1.pred, na.rm = T)
+
+plot(co2.kriged)
+
+# add back in the trend to the kriged residuals
+co2.kriged$trend <- predict(co2.kriged, lm_trend)
+co2.kriged$detrended.norm <- co2.kriged$trend + co2.kriged$var1.pred
+
+plot(co2.kriged[4])
+
+range(co2.kriged[4]$detrended.norm, na.rm = T)
+hist(co2.kriged[4]$detrended.norm)
+
+# backtransform normal scores
+# based on the gslib documentation, it looks like what you need to do is for each point interpolate between points in the normal score table and use an extrapolation function (possibly linear?) for points beyond the range
+above.max.lm <- lm(x~nscore, data=nscore.tab[(nrow(nscore.tab)-1):nrow(nscore.tab),])
+above.max.func <- function(x){
+  coefficients(above.max.lm)[[1]] + (coefficients(above.max.lm)[[2]]*x)
+  }
+below.min.lm <- lm(x~nscore, data=nscore.tab[1:2,])
+below.min.func <- function(x){
+  coefficients(below.min.lm)[[1]] + (coefficients(below.min.lm)[[2]]*x)
+}
+
+interpolate <- approxfun(x=nscore.tab$nscore, y=nscore.tab$x)
+backtr <- function(x){
+  if(is.na(x)){
+    return(NA)
+  }
+  if(x>max(nscore.tab$nscore)){
+    return(above.max.func(x))
+  }
+  if(x<min(nscore.tab$nscore)){
+    return(below.min.func(x))
+  }
+  else{
+    return(interpolate(x))
+  }
+    
+}
+
+co2.kriged$backtransformed <- apply(co2.kriged$detrended.norm, 1:2, backtr)
+
+mapview(co2.kriged[5])+
+  mapview(test_data, zcol = "flux_co2_g_hr", col.region=viridis::viridis_pal(option = "A"))
+```
+
+```{r simulation}
+# Sequential Gaussian simulation with isotropic variogram using simple kriging (but ordinary kriging also run)
+
+# Ortiz 2020 https://qspace.library.queensu.ca/bitstream/handle/1974/28538/2020-01-Ortiz-Simulation.pdf?sequence=2 indicates that you shouldn't use ordinary kriging in sequential gaussian simulation. The krige function I think allows you to use ordinary kriging and it looks like it might be trying to estimate beta within the function. 
+co2.kriged.sim = krige(resid_norm_co2_g_hr~1, test_data, grid, model = var.norm.th.iso,maxdist = Inf,nmin = 0,omax=Inf, indicators=FALSE, nsim=4, nmax=100) # will take a second to run
+
+co2.kriged.sim.sk = krige(resid_norm_co2_g_hr~1, test_data, grid, model = var.norm.th.iso,maxdist = Inf,nmin = 0,omax=Inf, indicators=FALSE, nsim=4, nmax=100, beta = 0) # will take a second to run # mean should be zero after gaussian transformation # I don't know if beta is required here
+
+co2.kriged.sim.sk$trend <- predict(co2.kriged.sim.sk, lm_trend)
+co2.kriged.sim.sk$detrended.norm <- co2.kriged.sim.sk$trend + co2.kriged.sim.sk$var1
+
+
+plot(co2.kriged.sim.sk["trend"])
+plot(co2.kriged.sim.sk["detrended.norm"])
+
+co2.kriged.sim.sk$backtransform <- st_apply(co2.kriged.sim.sk[3], 1:3, backtr)
+
+plot(co2.kriged.sim.sk["backtransform"])
+
+mapview(co2.kriged.sim.sk[4,,,1])
+mapview(co2.kriged.sim.sk[4,,,2])
+mapview(co2.kriged.sim.sk[4,,,3])
+mapview(co2.kriged.sim.sk[4,,,4])
+```
+
+```{r}
+# total CO2 flux estimate (in grams) from simulations
+sum(co2.kriged.sim.sk[4,,,1]$backtransform, na.rm = T)
+sum(co2.kriged.sim.sk[4,,,2]$backtransform, na.rm = T)
+sum(co2.kriged.sim.sk[4,,,3]$backtransform, na.rm = T)
+sum(co2.kriged.sim.sk[4,,,4]$backtransform, na.rm = T)
+
+# total CO2 flux estimate using only the mean of measured data values
+st_area(pick) %>% as.numeric()*mean(test_data$flux_co2_g_hr)
+```
+

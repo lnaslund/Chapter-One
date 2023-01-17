@@ -1,134 +1,194 @@
 # Ebullition
 
-```{r, echo = F}
-samplings <- read.csv("2-Clean Data/sampling-events.csv") %>% 
-  pivot_longer(cols = c("Start.Date", "End.Date"), names_to = "Date.Type", values_to = "Collection.Date") %>% 
+```{r calculate distances from inlet, echo =F}
+pick_dist <- st_distance(pick_pts, inlet_locations %>% filter(Name == "Picks inlet")) %>% as.numeric()
+pick_pts$inlet_dist <- pick_dist
+
+sister_dist <- st_distance(sister3_pts, inlet_locations %>% filter(Name == "Sister inlet")) %>% as.numeric()
+sister3_pts$inlet_dist <- sister_dist
+
+deans_dist_1 <- st_distance(deans_pts, inlet_locations %>% filter(Name == "Deans inlet 1")) %>% as.numeric()
+deans_pts$deans_dist_1 <- deans_dist_1
+deans_dist_2 <- st_distance(deans_pts, inlet_locations %>% filter(Name == "Deans inlet 2")) %>% as.numeric()
+deans_pts$deans_dist_2 <- deans_dist_2
+
+catfish_dist_1 <- st_distance(catfish_pts, inlet_locations %>% filter(Name == "Catfish inlet 1")) %>% as.numeric()
+catfish_pts$catfish_dist_1 <- catfish_dist_1
+catfish_dist_2 <- st_distance(catfish_pts, inlet_locations %>% filter(Name == "Catfish inlet 2")) %>% as.numeric()
+catfish_pts$catfish_dist_2 <- catfish_dist_2
+```
+
+```{r fix issue with deans, echo = F}
+# funnel diameter 18 cm
+# perception corrected volumes
+gas_vols <- read.csv("2-Clean Data/ebullition-gas-volumes-pcorrect.csv") %>% 
+  mutate(eb_start = ymd_hms(eb_start, tz = "America/New_York"), eb_end = ymd_hms(eb_end, tz="America/New_York"), Collection.Date = date(eb_end))
+
+# need to fix NAs in deans 8/16. It looks like you forgot to visit D4D in the middle of the night and the algorithm didn't know how to interpolate times in between
+gap_start <- gas_vols %>% filter(Trap == "D4C", period == "6~7", Collection.Date ==ymd("2022-08-17")) %>% select(eb_start) %>% pull()
+gap_end <- gas_vols %>% filter(Trap == "D5B", period == "6~7", Collection.Date ==ymd("2022-08-17")) %>% select(eb_start) %>% pull()
+time_diff <- (gap_end-gap_start)/4
+
+gas_vols[gas_vols$Trap == "D4D" & gas_vols$period == "6~7" & gas_vols$Collection.Date == ymd("2022-08-17"),]$eb_start <- gap_start + time_diff
+gas_vols[gas_vols$Trap == "D4E" & gas_vols$period == "6~7" & gas_vols$Collection.Date == ymd("2022-08-17"),]$eb_start <- gap_start + time_diff
+gas_vols[gas_vols$Trap == "D5A" & gas_vols$period == "6~7" & gas_vols$Collection.Date == ymd("2022-08-17"),]$eb_start <- gap_start + time_diff
+
+gas_vols[gas_vols$Trap == "D4D" & gas_vols$period == "5~6" & date(gas_vols$eb_start) == ymd("2022-08-16"),]$eb_end <- gas_vols[gas_vols$Trap == "D4D" & gas_vols$period == "6~7" & gas_vols$Collection.Date == ymd("2022-08-17"),]$eb_start 
+
+gas_vols[gas_vols$Trap == "D4E" & gas_vols$period == "5~6" & date(gas_vols$eb_start) == ymd("2022-08-16"),]$eb_end <- gas_vols[gas_vols$Trap == "D4E" & gas_vols$period == "6~7" & gas_vols$Collection.Date == ymd("2022-08-17"),]$eb_start 
+
+gas_vols[gas_vols$Trap == "D5A" & gas_vols$period == "5~6" & date(gas_vols$eb_start) == ymd("2022-08-16"),]$eb_end <- gas_vols[gas_vols$Trap == "D5A" & gas_vols$period == "6~7" & gas_vols$Collection.Date == ymd("2022-08-17"),]$eb_start 
+
+gas_vols[gas_vols$Trap == "D4D" & gas_vols$period == "5~6" & date(gas_vols$eb_start) == ymd("2022-08-16"),]$Collection.Date <- ymd("2022-08-17")
+
+gas_vols[gas_vols$Trap == "D4E" & gas_vols$period == "5~6" & date(gas_vols$eb_start) == ymd("2022-08-16"),]$Collection.Date <- ymd("2022-08-17")
+
+gas_vols[gas_vols$Trap == "D5A" & gas_vols$period == "5~6" & date(gas_vols$eb_start) == ymd("2022-08-16"),]$Collection.Date <- ymd("2022-08-17")
+
+gas_vols <- gas_vols %>% mutate(time_hr = (as.numeric(eb_end - eb_start))/60)
+```
+
+```{r calculate ebullition, echo = F}
+depths <- read.csv("2-Clean Data/trap_depths.csv")
+
+samplings <- read.csv("2-Clean Data/sampling-events.csv") %>%
+  pivot_longer(cols = c("Start.Date", "End.Date"), names_to = "Date.Type", values_to = "Collection.Date") %>%
   mutate(Sampling = paste0(Site, Event)) %>% select(Sampling, Collection.Date)
 
-# funnel diameter 18 cm 
-gas_vols <- read.csv("2-Clean Data/ebullition-gas-volumes.csv") %>% 
-  mutate(gas_accumulated = if_else(X==1209, 0, gas_accumulated)) %>% 
-  mutate(gas_vol_corrected = if_else(gas_accumulated >0, gas_accumulated, if_else(gas_accumulated < -0.2, -9999, 0))) %>% 
-  mutate(gas_vol_corrected = na_if(gas_vol_corrected, -9999)) %>% 
-  mutate(eb_start = ymd_hms(eb_start), eb_end = ymd_hms(eb_end), Collection.Date = date(eb_end)) %>% 
-  left_join(samplings %>% mutate(Collection.Date = mdy(Collection.Date)), by = "Collection.Date") %>% 
-  filter(period != "NA~0") %>% 
-  filter(!(Sampling == "Deans1" & period == "8~9")) %>% 
-  mutate(area = pi * 81 * 0.0001) %>% 
+gas_vols <- gas_vols %>% 
+  mutate(gas_vol_corrected = if_else(gas_accumulated >0, gas_accumulated, if_else(gas_accumulated < -0.5,  -9999, 0))) %>%
+  mutate(gas_vol_corrected = na_if(gas_vol_corrected, -9999)) %>%
+  
+  left_join(samplings %>% mutate(Collection.Date = mdy(Collection.Date)), by = "Collection.Date") %>%
+  filter(period != "NA~0") %>%
+  filter(!(Sampling == "Deans1" & period == "8~9")) %>%
+  mutate(area = pi * 81 * 0.0001) %>%
   mutate(location = Trap)
 
-conc <- read.csv("2-Clean Data/ebullition_concentrations.csv") %>% left_join(samplings, by = "Collection.Date") %>% group_by(Sampling) %>% summarize(mean_ch4_ppm = mean(Undiluted.CH4.conc.ppm))
+conc <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>% 
+  mutate(corr_ch4 = case_when(
+  Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, 
+  Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, 
+  Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)
+) %>% filter(is.na(Data.Flag)==T) %>% 
+  left_join(samplings, by = "Collection.Date") %>% group_by(Sampling) %>% 
+  summarize(mean_ch4_ppm = mean(corr_ch4, na.rm =T))
 
-gas_vols_uncorrected <- read.csv("2-Clean Data/ebullition-gas-volumes.csv")
-conc_uncorrected <- read.csv("2-Clean Data/ebullition_concentrations.csv") 
-
-# change this so that it doesn't get rid of the point
-ebullition <- gas_vols %>% left_join(conc, by = "Sampling") %>% 
-  mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * mean_ch4_ppm * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %>% 
-  filter(X !=1364) 
+conc_match <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>% 
+  mutate(corr_ch4 = case_when(
+  Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, 
+  Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, 
+  Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)
+) %>% filter(is.na(Data.Flag)==T) %>% 
+  filter(str_detect(Location, "^[:alpha:][:digit:][:alpha:]$")==TRUE) %>% 
+  mutate(Collection.Date = mdy(Collection.Date)) %>% 
+  mutate(Trap = case_when(
+    Site == "Picks" ~ paste0("P", str_sub(Location, 2,3)), 
+    Site == "Deans" ~ paste0("D", str_sub(Location, 2,3)),
+    Site == "Sister 3" ~ paste0("S", str_sub(Location, 2,3)),
+    Site == "Catfish" ~ paste0("C", str_sub(Location, 2,3))
+  )) %>% 
+  mutate(period = paste0((Rep-1), "~", Rep))
   
+ebullition <- gas_vols %>% 
+  left_join(conc_match %>% select(Trap, Collection.Date, period, corr_ch4), by = c("Trap", "Collection.Date", "period")) %>% 
+  left_join(conc, by = "Sampling") %>% 
+  mutate(ch4_conc = if_else(is.na(corr_ch4)==T, mean_ch4_ppm, corr_ch4)) %>%
+  mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %>% mutate(row_id = row_number()) %>% filter(!(row_id)%in% c(1201,1202, 1602,1603))
 
+deans_16_eb <- ebullition %>%
+  filter(Sampling == "Deans1") %>%
+  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM",
+                             period == "1~2" ~ "10AM - 1PM",
+                             period == "2~3" ~ "1PM - 4PM",
+                             period == "3~4" ~ "4PM - 7PM",
+                             period == "4~5" ~ "7PM - 10PM",
+                             period == "5~6" ~ "10PM - 1AM",
+                             period == "6~7" ~ "1AM - 4AM",
+                             period == "7~8" ~ "4AM - 7AM",
+                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM"))) %>% left_join(depths %>% filter(Site == "Deans", Date == "8/16/2022") %>% select(Trap, Depth), by = "Trap")
 
-deans_16_eb <- ebullition %>% 
-  filter(Sampling == "Deans1") %>% 
-  select(-X) %>% 
-  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM", 
-                             period == "1~2" ~ "10AM - 1PM", 
-                             period == "2~3" ~ "1PM - 4PM", 
-                             period == "3~4" ~ "4PM - 7PM", 
-                             period == "4~5" ~ "7PM - 10PM", 
-                             period == "5~6" ~ "10PM - 1AM", 
-                             period == "6~7" ~ "1AM - 4AM", 
-                             period == "7~8" ~ "4AM - 7AM", 
-                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM")))
 
 deans_pts_16_eb <- deans_pts %>% full_join(deans_16_eb, by = "location")
 
-deans_30_eb <- ebullition %>% 
-  filter(Sampling == "Deans2") %>% 
-  select(-X) %>% 
-  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM", 
-                             period == "1~2" ~ "10AM - 1PM", 
-                             period == "2~3" ~ "1PM - 4PM", 
-                             period == "3~4" ~ "4PM - 7PM", 
-                             period == "4~5" ~ "7PM - 10PM", 
-                             period == "5~6" ~ "10PM - 1AM", 
-                             period == "6~7" ~ "1AM - 4AM", 
-                             period == "7~8" ~ "4AM - 7AM", 
-                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM")))
+deans_30_eb <- ebullition %>%
+  filter(Sampling == "Deans2") %>%
+  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM",
+                             period == "1~2" ~ "10AM - 1PM",
+                             period == "2~3" ~ "1PM - 4PM",
+                             period == "3~4" ~ "4PM - 7PM",
+                             period == "4~5" ~ "7PM - 10PM",
+                             period == "5~6" ~ "10PM - 1AM",
+                             period == "6~7" ~ "1AM - 4AM",
+                             period == "7~8" ~ "4AM - 7AM",
+                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM"))) %>% left_join(depths %>% filter(Site == "Deans", Date == "8/30/2022") %>% select(Trap, Depth), by = "Trap")
 
 deans_pts_30_eb <- deans_pts %>% full_join(deans_30_eb, by = "location")
 
 
-catfish_06_eb <- ebullition %>% 
-  filter(Sampling == "Catfish1") %>% 
-  select(-X) %>% 
-  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM", 
-                             period == "1~2" ~ "10AM - 1PM", 
-                             period == "2~3" ~ "1PM - 4PM", 
-                             period == "3~4" ~ "4PM - 7PM", 
-                             period == "4~5" ~ "7PM - 10PM", 
-                             period == "5~6" ~ "10PM - 1AM", 
-                             period == "6~7" ~ "1AM - 4AM", 
-                             period == "7~8" ~ "4AM - 7AM", 
-                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM")))
+catfish_06_eb <- ebullition %>%
+  filter(Sampling == "Catfish1") %>%
+  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM",
+                             period == "1~2" ~ "10AM - 1PM",
+                             period == "2~3" ~ "1PM - 4PM",
+                             period == "3~4" ~ "4PM - 7PM",
+                             period == "4~5" ~ "7PM - 10PM",
+                             period == "5~6" ~ "10PM - 1AM",
+                             period == "6~7" ~ "1AM - 4AM",
+                             period == "7~8" ~ "4AM - 7AM",
+                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM"))) %>% left_join(depths %>% filter(Site == "Catfish", Date == "9/6/2022") %>% select(Trap, Depth), by = "Trap")
 
 catfish_pts_06_eb <- catfish_pts %>% full_join(catfish_06_eb, by = "location")
 
-catfish_18_eb <- ebullition %>% 
-  filter(Sampling == "Catfish2") %>% 
-  select(-X) %>% 
-  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM", 
-                             period == "1~2" ~ "10AM - 1PM", 
-                             period == "2~3" ~ "1PM - 4PM", 
-                             period == "3~4" ~ "4PM - 7PM", 
-                             period == "4~5" ~ "7PM - 10PM", 
-                             period == "5~6" ~ "10PM - 1AM", 
-                             period == "6~7" ~ "1AM - 4AM", 
-                             period == "7~8" ~ "4AM - 7AM", 
-                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM")))
+catfish_18_eb <- ebullition %>%
+  filter(Sampling == "Catfish2") %>%
+  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM",
+                             period == "1~2" ~ "10AM - 1PM",
+                             period == "2~3" ~ "1PM - 4PM",
+                             period == "3~4" ~ "4PM - 7PM",
+                             period == "4~5" ~ "7PM - 10PM",
+                             period == "5~6" ~ "10PM - 1AM",
+                             period == "6~7" ~ "1AM - 4AM",
+                             period == "7~8" ~ "4AM - 7AM",
+                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM"))) %>% left_join(depths %>% filter(Site == "Catfish", Date == "9/18/2022") %>% select(Trap, Depth), by = "Trap")
 
 catfish_pts_18_eb <- catfish_pts %>% full_join(catfish_18_eb, by = "location")
 
-pick_13_eb <- ebullition %>% 
-  filter(Sampling == "Pick1") %>% 
-  select(-X) %>% 
-  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM", 
-                             period == "1~2" ~ "10AM - 1PM", 
-                             period == "2~3" ~ "1PM - 4PM", 
-                             period == "3~4" ~ "4PM - 7PM", 
-                             period == "4~5" ~ "7PM - 10PM", 
-                             period == "5~6" ~ "10PM - 1AM", 
-                             period == "6~7" ~ "1AM - 4AM", 
-                             period == "7~8" ~ "4AM - 7AM", 
-                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM")))
+pick_13_eb <- ebullition %>%
+  filter(Sampling == "Pick1") %>%
+  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM",
+                             period == "1~2" ~ "10AM - 1PM",
+                             period == "2~3" ~ "1PM - 4PM",
+                             period == "3~4" ~ "4PM - 7PM",
+                             period == "4~5" ~ "7PM - 10PM",
+                             period == "5~6" ~ "10PM - 1AM",
+                             period == "6~7" ~ "1AM - 4AM",
+                             period == "7~8" ~ "4AM - 7AM",
+                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM"))) %>% left_join(depths %>% filter(Site == "Picks", Date == "9/13/2022") %>% select(Trap, Depth), by = "Trap")
 
 pick_pts_13_eb <- pick_pts %>% full_join(pick_13_eb, by = "location")
 
-sister3_22_eb <- ebullition %>% 
-  filter(Sampling == "Sister31") %>% 
-  select(-X) %>% 
-  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM", 
-                             period == "1~2" ~ "10AM - 1PM", 
-                             period == "2~3" ~ "1PM - 4PM", 
-                             period == "3~4" ~ "4PM - 7PM", 
-                             period == "4~5" ~ "7PM - 10PM", 
-                             period == "5~6" ~ "10PM - 1AM", 
-                             period == "6~7" ~ "1AM - 4AM", 
-                             period == "7~8" ~ "4AM - 7AM", 
-                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM")))
+sister3_22_eb <- ebullition %>%
+  filter(Sampling == "Sister31") %>%
+  mutate(trip_wr =factor(case_when(period == "0~1" ~ "9AM - 10AM",
+                             period == "1~2" ~ "10AM - 1PM",
+                             period == "2~3" ~ "1PM - 4PM",
+                             period == "3~4" ~ "4PM - 7PM",
+                             period == "4~5" ~ "7PM - 10PM",
+                             period == "5~6" ~ "10PM - 1AM",
+                             period == "6~7" ~ "1AM - 4AM",
+                             period == "7~8" ~ "4AM - 7AM",
+                             period == "8~9" ~ "7AM - 9AM"), levels = c("9AM - 10AM", "10AM - 1PM", "1PM - 4PM", "4PM - 7PM","7PM - 10PM", "10PM - 1AM", "1AM - 4AM", "4AM - 7AM", "7AM - 9AM"))) %>% left_join(depths %>% filter(Site == "Sister3", Date == "8/22/2022") %>% select(Trap, Depth), by = "Trap")
 
 sister3_pts_22_eb <- sister3_pts %>% full_join(sister3_22_eb, by = "location")
+
+#https://www3.epa.gov/ceampubl/learn2model/part-two/onsite/doc/Indoor%20Air%20Unit%20Conversions.pdf
 ```
 
 
-7.8% of gas volume observations indicated a decline in gas volume from one time period to the next. Most of these observations occurred at night and in the pond covered with Wolffia. I set all observations of a -0.2 mL or -0.1 mL change equal to 0. All other negative gas volume observations (1%) were treated as missing data. 
+7.8% of gas volume observations indicated a decline in gas volume from one time period to the next. Most of these observations occurred at night and in the pond covered with Wolffia. I set all negative observations of volume greater than -0.5mL change equal to 0. All other negative gas volume observations (<1%) were treated as missing data. 
 
-I still need to apply a correction factor for the ebullition CH4 concentrations which is why they are >100% CH4 in some cases.
-
-The "9th" sampling event used a different method for gas volume (determined in a separate syringe-- I need to figure out how to convert between the two. I think what makes sense is to create a standard curve where you inject a known volume into the ebullition trap and run a linear regression between inserted and perceived volume to correct all 0-8 gas accumulations) 
-
-https://www3.epa.gov/ceampubl/learn2model/part-two/onsite/doc/Indoor%20Air%20Unit%20Conversions.pdf
+Because there was insufficient gas volume to measure CH4 concentration at every time-point, I used the average CH4 concentration measured from ebullition in a sampling event to calculate ebullition for the following figures. 
 
 ## Deans 8/16/22-8/17/22
 ```{r, width = 5, units = "in",  echo = F}
@@ -164,7 +224,7 @@ tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 ```{r, width = 5, units = "in",  echo = F}
 tm_shape(catfish)+
   tm_polygons(col = "white")+
-tm_shape(catfish_pts_06_eb, bbox = st_bbox(catfish) %>% st_as_sfc())+
+tm_shape(catfish_pts_18_eb, bbox = st_bbox(catfish) %>% st_as_sfc())+
   tm_dots("ch4_eb_g_m2_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CH4 flux (g/m2/hr)")+
 tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
@@ -190,7 +250,7 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 ```
 
-```{r}
+```{r, echo=F}
 # Treat as legit if there are no notes, indicating the trap tipped, and concentration is indicative of ebullition 
 # 1033 (Pick PD1 1-2 seems legit, concentration ~68%)
 # 1039 (Pick PD1 7-8 seems legit, concentration >100%)
@@ -202,7 +262,6 @@ tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 # 1209 (Pick P5A 8-9, not legit, filled with Wolffia)
 # 1036 (Pick P1D 4-5 seems legit, concentration >100%)
 
-
-hist(ebullition$ch4_eb_g_m2_hr)
+ggplot(ebullition, aes(ch4_eb_g_m2_hr))+geom_histogram(bins = 10)+ theme_bw()+xlab("CH4 Ebullition (g/m2/hr)")
 ```
 

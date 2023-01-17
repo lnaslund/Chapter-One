@@ -1,0 +1,8 @@
+# Ebullition Analysis
+
+```{r}
+library(lme4)
+
+# random slope and intercept for Site, random intercept for time period?
+
+```

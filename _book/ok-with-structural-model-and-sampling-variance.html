@@ -5,31 +5,25 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 OK with structural model and sampling variance | Naslund Chapter 1 Analysis</title>
-  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
-set in the _output.yml file.
-The HTML output format for this example is bookdown::gitbook,</p>" />
+  <meta name="description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 OK with structural model and sampling variance | Naslund Chapter 1 Analysis" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
-set in the _output.yml file.
-The HTML output format for this example is bookdown::gitbook,</p>" />
+  <meta property="og:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 5 OK with structural model and sampling variance | Naslund Chapter 1 Analysis" />
   
-  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
-set in the _output.yml file.
-The HTML output format for this example is bookdown::gitbook,</p>" />
+  <meta name="twitter:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
   
 
 <meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2022-12-09" />
+<meta name="date" content="2023-01-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -81,6 +75,13 @@ The HTML output format for this example is bookdown::gitbook,</p>" />
 <script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
 <script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
 <script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<script src="libs/co2.kriged[5] - 1_a548fe-1/data_stars_co2kriged51576b0a.txt"></script>
+<script src="libs/joda-0.0.1/joda.js"></script>
+<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_524e03-1/data_stars_co2krigedsimsk411e06932.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_bac6e0-1/data_stars_co2krigedsimsk421694af1.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_817b53-1/data_stars_co2krigedsimsk431c1043e.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_5ec624-1/data_stars_co2krigedsimsk441853ceb.txt"></script>
 
 
 <style type="text/css">
@@ -204,6 +205,7 @@ div.csl-indent {
 <li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#sister-3-1"><i class="fa fa-check"></i><b>1.2.3</b> Sister 3</a></li>
 <li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#pick-1"><i class="fa fa-check"></i><b>1.2.4</b> Pick</a></li>
 </ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#label"><i class="fa fa-check"></i><b>1.3</b> Residence time calculation</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html"><i class="fa fa-check"></i><b>2</b> Diffusive emissions</a>
 <ul>
@@ -265,444 +267,82 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="ok-with-structural-model-and-sampling-variance" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> OK with structural model and sampling variance<a href="ok-with-structural-model-and-sampling-variance.html#ok-with-structural-model-and-sampling-variance" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">11</span>)</span>
-<span id="cb33-2"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create fake data</span></span>
-<span id="cb33-4"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-4" aria-hidden="true" tabindex="-1"></a>n_pts <span class="ot">&lt;-</span> <span class="dv">15</span></span>
-<span id="cb33-5"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-5" aria-hidden="true" tabindex="-1"></a>conc <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">1</span>)<span class="sc">*</span><span class="dv">100</span><span class="sc">*</span><span class="dv">10000</span> <span class="co"># conc in ppm </span></span>
-<span id="cb33-6"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-6" aria-hidden="true" tabindex="-1"></a>depth <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(n_pts, <span class="dv">5</span>, <span class="dv">15</span>) <span class="sc">*</span> <span class="dv">10</span> <span class="co"># fake depths</span></span>
-<span id="cb33-7"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-7" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> <span class="fl">0.0254469</span></span>
-<span id="cb33-8"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-8" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb33-9"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-9" aria-hidden="true" tabindex="-1"></a>vol <span class="ot">=</span> <span class="fu">rgamma</span>(n_pts,<span class="dv">1</span>)</span>
-<span id="cb33-10"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-10" aria-hidden="true" tabindex="-1"></a>lat <span class="ot">=</span> <span class="fu">rnorm</span>(n_pts, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb33-11"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-11" aria-hidden="true" tabindex="-1"></a>long <span class="ot">=</span> <span class="fu">rnorm</span>(n_pts, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb33-12"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-13"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="co"># monte carlo parameters</span></span>
-<span id="cb33-14"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-14" aria-hidden="true" tabindex="-1"></a>n_sims <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb33-15"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-15" aria-hidden="true" tabindex="-1"></a>flux_summary <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb33-16"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-16" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb33-17"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-18"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sims){</span>
-<span id="cb33-19"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="co"># assign concentrations to volumes and calculate raw flux</span></span>
-<span id="cb33-20"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-20" aria-hidden="true" tabindex="-1"></a>  pts <span class="ot">&lt;-</span></span>
-<span id="cb33-21"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb33-22"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">vol =</span>vol,</span>
-<span id="cb33-23"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> lat,</span>
-<span id="cb33-24"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">long =</span> long) <span class="sc">%&gt;%</span> </span>
-<span id="cb33-25"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">conc_sampled =</span> <span class="fu">sample</span>(conc, n_pts, <span class="at">replace =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb33-26"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">depth =</span> depth, </span>
-<span id="cb33-27"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">flux_raw =</span> vol <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>area) <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>time)<span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">9</span>) <span class="sc">*</span> conc_sampled <span class="sc">*</span> <span class="fl">16.04</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="fl">0.0821</span>)<span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="fl">293.15</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb33-28"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;long&quot;</span>, <span class="st">&quot;lat&quot;</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
-<span id="cb33-29"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-30"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="co"># correct &quot;observed&quot; flux values using residual standard error from depth model</span></span>
-<span id="cb33-31"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-31" aria-hidden="true" tabindex="-1"></a>  rse <span class="ot">&lt;-</span> <span class="fu">summary</span>(<span class="fu">lm</span>(flux_raw <span class="sc">~</span> depth, <span class="at">data =</span> pts))<span class="sc">$</span>sigma</span>
-<span id="cb33-32"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Question: This allows fluxes to be negative which doesn&#39;t make sense for ebullition. Should I write in an additional constraint that flux_corr must be positive?</span></span>
-<span id="cb33-33"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-33" aria-hidden="true" tabindex="-1"></a>  pts <span class="ot">&lt;-</span> pts <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">flux_corr=</span> flux_raw <span class="sc">%&gt;%</span> <span class="fu">map_dbl</span>(<span class="sc">~</span><span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> .x, <span class="at">sd =</span>rse)))</span>
-<span id="cb33-34"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-35"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-35" aria-hidden="true" tabindex="-1"></a><span class="co"># create grid for kriging</span></span>
-<span id="cb33-36"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-36" aria-hidden="true" tabindex="-1"></a>  grid <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(<span class="fu">st_bbox</span>(pts), <span class="at">dx =</span> <span class="fl">0.1</span>, <span class="at">dy =</span> <span class="fl">0.1</span>)</span>
-<span id="cb33-37"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-37" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-38"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate empirical variogram</span></span>
-<span id="cb33-39"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-39" aria-hidden="true" tabindex="-1"></a>  v_emp_ok <span class="ot">&lt;-</span> <span class="fu">variogram</span>(flux_corr <span class="sc">~</span> <span class="dv">1</span>, pts)</span>
-<span id="cb33-40"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(v_emp_ok)</span>
-<span id="cb33-41"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-42"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fit modeled variogram</span></span>
-<span id="cb33-43"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Question: if you are fitting the variogram &quot;manually&quot; (not using autofit), you need to give the function starting parameters, and from what I gather from the internet, people typically eyeball the empirical variogram to get those starting parameters (e.g., sill, nugget, range), so I am not sure how to randomize manual fits except to autofit first and then maybe extract parameters from the model IDed by autofit as having the smallest rss and then applying them to randomly selected model. Because the data are changing by accounting for sampling variance and ebullition concentrations, does this even make sense? Presumably different model runs will have different variogram models using autofit.</span></span>
-<span id="cb33-44"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># auto fitting of variogram</span></span>
-<span id="cb33-45"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-45" aria-hidden="true" tabindex="-1"></a>  v_mod_ok <span class="ot">=</span> <span class="fu">autofitVariogram</span>(flux_corr <span class="sc">~</span> <span class="dv">1</span>, <span class="fu">as</span>(pts, <span class="st">&quot;Spatial&quot;</span>))</span>
-<span id="cb33-46"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(v_mod_ok)</span>
-<span id="cb33-47"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-48"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># apply modeled variogram and krige</span></span>
-<span id="cb33-49"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-49" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fu">gstat</span>(<span class="at">formula =</span> flux_corr <span class="sc">~</span> <span class="dv">1</span>, <span class="at">model =</span> v_mod_ok<span class="sc">$</span>var_model, <span class="at">data =</span> pts)</span>
-<span id="cb33-50"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-50" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">predict</span>(g, grid)</span>
-<span id="cb33-51"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-51" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> z[<span class="st">&quot;var1.pred&quot;</span>,,]</span>
-<span id="cb33-52"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(z) <span class="ot">=</span> <span class="st">&quot;flux&quot;</span></span>
-<span id="cb33-53"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-53" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-54"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sum cells in the grid to get total flux</span></span>
-<span id="cb33-55"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-55" aria-hidden="true" tabindex="-1"></a>  flux_summary <span class="ot">&lt;-</span> <span class="fu">c</span>(flux_summary, <span class="fu">sum</span>(z<span class="sc">$</span>flux))</span>
-<span id="cb33-56"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-56" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb33-57"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># plot kriged grid</span></span>
-<span id="cb33-58"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-58" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">range</span>(z<span class="sc">$</span>flux)[<span class="dv">1</span>], <span class="fu">range</span>(z<span class="sc">$</span>flux)[<span class="dv">2</span>], <span class="at">by =</span> (<span class="fu">range</span>(z<span class="sc">$</span>flux)[<span class="dv">2</span>]<span class="sc">-</span><span class="fu">range</span>(z<span class="sc">$</span>flux)[<span class="dv">1</span>])<span class="sc">/</span><span class="dv">10</span>)</span>
-<span id="cb33-59"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-60"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(z, <span class="at">breaks =</span> b, <span class="at">col =</span> <span class="fu">hcl.colors</span>(<span class="fu">length</span>(b)<span class="sc">-</span><span class="dv">1</span>, <span class="st">&quot;Spectral&quot;</span>), <span class="at">reset =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb33-61"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">st_geometry</span>(pts), <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb33-62"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">contour</span>(z, <span class="at">breaks =</span> b, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb33-63"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-64"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-64" aria-hidden="true" tabindex="-1"></a>  <span class="co"># leave-one-out cross validation </span></span>
-<span id="cb33-65"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-65" aria-hidden="true" tabindex="-1"></a>  ou2 <span class="ot">&lt;-</span> <span class="fu">krige.cv</span>(flux_corr <span class="sc">~</span> <span class="dv">1</span>, pts, v_mod_ok<span class="sc">$</span>var_model, <span class="at">nmax =</span> n_pts, <span class="at">nfold =</span> <span class="fu">nrow</span>(pts))</span>
-<span id="cb33-66"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-66" aria-hidden="true" tabindex="-1"></a>  rmse <span class="ot">&lt;-</span> <span class="fu">c</span>(rmse, <span class="fu">sqrt</span>(<span class="fu">mean</span>(out2<span class="sc">$</span>residual<span class="sc">^</span><span class="dv">2</span>)))</span>
-<span id="cb33-67"><a href="ok-with-structural-model-and-sampling-variance.html#cb33-67" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-2.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-3.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-4.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-5.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-6.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-7.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-8.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-9.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-10.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-11.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-12.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-13.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-14.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-15.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-16.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-17.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-18.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-19.png" width="672" /></p>
-<pre><code>## [using ordinary kriging]</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-20.png" width="672" /></p>
-<pre><code>## 
-  |                                                                                                                                                                                                                   
-  |                                                                                                                                                                                                             |   0%
-  |                                                                                                                                                                                                                   
-  |===============                                                                                                                                                                                              |   7%
-  |                                                                                                                                                                                                                   
-  |=============================                                                                                                                                                                                |  14%
-  |                                                                                                                                                                                                                   
-  |============================================                                                                                                                                                                 |  21%
-  |                                                                                                                                                                                                                   
-  |===========================================================                                                                                                                                                  |  29%
-  |                                                                                                                                                                                                                   
-  |=========================================================================                                                                                                                                    |  36%
-  |                                                                                                                                                                                                                   
-  |========================================================================================                                                                                                                     |  43%
-  |                                                                                                                                                                                                                   
-  |======================================================================================================                                                                                                       |  50%
-  |                                                                                                                                                                                                                   
-  |=====================================================================================================================                                                                                        |  57%
-  |                                                                                                                                                                                                                   
-  |====================================================================================================================================                                                                         |  64%
-  |                                                                                                                                                                                                                   
-  |==================================================================================================================================================                                                           |  71%
-  |                                                                                                                                                                                                                   
-  |=================================================================================================================================================================                                            |  79%
-  |                                                                                                                                                                                                                   
-  |================================================================================================================================================================================                             |  86%
-  |                                                                                                                                                                                                                   
-  |==============================================================================================================================================================================================               |  93%
-  |                                                                                                                                                                                                                   
-  |=============================================================================================================================================================================================================| 100%</code></pre>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="ok-with-structural-model-and-sampling-variance.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># total fluxes from simulation runs</span></span>
-<span id="cb54-2"><a href="ok-with-structural-model-and-sampling-variance.html#cb54-2" aria-hidden="true" tabindex="-1"></a>flux_summary</span></code></pre></div>
-<pre><code>##  [1]  2.0698544  3.1763061  3.1830058  3.6327238 -0.6006425  2.3563294  3.0630038  2.9284312  6.7993477  2.5465759</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="ok-with-structural-model-and-sampling-variance.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RMSE from leave-one-out cross validation from simulation runs</span></span>
-<span id="cb56-2"><a href="ok-with-structural-model-and-sampling-variance.html#cb56-2" aria-hidden="true" tabindex="-1"></a>rmse</span></code></pre></div>
-<pre><code>##  [1] 0.003145991 0.003145991 0.003145991 0.003145991 0.003145991 0.003145991 0.003145991 0.003145991 0.003145991 0.003145991</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="ok-with-structural-model-and-sampling-variance.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mtcars)</span></code></pre></div>
-<pre><code>##  [1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot; &quot;carb&quot;</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(mpg<span class="sc">~</span>cyl, <span class="at">data =</span> mtcars))</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = mpg ~ cyl, data = mtcars)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -4.9814 -2.1185  0.2217  1.0717  7.5186 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  37.8846     2.0738   18.27  &lt; 2e-16 ***
-## cyl          -2.8758     0.3224   -8.92 6.11e-10 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 3.206 on 30 degrees of freedom
-## Multiple R-squared:  0.7262, Adjusted R-squared:  0.7171 
-## F-statistic: 79.56 on 1 and 30 DF,  p-value: 6.113e-10</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="ok-with-structural-model-and-sampling-variance.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(mtcars[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span></code></pre></div>
-<pre><code>##           mpg       cyl
-## mpg 36.324103 -9.172379
-## cyl -9.172379  3.189516</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">11</span>)</span>
+<span id="cb60-2"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create fake data</span></span>
+<span id="cb60-4"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># n_pts &lt;- 15</span></span>
+<span id="cb60-5"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="co"># conc &lt;- rbeta(5, 2, 1)*100*10000 # conc in ppm </span></span>
+<span id="cb60-6"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="co"># depth &lt;- rbeta(n_pts, 5, 15) * 10 # fake depths</span></span>
+<span id="cb60-7"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="co"># area &lt;- 0.0254469</span></span>
+<span id="cb60-8"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="co"># time &lt;- 3</span></span>
+<span id="cb60-9"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-9" aria-hidden="true" tabindex="-1"></a><span class="co"># vol = rgamma(n_pts,1)</span></span>
+<span id="cb60-10"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-10" aria-hidden="true" tabindex="-1"></a><span class="co"># lat = rnorm(n_pts, 0, 1)</span></span>
+<span id="cb60-11"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-11" aria-hidden="true" tabindex="-1"></a><span class="co"># long = rnorm(n_pts, 0, 1)</span></span>
+<span id="cb60-12"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb60-13"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-13" aria-hidden="true" tabindex="-1"></a><span class="co"># # monte carlo parameters</span></span>
+<span id="cb60-14"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-14" aria-hidden="true" tabindex="-1"></a><span class="co"># n_sims &lt;- 10</span></span>
+<span id="cb60-15"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-15" aria-hidden="true" tabindex="-1"></a><span class="co"># flux_summary &lt;- NULL</span></span>
+<span id="cb60-16"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-16" aria-hidden="true" tabindex="-1"></a><span class="co"># rmse &lt;- NULL</span></span>
+<span id="cb60-17"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-17" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb60-18"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-18" aria-hidden="true" tabindex="-1"></a><span class="co"># for(i in 1:n_sims){</span></span>
+<span id="cb60-19"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-19" aria-hidden="true" tabindex="-1"></a><span class="co"># # assign concentrations to volumes and calculate raw flux</span></span>
+<span id="cb60-20"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-20" aria-hidden="true" tabindex="-1"></a><span class="co">#   pts &lt;-</span></span>
+<span id="cb60-21"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   data.frame(</span></span>
+<span id="cb60-22"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-22" aria-hidden="true" tabindex="-1"></a><span class="co">#     vol =vol,</span></span>
+<span id="cb60-23"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-23" aria-hidden="true" tabindex="-1"></a><span class="co">#     lat = lat,</span></span>
+<span id="cb60-24"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-24" aria-hidden="true" tabindex="-1"></a><span class="co">#     long = long) %&gt;% </span></span>
+<span id="cb60-25"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(conc_sampled = sample(conc, n_pts, replace = TRUE), </span></span>
+<span id="cb60-26"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-26" aria-hidden="true" tabindex="-1"></a><span class="co">#          depth = depth, </span></span>
+<span id="cb60-27"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-27" aria-hidden="true" tabindex="-1"></a><span class="co">#          flux_raw = vol * (1/area) * (1/time)* (1/10^9) * conc_sampled * 16.04 * (1/0.0821)* (1/293.15)) %&gt;% </span></span>
+<span id="cb60-28"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   st_as_sf(coords = c(&quot;long&quot;, &quot;lat&quot;), crs = 4326)</span></span>
+<span id="cb60-29"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-29" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb60-30"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-30" aria-hidden="true" tabindex="-1"></a><span class="co"># # correct &quot;observed&quot; flux values using residual standard error from depth model</span></span>
+<span id="cb60-31"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   rse &lt;- summary(lm(flux_raw ~ depth, data = pts))$sigma</span></span>
+<span id="cb60-32"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-32" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Question: This allows fluxes to be negative which doesn&#39;t make sense for ebullition. Should I write in an additional constraint that flux_corr must be positive?</span></span>
+<span id="cb60-33"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-33" aria-hidden="true" tabindex="-1"></a><span class="co">#   pts &lt;- pts %&gt;% mutate(flux_corr= flux_raw %&gt;% map_dbl(~rnorm(1, mean = .x, sd =rse)))</span></span>
+<span id="cb60-34"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb60-35"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-35" aria-hidden="true" tabindex="-1"></a><span class="co"># # create grid for kriging</span></span>
+<span id="cb60-36"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-36" aria-hidden="true" tabindex="-1"></a><span class="co">#   grid &lt;- st_as_stars(st_bbox(pts), dx = 0.1, dy = 0.1)</span></span>
+<span id="cb60-37"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-37" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb60-38"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-38" aria-hidden="true" tabindex="-1"></a><span class="co">#   # calculate empirical variogram</span></span>
+<span id="cb60-39"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-39" aria-hidden="true" tabindex="-1"></a><span class="co">#   v_emp_ok &lt;- variogram(flux_corr ~ 1, pts)</span></span>
+<span id="cb60-40"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-40" aria-hidden="true" tabindex="-1"></a><span class="co">#   plot(v_emp_ok)</span></span>
+<span id="cb60-41"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-41" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb60-42"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-42" aria-hidden="true" tabindex="-1"></a><span class="co">#   # fit modeled variogram</span></span>
+<span id="cb60-43"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Question: if you are fitting the variogram &quot;manually&quot; (not using autofit), you need to give the function starting parameters, and from what I gather from the internet, people typically eyeball the empirical variogram to get those starting parameters (e.g., sill, nugget, range), so I am not sure how to randomize manual fits except to autofit first and then maybe extract parameters from the model IDed by autofit as having the smallest rss and then applying them to randomly selected model. Because the data are changing by accounting for sampling variance and ebullition concentrations, does this even make sense? Presumably different model runs will have different variogram models using autofit.</span></span>
+<span id="cb60-44"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   # auto fitting of variogram</span></span>
+<span id="cb60-45"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-45" aria-hidden="true" tabindex="-1"></a><span class="co">#   v_mod_ok = autofitVariogram(flux_corr ~ 1, as(pts, &quot;Spatial&quot;))</span></span>
+<span id="cb60-46"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-46" aria-hidden="true" tabindex="-1"></a><span class="co">#   plot(v_mod_ok)</span></span>
+<span id="cb60-47"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-47" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb60-48"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-48" aria-hidden="true" tabindex="-1"></a><span class="co">#   # apply modeled variogram and krige</span></span>
+<span id="cb60-49"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-49" aria-hidden="true" tabindex="-1"></a><span class="co">#   g &lt;- gstat(formula = flux_corr ~ 1, model = v_mod_ok$var_model, data = pts)</span></span>
+<span id="cb60-50"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-50" aria-hidden="true" tabindex="-1"></a><span class="co">#   z &lt;- predict(g, grid)</span></span>
+<span id="cb60-51"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-51" aria-hidden="true" tabindex="-1"></a><span class="co">#   z &lt;- z[&quot;var1.pred&quot;,,]</span></span>
+<span id="cb60-52"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   names(z) = &quot;flux&quot;</span></span>
+<span id="cb60-53"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-53" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb60-54"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-54" aria-hidden="true" tabindex="-1"></a><span class="co">#   # sum cells in the grid to get total flux</span></span>
+<span id="cb60-55"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-55" aria-hidden="true" tabindex="-1"></a><span class="co">#   flux_summary &lt;- c(flux_summary, sum(z$flux))</span></span>
+<span id="cb60-56"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-56" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb60-57"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-57" aria-hidden="true" tabindex="-1"></a><span class="co">#   # plot kriged grid</span></span>
+<span id="cb60-58"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-58" aria-hidden="true" tabindex="-1"></a><span class="co">#   b &lt;- seq(range(z$flux)[1], range(z$flux)[2], by = (range(z$flux)[2]-range(z$flux)[1])/10)</span></span>
+<span id="cb60-59"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-59" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb60-60"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-60" aria-hidden="true" tabindex="-1"></a><span class="co">#   plot(z, breaks = b, col = hcl.colors(length(b)-1, &quot;Spectral&quot;), reset = FALSE)</span></span>
+<span id="cb60-61"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-61" aria-hidden="true" tabindex="-1"></a><span class="co">#   plot(st_geometry(pts), pch = 16, add = TRUE)</span></span>
+<span id="cb60-62"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-62" aria-hidden="true" tabindex="-1"></a><span class="co">#   contour(z, breaks = b, add = TRUE)</span></span>
+<span id="cb60-63"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-63" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb60-64"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-64" aria-hidden="true" tabindex="-1"></a><span class="co">#   # leave-one-out cross validation </span></span>
+<span id="cb60-65"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-65" aria-hidden="true" tabindex="-1"></a><span class="co">#   ou2 &lt;- krige.cv(flux_corr ~ 1, pts, v_mod_ok$var_model, nmax = n_pts, nfold = nrow(pts))</span></span>
+<span id="cb60-66"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-66" aria-hidden="true" tabindex="-1"></a><span class="co">#   rmse &lt;- c(rmse, sqrt(mean(out2$residual^2)))</span></span>
+<span id="cb60-67"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-67" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb60-68"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-68" aria-hidden="true" tabindex="-1"></a><span class="co">#  </span></span>
+<span id="cb60-69"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-69" aria-hidden="true" tabindex="-1"></a><span class="co"># # total fluxes from simulation runs</span></span>
+<span id="cb60-70"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-70" aria-hidden="true" tabindex="-1"></a><span class="co"># flux_summary</span></span>
+<span id="cb60-71"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-71" aria-hidden="true" tabindex="-1"></a><span class="co"># # RMSE from leave-one-out cross validation from simulation runs</span></span>
+<span id="cb60-72"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-72" aria-hidden="true" tabindex="-1"></a><span class="co"># rmse</span></span>
+<span id="cb60-73"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-73" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb60-74"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-74" aria-hidden="true" tabindex="-1"></a><span class="co"># names(mtcars)</span></span>
+<span id="cb60-75"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-75" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(lm(mpg~cyl, data = mtcars))</span></span>
+<span id="cb60-76"><a href="ok-with-structural-model-and-sampling-variance.html#cb60-76" aria-hidden="true" tabindex="-1"></a><span class="co"># cov(mtcars[1:2])</span></span></code></pre></div>
 
 </div>
             </section>

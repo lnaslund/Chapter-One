@@ -12,8 +12,10 @@ sister-3-1
 pick-1
 label
 diffusive-emissions
+deans-cloud-comparison
 deans-81622-81722
 deans-83022-83122
+catfish-cloud-comparison
 catfish-9622-9722
 catfish-91822-91922
 pick-91322--91422
@@ -27,6 +29,6 @@ pick-91322-91422
 sister-3-82222-82322
 simple-kriging-just-in-space
 diffusive-analysis
+catfish-cloud-comparison-1
+deans-cloud-comparison-1
 ebullition-analysis
-deans-cloud-comparison
-catfish-cloud-comparison

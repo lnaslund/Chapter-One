@@ -11,11 +11,13 @@ deans_dist_1 <- st_distance(deans_pts, inlet_locations %>% filter(Name == "Deans
 deans_pts$deans_dist_1 <- deans_dist_1
 deans_dist_2 <- st_distance(deans_pts, inlet_locations %>% filter(Name == "Deans inlet 2")) %>% as.numeric()
 deans_pts$deans_dist_2 <- deans_dist_2
+deans_pts <- deans_pts %>% mutate(inlet_dist = pmin(deans_dist_1, deans_dist_2))
 
 catfish_dist_1 <- st_distance(catfish_pts, inlet_locations %>% filter(Name == "Catfish inlet 1")) %>% as.numeric()
 catfish_pts$catfish_dist_1 <- catfish_dist_1
 catfish_dist_2 <- st_distance(catfish_pts, inlet_locations %>% filter(Name == "Catfish inlet 2")) %>% as.numeric()
 catfish_pts$catfish_dist_2 <- catfish_dist_2
+catfish_pts <- catfish_pts %>% mutate(inlet_dist = pmin(catfish_dist_1, catfish_dist_2))
 ```
 
 ```{r fix issue with deans, echo = F}

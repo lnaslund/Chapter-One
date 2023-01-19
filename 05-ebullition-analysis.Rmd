@@ -2,7 +2,68 @@
 
 ```{r}
 library(lme4)
+library(glmmTMB)
+library("AICcmodavg")
 
-# random slope and intercept for Site, random intercept for time period?
+eb_all <- bind_rows(sister3_pts_22_eb %>% mutate(Site ="Sister3"), 
+                    pick_pts_13_eb,
+                    catfish_pts_18_eb %>% dplyr::select(-c(catfish_dist_1, catfish_dist_2)),
+                    catfish_pts_06_eb %>% dplyr::select(-c(catfish_dist_1, catfish_dist_2)),
+                    deans_pts_30_eb %>% dplyr::select(-c(deans_dist_1, deans_dist_2)),
+                    deans_pts_16_eb%>% dplyr::select(-c(deans_dist_1, deans_dist_2))) %>% 
+  mutate(Site = as.factor(Site))
 
+
+cor.test(eb_all$Depth, eb_all$inlet_dist, method = "spearman")
+
+ggplot(eb_all, aes(Depth, ch4_eb_g_m2_hr, color = Site)) + geom_point()
+ggplot(eb_all, aes(inlet_dist, ch4_eb_g_m2_hr, color = Site)) + geom_point()
+
+```
+
+```{r}
+
+# no random effects and no zeros because gamma can't handle zeros
+mod1 <- glm(ch4_eb_g_m2_hr ~ Depth + inlet_dist, data = eb_all %>% filter(ch4_eb_g_m2_hr > 0), family = Gamma(link = "log"))
+summary(mod1)
+
+# with random effects but still no zeros
+mod2 <- glmer(ch4_eb_g_m2_hr ~ Depth_scale + inlet_dist_scale + (1|Site)  + (1|trip_wr), data = eb_all %>% filter(ch4_eb_g_m2_hr > 0) %>% mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist)), family = Gamma(link = "log"))
+summary(mod2)
+
+# hurdle-model gamma regression with random effects and scaled fixed effects
+# predictors generating structural zeros
+mod3 <- glmmTMB(ch4_eb_g_m2_hr ~ Depth_scale + inlet_dist_scale + (1|Site)  + (1|trip_wr), data = eb_all %>% filter(is.na(ch4_eb_g_m2_hr)==F) %>% st_drop_geometry() %>% mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist)),  ziformula = ~., family = ziGamma)
+summary(mod3)
+
+# without random effects, fixed effects not scaled
+mod4 <- glmmTMB(ch4_eb_g_m2_hr ~ Depth + inlet_dist, data = eb_all %>% filter(is.na(ch4_eb_g_m2_hr)==F) %>% st_drop_geometry() %>% mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist)),  ziformula = ~., family = ziGamma)
+summary(mod4)
+
+# with random effects, fixed effects not scaled
+mod5 <- glmmTMB(ch4_eb_g_m2_hr ~ Depth + inlet_dist + (1|Site)  + (1|trip_wr), data = eb_all %>% filter(is.na(ch4_eb_g_m2_hr)==F) %>% st_drop_geometry(),  ziformula = ~., family = ziGamma)
+summary(mod5)
+
+# equal probability of structural zeros, scaled predictors
+mod6 <- glmmTMB(ch4_eb_g_m2_hr ~ Depth_scale + inlet_dist_scale + (1|Site)  + (1|trip_wr), data = eb_all %>% filter(is.na(ch4_eb_g_m2_hr)==F) %>% st_drop_geometry() %>% mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist)),  ziformula = ~1, family = ziGamma)
+summary(mod6)
+
+# equal probability of structural zeros, predictors not scaled
+mod7 <- glmmTMB(ch4_eb_g_m2_hr ~ Depth + inlet_dist + (1|Site)  + (1|trip_wr), data = eb_all %>% filter(is.na(ch4_eb_g_m2_hr)==F) %>% st_drop_geometry() %>% mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist)),  ziformula = ~1, family = ziGamma)
+summary(mod7)
+
+# model selection fixed effects
+hurd1 <- glmmTMB(ch4_eb_g_m2_hr ~ Depth + inlet_dist + (1|Site)  + (1|trip_wr), data = eb_all %>% filter(is.na(ch4_eb_g_m2_hr)==F) %>% st_drop_geometry() %>% mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist)),  ziformula = ~1, family = ziGamma)
+hurd2 <- glmmTMB(ch4_eb_g_m2_hr ~ Depth + (1|Site)  + (1|trip_wr), data = eb_all %>% filter(is.na(ch4_eb_g_m2_hr)==F) %>% st_drop_geometry() %>% mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist)),  ziformula = ~1, family = ziGamma)
+hurd3 <- glmmTMB(ch4_eb_g_m2_hr ~ inlet_dist + (1|Site)  + (1|trip_wr), data = eb_all %>% filter(is.na(ch4_eb_g_m2_hr)==F) %>% st_drop_geometry() %>% mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist)),  ziformula = ~1, family = ziGamma)
+
+
+cand.models <- list()
+cand.models[[1]] <- hurd1
+cand.models[[2]] <- hurd2
+cand.models[[3]] <- hurd3
+
+aictab(cand.models)
+
+summary(hurd3)
 ```

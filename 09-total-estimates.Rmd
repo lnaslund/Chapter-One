@@ -15,6 +15,8 @@ all_fluxes_periods <- read.csv("5-Results/1-kriged-estimates/all_fluxes_periods.
 
 ```{r summary flux pathways}
 all_fluxes_pathways  %>% select(site, date, pathway:flux_97.5_g_day, flux_mean_g_m2_day:flux_97.5_g_day_co2_eq)
+
+all_fluxes_pathways %>% select(site, date, pathway, gas, flux_mean_g_day_co2_eq:flux_97.5_g_day_co2_eq)
 ```
 
 

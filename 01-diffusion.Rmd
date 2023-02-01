@@ -1,11 +1,13 @@
 # Diffusive emissions
 
 ```{r diffusive visualization setup, echo = F, warning = F}
-# reads in g/m2/day
-
+# Read in diffusive flux data and convert estimates from g/m2/day to g/m2/hr
 diffusion <- read.csv("2-Clean Data/diffusive-flux-estimates.csv") %>% 
-  mutate(start_time = ymd_hms(start_time), flux_ch4_g_hr = flux_ch4_g/24, flux_co2_g_hr = flux_co2_g/24)
+  mutate(start_time = ymd_hms(start_time), 
+         flux_ch4_g_hr = flux_ch4_g/24, 
+         flux_co2_g_hr = flux_co2_g/24)
 
+# Create sf objects with just traps in a given site
 deans_pts <- trap_locations %>% 
   filter(Site == "Deans") %>% 
   select(Name, GeometryType, geometry) %>% 
@@ -26,6 +28,7 @@ sister3_pts <- trap_locations%>%
   select(Name, GeometryType, geometry) %>% 
   rename(location = Name)
 
+# Subset data from each sampling date and then create sf object with estimates
 deans_16 <- diffusion %>% 
   filter(site == "Deans", date(start_time)==mdy("08-16-2022") |  date(start_time)==mdy("08-17-2022")) %>% 
   select(-X) %>% 
@@ -38,7 +41,9 @@ deans_16 <- diffusion %>%
                              trip == 7 ~ "4AM", 
                              trip == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM")))
 
-deans_pts_16 <- deans_pts %>% full_join(deans_16, by = "location") %>% filter(is.na(flux_ch4_mmol)==F)
+deans_pts_16 <- deans_pts %>% 
+  full_join(deans_16, by = "location") %>% 
+  filter(is.na(flux_ch4_mmol)==F)
 
 deans_30 <- diffusion %>% 
   filter(site == "Deans", date(start_time)==mdy("08-30-2022") |  date(start_time)==mdy("08-31-2022")) %>% 

@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Ebullition estimates | Naslund Chapter 1 Analysis</title>
+  <meta name="description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Ebullition estimates | Naslund Chapter 1 Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Ebullition estimates | Naslund Chapter 1 Analysis" />
+  
+  <meta name="twitter:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
+  
+
+<meta name="author" content="Laura Naslund" />
+
+
+<meta name="date" content="2023-02-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="diffusion-estimates.html"/>
+<link rel="next" href="flux-summary-stats-prep.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_c85ba2-1/data_stars_co2krigedsimsk411d29e06.txt"></script>
+<script src="libs/joda-0.0.1/joda.js"></script>
+<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_dcb584-1/data_stars_co2krigedsimsk421d4c8eb.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_afe19c-1/data_stars_co2krigedsimsk431c5bf06.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_967ed3-1/data_stars_co2krigedsimsk4412bf34c.txt"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Naslund Chapter 1 Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Sampling scheme</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#dissolved-oxygen"><i class="fa fa-check"></i><b>1.1</b> Dissolved oxygen</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#deans"><i class="fa fa-check"></i><b>1.1.1</b> Deans</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#catfish"><i class="fa fa-check"></i><b>1.1.2</b> Catfish</a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#sister-3"><i class="fa fa-check"></i><b>1.1.3</b> Sister 3</a></li>
+<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#pick"><i class="fa fa-check"></i><b>1.1.4</b> Pick</a></li>
+<li class="chapter" data-level="1.1.5" data-path="index.html"><a href="index.html#all-impoundments-top-do"><i class="fa fa-check"></i><b>1.1.5</b> All impoundments top DO</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#temperature"><i class="fa fa-check"></i><b>1.2</b> Temperature</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#deans-1"><i class="fa fa-check"></i><b>1.2.1</b> Deans</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#catfish-1"><i class="fa fa-check"></i><b>1.2.2</b> Catfish</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#sister-3-1"><i class="fa fa-check"></i><b>1.2.3</b> Sister 3</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#pick-1"><i class="fa fa-check"></i><b>1.2.4</b> Pick</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#label"><i class="fa fa-check"></i><b>1.3</b> Residence time calculation</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html"><i class="fa fa-check"></i><b>2</b> Diffusive emissions</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-cloud-comparison"><i class="fa fa-check"></i><b>2.1</b> Deans Cloud Comparison</a></li>
+<li class="chapter" data-level="2.2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-81622-81722"><i class="fa fa-check"></i><b>2.2</b> Deans 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="2.3" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-83022-83122"><i class="fa fa-check"></i><b>2.3</b> Deans 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="2.4" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-cloud-comparison"><i class="fa fa-check"></i><b>2.4</b> Catfish Cloud Comparison</a></li>
+<li class="chapter" data-level="2.5" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-9622-9722"><i class="fa fa-check"></i><b>2.5</b> Catfish 9/6/22-9/7/22</a></li>
+<li class="chapter" data-level="2.6" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-91822-91922"><i class="fa fa-check"></i><b>2.6</b> Catfish 9/18/22-9/19/22</a></li>
+<li class="chapter" data-level="2.7" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#pick-91322--91422"><i class="fa fa-check"></i><b>2.7</b> Pick 9/13/22- 9/14/22</a></li>
+<li class="chapter" data-level="2.8" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#sister3-82222-82322"><i class="fa fa-check"></i><b>2.8</b> Sister3 8/22/22-8/23/22</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ebullition.html"><a href="ebullition.html"><i class="fa fa-check"></i><b>3</b> Ebullition</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="ebullition.html"><a href="ebullition.html#deans-81622-81722-1"><i class="fa fa-check"></i><b>3.1</b> Deans 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="3.2" data-path="ebullition.html"><a href="ebullition.html#deans-83022-83122-1"><i class="fa fa-check"></i><b>3.2</b> Deans 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="3.3" data-path="ebullition.html"><a href="ebullition.html#catfish-90622-90722-clouds-cleared-by-9am-sparce-clouds-until-4-cleared-around-7-overcast-the-next-morning"><i class="fa fa-check"></i><b>3.3</b> Catfish 9/06/22-9/07/22 (Clouds cleared by 9AM, sparce clouds until ~ 4, cleared around 7, overcast the next morning)</a></li>
+<li class="chapter" data-level="3.4" data-path="ebullition.html"><a href="ebullition.html#catfish-91822-91922-cloudless-until-12-3-pretty-cloudy"><i class="fa fa-check"></i><b>3.4</b> Catfish 9/18/22-9/19/22 (cloudless until 12-3 pretty cloudy)</a></li>
+<li class="chapter" data-level="3.5" data-path="ebullition.html"><a href="ebullition.html#pick-91322-91422"><i class="fa fa-check"></i><b>3.5</b> Pick 9/13/22-9/14/22</a></li>
+<li class="chapter" data-level="3.6" data-path="ebullition.html"><a href="ebullition.html#sister-3-82222-82322"><i class="fa fa-check"></i><b>3.6</b> Sister 3 8/22/22-8/23/22</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="simple-kriging-just-in-space.html"><a href="simple-kriging-just-in-space.html"><i class="fa fa-check"></i><b>4</b> Simple kriging just in space</a></li>
+<li class="chapter" data-level="5" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html"><i class="fa fa-check"></i><b>5</b> Diffusive analysis</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#catfish-cloud-comparison-1"><i class="fa fa-check"></i><b>5.1</b> Catfish Cloud Comparison</a></li>
+<li class="chapter" data-level="5.2" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#deans-cloud-comparison-1"><i class="fa fa-check"></i><b>5.2</b> Deans Cloud Comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html"><i class="fa fa-check"></i><b>6</b> Ebullition Analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#plots"><i class="fa fa-check"></i><b>6.1</b> Plots</a></li>
+<li class="chapter" data-level="6.2" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod1-non-zero-data-fixed-effects-only"><i class="fa fa-check"></i><b>6.2</b> Mod1: Non-zero data, fixed effects only</a></li>
+<li class="chapter" data-level="6.3" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2-non-zero-data-mixed-model"><i class="fa fa-check"></i><b>6.3</b> Mod2: Non zero data, mixed model</a></li>
+<li class="chapter" data-level="6.4" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2.a-non-zero-data-mixed-model-without-picks"><i class="fa fa-check"></i><b>6.4</b> Mod2.a: Non zero data, mixed model without Picks</a></li>
+<li class="chapter" data-level="6.5" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2.b-non-zero-data-mixed-model-only-picks"><i class="fa fa-check"></i><b>6.5</b> Mod2.b: Non zero data, mixed model only Picks</a></li>
+<li class="chapter" data-level="6.6" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod3-logistic-regression-fixed-effects-only"><i class="fa fa-check"></i><b>6.6</b> Mod3: Logistic regression, fixed effects only</a></li>
+<li class="chapter" data-level="6.7" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4-logistic-regression-mixed-model"><i class="fa fa-check"></i><b>6.7</b> Mod4: Logistic regression, mixed model</a></li>
+<li class="chapter" data-level="6.8" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4.a-logistic-regression-mixed-model-without-picks"><i class="fa fa-check"></i><b>6.8</b> Mod4.a: Logistic regression, mixed model without Picks</a></li>
+<li class="chapter" data-level="6.9" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4.b-logistic-regression-mixed-model-only-picks"><i class="fa fa-check"></i><b>6.9</b> Mod4.b: Logistic regression, mixed model only Picks</a></li>
+<li class="chapter" data-level="6.10" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod5-hurdle-model-predictors-generate-structural-zeros"><i class="fa fa-check"></i><b>6.10</b> Mod5: Hurdle model, predictors generate structural zeros</a></li>
+<li class="chapter" data-level="6.11" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#model-selection-with-mod5-predictors"><i class="fa fa-check"></i><b>6.11</b> Model selection with Mod5 predictors</a></li>
+<li class="chapter" data-level="6.12" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod6-hurdle-model-equal-probability-of-structural-zeros"><i class="fa fa-check"></i><b>6.12</b> Mod6: Hurdle model, equal probability of structural zeros</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="diffusion-estimates.html"><a href="diffusion-estimates.html"><i class="fa fa-check"></i><b>7</b> Diffusion estimates</a></li>
+<li class="chapter" data-level="8" data-path="ebullition-estimates.html"><a href="ebullition-estimates.html"><i class="fa fa-check"></i><b>8</b> Ebullition estimates</a></li>
+<li class="chapter" data-level="9" data-path="flux-summary-stats-prep.html"><a href="flux-summary-stats-prep.html"><i class="fa fa-check"></i><b>9</b> Flux summary stats prep</a></li>
+<li class="chapter" data-level="10" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html"><i class="fa fa-check"></i><b>10</b> Total flux estimates</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-ch4"><i class="fa fa-check"></i><b>10.1</b> Diel Diffusive CH4</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#log-transformed-axis"><i class="fa fa-check"></i><b>10.1.1</b> Log-transformed axis</a></li>
+<li class="chapter" data-level="10.1.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-axis"><i class="fa fa-check"></i><b>10.1.2</b> Untransformed axis</a></li>
+<li class="chapter" data-level="10.1.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-without-picks"><i class="fa fa-check"></i><b>10.1.3</b> Untransformed without Picks</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-co2"><i class="fa fa-check"></i><b>10.2</b> Diel Diffusive CO2</a></li>
+<li class="chapter" data-level="10.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed"><i class="fa fa-check"></i><b>10.3</b> Untransformed</a></li>
+<li class="chapter" data-level="10.4" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-without-picks-1"><i class="fa fa-check"></i><b>10.4</b> Untransformed without Picks</a></li>
+<li class="chapter" data-level="10.5" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-ebullition"><i class="fa fa-check"></i><b>10.5</b> Diel ebullition</a></li>
+<li class="chapter" data-level="10.6" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-1"><i class="fa fa-check"></i><b>10.6</b> Untransformed</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="untransformed-without-picks-2.html"><a href="untransformed-without-picks-2.html"><i class="fa fa-check"></i><b>11</b> Untransformed without Picks</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Naslund Chapter 1 Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ebullition-estimates" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Ebullition estimates<a href="ebullition-estimates.html#ebullition-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="ebullition-estimates.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load gas volumes and match traps with measured concentrations</span></span>
+<span id="cb115-2"><a href="ebullition-estimates.html#cb115-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ebullition_kriging &lt;- gas_vols %&gt;% </span></span>
+<span id="cb115-3"><a href="ebullition-estimates.html#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(conc_match %&gt;% select(Trap, Collection.Date, period, corr_ch4), by = c(&quot;Trap&quot;, &quot;Collection.Date&quot;, &quot;period&quot;)) %&gt;% </span></span>
+<span id="cb115-4"><a href="ebullition-estimates.html#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="co"># mutate(row_id = row_number()) %&gt;% filter(!(row_id)%in% c(1201,1202, 1602,1603))</span></span></code></pre></div>
+<p>Deans 8/16/22</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="ebullition-estimates.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="co"># to run again</span></span>
+<span id="cb116-2"><a href="ebullition-estimates.html#cb116-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sim_num &lt;- 2</span></span>
+<span id="cb116-3"><a href="ebullition-estimates.html#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co"># n_num &lt;- 10</span></span>
+<span id="cb116-4"><a href="ebullition-estimates.html#cb116-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-5"><a href="ebullition-estimates.html#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="co"># # create vector of ch4 concentrations</span></span>
+<span id="cb116-6"><a href="ebullition-estimates.html#cb116-6" aria-hidden="true" tabindex="-1"></a><span class="co"># deans1_conc &lt;- read.csv(&quot;2-Clean Data/ebullition_concentrations.csv&quot;)%&gt;% </span></span>
+<span id="cb116-7"><a href="ebullition-estimates.html#cb116-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(corr_ch4 = case_when(</span></span>
+<span id="cb116-8"><a href="ebullition-estimates.html#cb116-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, </span></span>
+<span id="cb116-9"><a href="ebullition-estimates.html#cb116-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, </span></span>
+<span id="cb116-10"><a href="ebullition-estimates.html#cb116-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %&gt;% </span></span>
+<span id="cb116-11"><a href="ebullition-estimates.html#cb116-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(is.na(Data.Flag)==T) %&gt;% </span></span>
+<span id="cb116-12"><a href="ebullition-estimates.html#cb116-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(samplings, by = &quot;Collection.Date&quot;) %&gt;% </span></span>
+<span id="cb116-13"><a href="ebullition-estimates.html#cb116-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(Sampling == &quot;Deans1&quot;) %&gt;% </span></span>
+<span id="cb116-14"><a href="ebullition-estimates.html#cb116-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(corr_ch4)</span></span>
+<span id="cb116-15"><a href="ebullition-estimates.html#cb116-15" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-16"><a href="ebullition-estimates.html#cb116-16" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-17"><a href="ebullition-estimates.html#cb116-17" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-18"><a href="ebullition-estimates.html#cb116-18" aria-hidden="true" tabindex="-1"></a><span class="co"># # define theoretical variogram</span></span>
+<span id="cb116-19"><a href="ebullition-estimates.html#cb116-19" aria-hidden="true" tabindex="-1"></a><span class="co"># dean_16_var_eb &lt;- vgm(psill = 1, &quot;Sph&quot;, range = 10) </span></span>
+<span id="cb116-20"><a href="ebullition-estimates.html#cb116-20" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-21"><a href="ebullition-estimates.html#cb116-21" aria-hidden="true" tabindex="-1"></a><span class="co"># # define interpolation grid</span></span>
+<span id="cb116-22"><a href="ebullition-estimates.html#cb116-22" aria-hidden="true" tabindex="-1"></a><span class="co"># dean_grid &lt;- st_as_stars(st_bbox(deans), dx = 1, dy = 1)</span></span>
+<span id="cb116-23"><a href="ebullition-estimates.html#cb116-23" aria-hidden="true" tabindex="-1"></a><span class="co"># dean_grid &lt;- dean_grid[deans]</span></span>
+<span id="cb116-24"><a href="ebullition-estimates.html#cb116-24" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-25"><a href="ebullition-estimates.html#cb116-25" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_16_eb_results &lt;- NULL</span></span>
+<span id="cb116-26"><a href="ebullition-estimates.html#cb116-26" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_16_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb116-27"><a href="ebullition-estimates.html#cb116-27" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-28"><a href="ebullition-estimates.html#cb116-28" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_df &lt;- NULL</span></span>
+<span id="cb116-29"><a href="ebullition-estimates.html#cb116-29" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-30"><a href="ebullition-estimates.html#cb116-30" aria-hidden="true" tabindex="-1"></a><span class="co"># krige_par &lt;- function(b){</span></span>
+<span id="cb116-31"><a href="ebullition-estimates.html#cb116-31" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-32"><a href="ebullition-estimates.html#cb116-32" aria-hidden="true" tabindex="-1"></a><span class="co">#   deans1_conc_vec &lt;- sample(deans1_conc, 200, replace=T)</span></span>
+<span id="cb116-33"><a href="ebullition-estimates.html#cb116-33" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb116-34"><a href="ebullition-estimates.html#cb116-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   deans_16_eb_kr &lt;- deans_pts %&gt;% </span></span>
+<span id="cb116-35"><a href="ebullition-estimates.html#cb116-35" aria-hidden="true" tabindex="-1"></a><span class="co">#     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb116-36"><a href="ebullition-estimates.html#cb116-36" aria-hidden="true" tabindex="-1"></a><span class="co">#                 filter(Sampling == &quot;Deans1&quot;) %&gt;% </span></span>
+<span id="cb116-37"><a href="ebullition-estimates.html#cb116-37" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_rand = deans1_conc_vec, </span></span>
+<span id="cb116-38"><a href="ebullition-estimates.html#cb116-38" aria-hidden="true" tabindex="-1"></a><span class="co">#            ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %&gt;% </span></span>
+<span id="cb116-39"><a href="ebullition-estimates.html#cb116-39" aria-hidden="true" tabindex="-1"></a><span class="co">#              mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = &quot;location&quot;)</span></span>
+<span id="cb116-40"><a href="ebullition-estimates.html#cb116-40" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb116-41"><a href="ebullition-estimates.html#cb116-41" aria-hidden="true" tabindex="-1"></a><span class="co">#   periods &lt;- unique(deans_16_eb_kr$period)</span></span>
+<span id="cb116-42"><a href="ebullition-estimates.html#cb116-42" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst &lt;- list()</span></span>
+<span id="cb116-43"><a href="ebullition-estimates.html#cb116-43" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-44"><a href="ebullition-estimates.html#cb116-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(i in 1:length(periods)){</span></span>
+<span id="cb116-45"><a href="ebullition-estimates.html#cb116-45" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst$data[[i]] &lt;- deans_16_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb116-46"><a href="ebullition-estimates.html#cb116-46" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb116-47"><a href="ebullition-estimates.html#cb116-47" aria-hidden="true" tabindex="-1"></a><span class="co">#   # quantile-quantile normal score transform data</span></span>
+<span id="cb116-48"><a href="ebullition-estimates.html#cb116-48" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst$data[[i]]$norm_eb &lt;- qqnorm(var.lst$data[[i]]$ch4_eb_g_m2_hr, plot.it = F)$x</span></span>
+<span id="cb116-49"><a href="ebullition-estimates.html#cb116-49" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb116-50"><a href="ebullition-estimates.html#cb116-50" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst$nscore.tab[[i]] &lt;- nscore(var.lst$data[[i]]$ch4_eb_g_m2_hr)</span></span>
+<span id="cb116-51"><a href="ebullition-estimates.html#cb116-51" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb116-52"><a href="ebullition-estimates.html#cb116-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst$var_df[[i]] &lt;- variogram(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), cloud = T)</span></span>
+<span id="cb116-53"><a href="ebullition-estimates.html#cb116-53" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb116-54"><a href="ebullition-estimates.html#cb116-54" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb116-55"><a href="ebullition-estimates.html#cb116-55" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb116-56"><a href="ebullition-estimates.html#cb116-56" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-57"><a href="ebullition-estimates.html#cb116-57" aria-hidden="true" tabindex="-1"></a><span class="co"># var.lst$kriged[[i]] &lt;- krige(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), dean_grid, model = dean_16_var_eb, nsim=sim_num, maxdist = Inf,nmin = 0,omax=Inf, beta = 0, nmax = n_num, debug.level = -1)</span></span>
+<span id="cb116-58"><a href="ebullition-estimates.html#cb116-58" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-59"><a href="ebullition-estimates.html#cb116-59" aria-hidden="true" tabindex="-1"></a><span class="co"># above.max.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][(nrow(var.lst$nscore.tab[[i]])-1):nrow(var.lst$nscore.tab[[i]]),])</span></span>
+<span id="cb116-60"><a href="ebullition-estimates.html#cb116-60" aria-hidden="true" tabindex="-1"></a><span class="co"># above.max.func &lt;- function(x){</span></span>
+<span id="cb116-61"><a href="ebullition-estimates.html#cb116-61" aria-hidden="true" tabindex="-1"></a><span class="co">#   coefficients(above.max.lm)[[1]] + (coefficients(above.max.lm)[[2]]*x)</span></span>
+<span id="cb116-62"><a href="ebullition-estimates.html#cb116-62" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb116-63"><a href="ebullition-estimates.html#cb116-63" aria-hidden="true" tabindex="-1"></a><span class="co"># below.min.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][1:2,])</span></span>
+<span id="cb116-64"><a href="ebullition-estimates.html#cb116-64" aria-hidden="true" tabindex="-1"></a><span class="co"># below.min.func &lt;- function(x){</span></span>
+<span id="cb116-65"><a href="ebullition-estimates.html#cb116-65" aria-hidden="true" tabindex="-1"></a><span class="co">#   coefficients(below.min.lm)[[1]] + (coefficients(below.min.lm)[[2]]*x)</span></span>
+<span id="cb116-66"><a href="ebullition-estimates.html#cb116-66" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb116-67"><a href="ebullition-estimates.html#cb116-67" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-68"><a href="ebullition-estimates.html#cb116-68" aria-hidden="true" tabindex="-1"></a><span class="co"># interpolate &lt;- approxfun(x=var.lst$nscore.tab[[i]]$nscore, y=var.lst$nscore.tab[[i]]$x)</span></span>
+<span id="cb116-69"><a href="ebullition-estimates.html#cb116-69" aria-hidden="true" tabindex="-1"></a><span class="co"># backtr &lt;- function(x){</span></span>
+<span id="cb116-70"><a href="ebullition-estimates.html#cb116-70" aria-hidden="true" tabindex="-1"></a><span class="co">#   if(is.na(x)){</span></span>
+<span id="cb116-71"><a href="ebullition-estimates.html#cb116-71" aria-hidden="true" tabindex="-1"></a><span class="co">#     return(NA)</span></span>
+<span id="cb116-72"><a href="ebullition-estimates.html#cb116-72" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb116-73"><a href="ebullition-estimates.html#cb116-73" aria-hidden="true" tabindex="-1"></a><span class="co">#   if(x&gt;max(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb116-74"><a href="ebullition-estimates.html#cb116-74" aria-hidden="true" tabindex="-1"></a><span class="co">#     return(above.max.func(x))</span></span>
+<span id="cb116-75"><a href="ebullition-estimates.html#cb116-75" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb116-76"><a href="ebullition-estimates.html#cb116-76" aria-hidden="true" tabindex="-1"></a><span class="co">#   if(x&lt;min(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb116-77"><a href="ebullition-estimates.html#cb116-77" aria-hidden="true" tabindex="-1"></a><span class="co">#     return(below.min.func(x))</span></span>
+<span id="cb116-78"><a href="ebullition-estimates.html#cb116-78" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb116-79"><a href="ebullition-estimates.html#cb116-79" aria-hidden="true" tabindex="-1"></a><span class="co">#   else{</span></span>
+<span id="cb116-80"><a href="ebullition-estimates.html#cb116-80" aria-hidden="true" tabindex="-1"></a><span class="co">#     return(interpolate(x))</span></span>
+<span id="cb116-81"><a href="ebullition-estimates.html#cb116-81" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb116-82"><a href="ebullition-estimates.html#cb116-82" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb116-83"><a href="ebullition-estimates.html#cb116-83" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb116-84"><a href="ebullition-estimates.html#cb116-84" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-85"><a href="ebullition-estimates.html#cb116-85" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-86"><a href="ebullition-estimates.html#cb116-86" aria-hidden="true" tabindex="-1"></a><span class="co">#  var.lst$kriged[[i]]$backtransformed &lt;- st_apply(var.lst$kriged[[i]][1], 1:3, backtr)</span></span>
+<span id="cb116-87"><a href="ebullition-estimates.html#cb116-87" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-88"><a href="ebullition-estimates.html#cb116-88" aria-hidden="true" tabindex="-1"></a><span class="co">#   sim_vec &lt;- c()</span></span>
+<span id="cb116-89"><a href="ebullition-estimates.html#cb116-89" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(f in 1:sim_num){</span></span>
+<span id="cb116-90"><a href="ebullition-estimates.html#cb116-90" aria-hidden="true" tabindex="-1"></a><span class="co">#     sim_vec &lt;- c(sum(var.lst$kriged[[i]][2,,,f]$backtransformed, na.rm = T), sim_vec)</span></span>
+<span id="cb116-91"><a href="ebullition-estimates.html#cb116-91" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb116-92"><a href="ebullition-estimates.html#cb116-92" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb116-93"><a href="ebullition-estimates.html#cb116-93" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- bind_rows(temp_df, data.frame(site = &quot;Deans&quot;, date = &quot;2022-08-16&quot;, period = i, gas = &quot;CH4&quot;, sum_flux = sim_vec))</span></span>
+<span id="cb116-94"><a href="ebullition-estimates.html#cb116-94" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb116-95"><a href="ebullition-estimates.html#cb116-95" aria-hidden="true" tabindex="-1"></a><span class="co">#   return(temp_df)</span></span>
+<span id="cb116-96"><a href="ebullition-estimates.html#cb116-96" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="ebullition-estimates.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co"># s_time &lt;- Sys.time()</span></span>
+<span id="cb117-2"><a href="ebullition-estimates.html#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- list()</span></span>
+<span id="cb117-3"><a href="ebullition-estimates.html#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- lapply(1:2, krige_par)</span></span>
+<span id="cb117-4"><a href="ebullition-estimates.html#cb117-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb117-5"><a href="ebullition-estimates.html#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_16_eb_results &lt;- bind_rows(temp_list)</span></span>
+<span id="cb117-6"><a href="ebullition-estimates.html#cb117-6" aria-hidden="true" tabindex="-1"></a><span class="co"># e_time &lt;- Sys.time()</span></span>
+<span id="cb117-7"><a href="ebullition-estimates.html#cb117-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print(&quot;total time:&quot;)</span></span>
+<span id="cb117-8"><a href="ebullition-estimates.html#cb117-8" aria-hidden="true" tabindex="-1"></a><span class="co"># print(e_time-s_time)</span></span>
+<span id="cb117-9"><a href="ebullition-estimates.html#cb117-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb117-10"><a href="ebullition-estimates.html#cb117-10" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(deans_16_eb_results,&quot;5-Results/1-kriged-estimates/deans_16_eb_results.csv&quot;)</span></span></code></pre></div>
+<p>Deans 8/30/22</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="ebullition-estimates.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sim_num &lt;- 25</span></span>
+<span id="cb118-2"><a href="ebullition-estimates.html#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="co"># n_num &lt;- 500</span></span>
+<span id="cb118-3"><a href="ebullition-estimates.html#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb118-4"><a href="ebullition-estimates.html#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="co"># krige_par &lt;- function(b){</span></span>
+<span id="cb118-5"><a href="ebullition-estimates.html#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   deans2_conc_vec &lt;- sample(deans2_conc, 225, replace=T)</span></span>
+<span id="cb118-6"><a href="ebullition-estimates.html#cb118-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb118-7"><a href="ebullition-estimates.html#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   deans_30_eb_kr &lt;- deans_pts %&gt;% </span></span>
+<span id="cb118-8"><a href="ebullition-estimates.html#cb118-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb118-9"><a href="ebullition-estimates.html#cb118-9" aria-hidden="true" tabindex="-1"></a><span class="co">#                 filter(Sampling == &quot;Deans2&quot;) %&gt;% </span></span>
+<span id="cb118-10"><a href="ebullition-estimates.html#cb118-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_rand = deans2_conc_vec, </span></span>
+<span id="cb118-11"><a href="ebullition-estimates.html#cb118-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                        ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %&gt;% </span></span>
+<span id="cb118-12"><a href="ebullition-estimates.html#cb118-12" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = &quot;location&quot;)</span></span>
+<span id="cb118-13"><a href="ebullition-estimates.html#cb118-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb118-14"><a href="ebullition-estimates.html#cb118-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   periods &lt;- unique(deans_30_eb_kr$period)</span></span>
+<span id="cb118-15"><a href="ebullition-estimates.html#cb118-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst &lt;- list()</span></span>
+<span id="cb118-16"><a href="ebullition-estimates.html#cb118-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb118-17"><a href="ebullition-estimates.html#cb118-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- NULL</span></span>
+<span id="cb118-18"><a href="ebullition-estimates.html#cb118-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb118-19"><a href="ebullition-estimates.html#cb118-19" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(i in 1:length(periods)){</span></span>
+<span id="cb118-20"><a href="ebullition-estimates.html#cb118-20" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]] &lt;- deans_30_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb118-21"><a href="ebullition-estimates.html#cb118-21" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb118-22"><a href="ebullition-estimates.html#cb118-22" aria-hidden="true" tabindex="-1"></a><span class="co">#     # quantile-quantile normal score transform data</span></span>
+<span id="cb118-23"><a href="ebullition-estimates.html#cb118-23" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]]$norm_eb &lt;- qqnorm(var.lst$data[[i]]$ch4_eb_g_m2_hr, plot.it = F)$x</span></span>
+<span id="cb118-24"><a href="ebullition-estimates.html#cb118-24" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb118-25"><a href="ebullition-estimates.html#cb118-25" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$nscore.tab[[i]] &lt;- nscore(var.lst$data[[i]]$ch4_eb_g_m2_hr)</span></span>
+<span id="cb118-26"><a href="ebullition-estimates.html#cb118-26" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb118-27"><a href="ebullition-estimates.html#cb118-27" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_df[[i]] &lt;- variogram(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), cloud = T)</span></span>
+<span id="cb118-28"><a href="ebullition-estimates.html#cb118-28" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb118-29"><a href="ebullition-estimates.html#cb118-29" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb118-30"><a href="ebullition-estimates.html#cb118-30" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb118-31"><a href="ebullition-estimates.html#cb118-31" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb118-32"><a href="ebullition-estimates.html#cb118-32" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]] &lt;- krige(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), dean_grid, model = dean_30_var_eb, nsim=sim_num, maxdist = Inf,nmin = 0,omax=Inf, beta = 0, nmax = n_num, debug.level = -1)</span></span>
+<span id="cb118-33"><a href="ebullition-estimates.html#cb118-33" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb118-34"><a href="ebullition-estimates.html#cb118-34" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][(nrow(var.lst$nscore.tab[[i]])-1):nrow(var.lst$nscore.tab[[i]]),])</span></span>
+<span id="cb118-35"><a href="ebullition-estimates.html#cb118-35" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.func &lt;- function(x){</span></span>
+<span id="cb118-36"><a href="ebullition-estimates.html#cb118-36" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(above.max.lm)[[1]] + (coefficients(above.max.lm)[[2]]*x)</span></span>
+<span id="cb118-37"><a href="ebullition-estimates.html#cb118-37" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb118-38"><a href="ebullition-estimates.html#cb118-38" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][1:2,])</span></span>
+<span id="cb118-39"><a href="ebullition-estimates.html#cb118-39" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.func &lt;- function(x){</span></span>
+<span id="cb118-40"><a href="ebullition-estimates.html#cb118-40" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(below.min.lm)[[1]] + (coefficients(below.min.lm)[[2]]*x)</span></span>
+<span id="cb118-41"><a href="ebullition-estimates.html#cb118-41" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb118-42"><a href="ebullition-estimates.html#cb118-42" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb118-43"><a href="ebullition-estimates.html#cb118-43" aria-hidden="true" tabindex="-1"></a><span class="co">#     interpolate &lt;- approxfun(x=var.lst$nscore.tab[[i]]$nscore, y=var.lst$nscore.tab[[i]]$x)</span></span>
+<span id="cb118-44"><a href="ebullition-estimates.html#cb118-44" aria-hidden="true" tabindex="-1"></a><span class="co">#     backtr &lt;- function(x){</span></span>
+<span id="cb118-45"><a href="ebullition-estimates.html#cb118-45" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(is.na(x)){</span></span>
+<span id="cb118-46"><a href="ebullition-estimates.html#cb118-46" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(NA)</span></span>
+<span id="cb118-47"><a href="ebullition-estimates.html#cb118-47" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb118-48"><a href="ebullition-estimates.html#cb118-48" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&gt;max(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb118-49"><a href="ebullition-estimates.html#cb118-49" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(above.max.func(x))</span></span>
+<span id="cb118-50"><a href="ebullition-estimates.html#cb118-50" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb118-51"><a href="ebullition-estimates.html#cb118-51" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&lt;min(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb118-52"><a href="ebullition-estimates.html#cb118-52" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(below.min.func(x))</span></span>
+<span id="cb118-53"><a href="ebullition-estimates.html#cb118-53" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb118-54"><a href="ebullition-estimates.html#cb118-54" aria-hidden="true" tabindex="-1"></a><span class="co">#       else{</span></span>
+<span id="cb118-55"><a href="ebullition-estimates.html#cb118-55" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(interpolate(x))</span></span>
+<span id="cb118-56"><a href="ebullition-estimates.html#cb118-56" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb118-57"><a href="ebullition-estimates.html#cb118-57" aria-hidden="true" tabindex="-1"></a><span class="co">#       </span></span>
+<span id="cb118-58"><a href="ebullition-estimates.html#cb118-58" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb118-59"><a href="ebullition-estimates.html#cb118-59" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb118-60"><a href="ebullition-estimates.html#cb118-60" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]]$backtransformed &lt;- st_apply(var.lst$kriged[[i]][1], 1:3, backtr)</span></span>
+<span id="cb118-61"><a href="ebullition-estimates.html#cb118-61" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb118-62"><a href="ebullition-estimates.html#cb118-62" aria-hidden="true" tabindex="-1"></a><span class="co">#   sim_vec &lt;- c()</span></span>
+<span id="cb118-63"><a href="ebullition-estimates.html#cb118-63" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(f in 1:sim_num){</span></span>
+<span id="cb118-64"><a href="ebullition-estimates.html#cb118-64" aria-hidden="true" tabindex="-1"></a><span class="co">#     sim_vec &lt;- c(sum(var.lst$kriged[[i]][2,,,f]$backtransformed, na.rm = T), sim_vec)</span></span>
+<span id="cb118-65"><a href="ebullition-estimates.html#cb118-65" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb118-66"><a href="ebullition-estimates.html#cb118-66" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb118-67"><a href="ebullition-estimates.html#cb118-67" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- bind_rows(temp_df, data.frame(site = &quot;Deans&quot;, date = &quot;2022-08-30&quot;, period = i, gas = &quot;CH4&quot;, sum_flux = sim_vec))</span></span>
+<span id="cb118-68"><a href="ebullition-estimates.html#cb118-68" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb118-69"><a href="ebullition-estimates.html#cb118-69" aria-hidden="true" tabindex="-1"></a><span class="co">#   return(temp_df)</span></span>
+<span id="cb118-70"><a href="ebullition-estimates.html#cb118-70" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="ebullition-estimates.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co"># s_time &lt;- Sys.time()</span></span>
+<span id="cb119-2"><a href="ebullition-estimates.html#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- list()</span></span>
+<span id="cb119-3"><a href="ebullition-estimates.html#cb119-3" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- mclapply(1:20, krige_par)</span></span>
+<span id="cb119-4"><a href="ebullition-estimates.html#cb119-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb119-5"><a href="ebullition-estimates.html#cb119-5" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_30_eb_results &lt;- bind_rows(temp_list)</span></span>
+<span id="cb119-6"><a href="ebullition-estimates.html#cb119-6" aria-hidden="true" tabindex="-1"></a><span class="co"># e_time &lt;- Sys.time()</span></span>
+<span id="cb119-7"><a href="ebullition-estimates.html#cb119-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print(&quot;total time:&quot;)</span></span>
+<span id="cb119-8"><a href="ebullition-estimates.html#cb119-8" aria-hidden="true" tabindex="-1"></a><span class="co"># print(e_time-s_time)</span></span>
+<span id="cb119-9"><a href="ebullition-estimates.html#cb119-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb119-10"><a href="ebullition-estimates.html#cb119-10" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(deans_30_eb_results,&quot;5-Results/1-kriged-estimates/deans_30_eb_results.csv&quot;)</span></span></code></pre></div>
+<p>Catfish 9/06/22</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="ebullition-estimates.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish1_conc &lt;- read.csv(&quot;2-Clean Data/ebullition_concentrations.csv&quot;)%&gt;%</span></span>
+<span id="cb120-2"><a href="ebullition-estimates.html#cb120-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(corr_ch4 = case_when(</span></span>
+<span id="cb120-3"><a href="ebullition-estimates.html#cb120-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497,</span></span>
+<span id="cb120-4"><a href="ebullition-estimates.html#cb120-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm,</span></span>
+<span id="cb120-5"><a href="ebullition-estimates.html#cb120-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %&gt;%</span></span>
+<span id="cb120-6"><a href="ebullition-estimates.html#cb120-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(is.na(Data.Flag)==T) %&gt;%</span></span>
+<span id="cb120-7"><a href="ebullition-estimates.html#cb120-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(samplings, by = &quot;Collection.Date&quot;) %&gt;%</span></span>
+<span id="cb120-8"><a href="ebullition-estimates.html#cb120-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(Sampling == &quot;Catfish1&quot;) %&gt;%</span></span>
+<span id="cb120-9"><a href="ebullition-estimates.html#cb120-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(corr_ch4)</span></span>
+<span id="cb120-10"><a href="ebullition-estimates.html#cb120-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-11"><a href="ebullition-estimates.html#cb120-11" aria-hidden="true" tabindex="-1"></a><span class="co"># # define theoretical variogram</span></span>
+<span id="cb120-12"><a href="ebullition-estimates.html#cb120-12" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_var_eb &lt;- vgm(psill = 1, &quot;Sph&quot;, range = 10)</span></span>
+<span id="cb120-13"><a href="ebullition-estimates.html#cb120-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-14"><a href="ebullition-estimates.html#cb120-14" aria-hidden="true" tabindex="-1"></a><span class="co"># # define interpolation grid</span></span>
+<span id="cb120-15"><a href="ebullition-estimates.html#cb120-15" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_grid &lt;- st_as_stars(st_bbox(catfish), dx = 1, dy = 1)</span></span>
+<span id="cb120-16"><a href="ebullition-estimates.html#cb120-16" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_grid &lt;- catfish_grid[catfish]</span></span>
+<span id="cb120-17"><a href="ebullition-estimates.html#cb120-17" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-18"><a href="ebullition-estimates.html#cb120-18" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_eb_results &lt;- NULL</span></span>
+<span id="cb120-19"><a href="ebullition-estimates.html#cb120-19" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb120-20"><a href="ebullition-estimates.html#cb120-20" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-21"><a href="ebullition-estimates.html#cb120-21" aria-hidden="true" tabindex="-1"></a><span class="co"># # # generate variogram based only on volume</span></span>
+<span id="cb120-22"><a href="ebullition-estimates.html#cb120-22" aria-hidden="true" tabindex="-1"></a><span class="co"># #</span></span>
+<span id="cb120-23"><a href="ebullition-estimates.html#cb120-23" aria-hidden="true" tabindex="-1"></a><span class="co"># # catfish_18_eb_kr &lt;- catfish_pts %&gt;%</span></span>
+<span id="cb120-24"><a href="ebullition-estimates.html#cb120-24" aria-hidden="true" tabindex="-1"></a><span class="co"># #     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb120-25"><a href="ebullition-estimates.html#cb120-25" aria-hidden="true" tabindex="-1"></a><span class="co"># #                 filter(Sampling == &quot;Catfish2&quot;), by = &quot;location&quot;)</span></span>
+<span id="cb120-26"><a href="ebullition-estimates.html#cb120-26" aria-hidden="true" tabindex="-1"></a><span class="co"># #</span></span>
+<span id="cb120-27"><a href="ebullition-estimates.html#cb120-27" aria-hidden="true" tabindex="-1"></a><span class="co"># # periods &lt;- unique(catfish_18_eb_kr$period)</span></span>
+<span id="cb120-28"><a href="ebullition-estimates.html#cb120-28" aria-hidden="true" tabindex="-1"></a><span class="co"># # var.lst &lt;- list()</span></span>
+<span id="cb120-29"><a href="ebullition-estimates.html#cb120-29" aria-hidden="true" tabindex="-1"></a><span class="co"># #</span></span>
+<span id="cb120-30"><a href="ebullition-estimates.html#cb120-30" aria-hidden="true" tabindex="-1"></a><span class="co"># #</span></span>
+<span id="cb120-31"><a href="ebullition-estimates.html#cb120-31" aria-hidden="true" tabindex="-1"></a><span class="co"># # for(i in 1:length(periods)){</span></span>
+<span id="cb120-32"><a href="ebullition-estimates.html#cb120-32" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$data[[i]] &lt;- catfish_18_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb120-33"><a href="ebullition-estimates.html#cb120-33" aria-hidden="true" tabindex="-1"></a><span class="co"># #</span></span>
+<span id="cb120-34"><a href="ebullition-estimates.html#cb120-34" aria-hidden="true" tabindex="-1"></a><span class="co"># #    # quantile-quantile normal score transform data</span></span>
+<span id="cb120-35"><a href="ebullition-estimates.html#cb120-35" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$data[[i]]$vol_norm &lt;- qqnorm(var.lst$data[[i]]$gas_vol_corrected, plot.it = F)$x</span></span>
+<span id="cb120-36"><a href="ebullition-estimates.html#cb120-36" aria-hidden="true" tabindex="-1"></a><span class="co"># #</span></span>
+<span id="cb120-37"><a href="ebullition-estimates.html#cb120-37" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$var_df[[i]] &lt;- variogram(vol_norm~1, var.lst$data[[i]] %&gt;% filter(is.na(vol_norm) == F), cloud = T)</span></span>
+<span id="cb120-38"><a href="ebullition-estimates.html#cb120-38" aria-hidden="true" tabindex="-1"></a><span class="co"># #</span></span>
+<span id="cb120-39"><a href="ebullition-estimates.html#cb120-39" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb120-40"><a href="ebullition-estimates.html#cb120-40" aria-hidden="true" tabindex="-1"></a><span class="co"># #    }</span></span>
+<span id="cb120-41"><a href="ebullition-estimates.html#cb120-41" aria-hidden="true" tabindex="-1"></a><span class="co"># #</span></span>
+<span id="cb120-42"><a href="ebullition-estimates.html#cb120-42" aria-hidden="true" tabindex="-1"></a><span class="co"># # pdf(&quot;5-Results/1-kriged-estimates/variograms_catfish_20220918_eb.pdf&quot;, paper=&quot;a4&quot;, width=9, height=12)</span></span>
+<span id="cb120-43"><a href="ebullition-estimates.html#cb120-43" aria-hidden="true" tabindex="-1"></a><span class="co"># # marrangeGrob(grobs=compact(var.lst$var_plot), nrow=4, ncol = 2)</span></span>
+<span id="cb120-44"><a href="ebullition-estimates.html#cb120-44" aria-hidden="true" tabindex="-1"></a><span class="co"># # dev.off()</span></span>
+<span id="cb120-45"><a href="ebullition-estimates.html#cb120-45" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-46"><a href="ebullition-estimates.html#cb120-46" aria-hidden="true" tabindex="-1"></a><span class="co"># sim_num &lt;- 25</span></span>
+<span id="cb120-47"><a href="ebullition-estimates.html#cb120-47" aria-hidden="true" tabindex="-1"></a><span class="co"># n_num &lt;- 500</span></span>
+<span id="cb120-48"><a href="ebullition-estimates.html#cb120-48" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-49"><a href="ebullition-estimates.html#cb120-49" aria-hidden="true" tabindex="-1"></a><span class="co"># krige_par &lt;- function(b){</span></span>
+<span id="cb120-50"><a href="ebullition-estimates.html#cb120-50" aria-hidden="true" tabindex="-1"></a><span class="co">#   catfish1_conc_vec &lt;- sample(catfish1_conc, 225, replace=T)</span></span>
+<span id="cb120-51"><a href="ebullition-estimates.html#cb120-51" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-52"><a href="ebullition-estimates.html#cb120-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   catfish_06_eb_kr &lt;- catfish_pts %&gt;%</span></span>
+<span id="cb120-53"><a href="ebullition-estimates.html#cb120-53" aria-hidden="true" tabindex="-1"></a><span class="co">#     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb120-54"><a href="ebullition-estimates.html#cb120-54" aria-hidden="true" tabindex="-1"></a><span class="co">#                 filter(Sampling == &quot;Catfish1&quot;) %&gt;%</span></span>
+<span id="cb120-55"><a href="ebullition-estimates.html#cb120-55" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_rand = catfish1_conc_vec,</span></span>
+<span id="cb120-56"><a href="ebullition-estimates.html#cb120-56" aria-hidden="true" tabindex="-1"></a><span class="co">#                        ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %&gt;%</span></span>
+<span id="cb120-57"><a href="ebullition-estimates.html#cb120-57" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = &quot;location&quot;)</span></span>
+<span id="cb120-58"><a href="ebullition-estimates.html#cb120-58" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-59"><a href="ebullition-estimates.html#cb120-59" aria-hidden="true" tabindex="-1"></a><span class="co">#   periods &lt;- unique(catfish_06_eb_kr$period)</span></span>
+<span id="cb120-60"><a href="ebullition-estimates.html#cb120-60" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst &lt;- list()</span></span>
+<span id="cb120-61"><a href="ebullition-estimates.html#cb120-61" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-62"><a href="ebullition-estimates.html#cb120-62" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- NULL</span></span>
+<span id="cb120-63"><a href="ebullition-estimates.html#cb120-63" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-64"><a href="ebullition-estimates.html#cb120-64" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(i in 1:length(periods)){</span></span>
+<span id="cb120-65"><a href="ebullition-estimates.html#cb120-65" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]] &lt;- catfish_06_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb120-66"><a href="ebullition-estimates.html#cb120-66" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-67"><a href="ebullition-estimates.html#cb120-67" aria-hidden="true" tabindex="-1"></a><span class="co">#     # quantile-quantile normal score transform data</span></span>
+<span id="cb120-68"><a href="ebullition-estimates.html#cb120-68" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]]$norm_eb &lt;- qqnorm(var.lst$data[[i]]$ch4_eb_g_m2_hr, plot.it = F)$x</span></span>
+<span id="cb120-69"><a href="ebullition-estimates.html#cb120-69" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-70"><a href="ebullition-estimates.html#cb120-70" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$nscore.tab[[i]] &lt;- nscore(var.lst$data[[i]]$ch4_eb_g_m2_hr)</span></span>
+<span id="cb120-71"><a href="ebullition-estimates.html#cb120-71" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-72"><a href="ebullition-estimates.html#cb120-72" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_df[[i]] &lt;- variogram(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), cloud = T)</span></span>
+<span id="cb120-73"><a href="ebullition-estimates.html#cb120-73" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-74"><a href="ebullition-estimates.html#cb120-74" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb120-75"><a href="ebullition-estimates.html#cb120-75" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-76"><a href="ebullition-estimates.html#cb120-76" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-77"><a href="ebullition-estimates.html#cb120-77" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]] &lt;- krige(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), catfish_grid, model = catfish_06_var_eb, nsim=sim_num, maxdist = Inf,nmin = 0,omax=Inf, beta = 0, nmax = n_num, debug.level = -1)</span></span>
+<span id="cb120-78"><a href="ebullition-estimates.html#cb120-78" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-79"><a href="ebullition-estimates.html#cb120-79" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][(nrow(var.lst$nscore.tab[[i]])-1):nrow(var.lst$nscore.tab[[i]]),])</span></span>
+<span id="cb120-80"><a href="ebullition-estimates.html#cb120-80" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.func &lt;- function(x){</span></span>
+<span id="cb120-81"><a href="ebullition-estimates.html#cb120-81" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(above.max.lm)[[1]] + (coefficients(above.max.lm)[[2]]*x)</span></span>
+<span id="cb120-82"><a href="ebullition-estimates.html#cb120-82" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb120-83"><a href="ebullition-estimates.html#cb120-83" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][1:2,])</span></span>
+<span id="cb120-84"><a href="ebullition-estimates.html#cb120-84" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.func &lt;- function(x){</span></span>
+<span id="cb120-85"><a href="ebullition-estimates.html#cb120-85" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(below.min.lm)[[1]] + (coefficients(below.min.lm)[[2]]*x)</span></span>
+<span id="cb120-86"><a href="ebullition-estimates.html#cb120-86" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb120-87"><a href="ebullition-estimates.html#cb120-87" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-88"><a href="ebullition-estimates.html#cb120-88" aria-hidden="true" tabindex="-1"></a><span class="co">#     interpolate &lt;- approxfun(x=var.lst$nscore.tab[[i]]$nscore, y=var.lst$nscore.tab[[i]]$x)</span></span>
+<span id="cb120-89"><a href="ebullition-estimates.html#cb120-89" aria-hidden="true" tabindex="-1"></a><span class="co">#     backtr &lt;- function(x){</span></span>
+<span id="cb120-90"><a href="ebullition-estimates.html#cb120-90" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(is.na(x)){</span></span>
+<span id="cb120-91"><a href="ebullition-estimates.html#cb120-91" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(NA)</span></span>
+<span id="cb120-92"><a href="ebullition-estimates.html#cb120-92" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb120-93"><a href="ebullition-estimates.html#cb120-93" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&gt;max(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb120-94"><a href="ebullition-estimates.html#cb120-94" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(above.max.func(x))</span></span>
+<span id="cb120-95"><a href="ebullition-estimates.html#cb120-95" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb120-96"><a href="ebullition-estimates.html#cb120-96" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&lt;min(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb120-97"><a href="ebullition-estimates.html#cb120-97" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(below.min.func(x))</span></span>
+<span id="cb120-98"><a href="ebullition-estimates.html#cb120-98" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb120-99"><a href="ebullition-estimates.html#cb120-99" aria-hidden="true" tabindex="-1"></a><span class="co">#       else{</span></span>
+<span id="cb120-100"><a href="ebullition-estimates.html#cb120-100" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(interpolate(x))</span></span>
+<span id="cb120-101"><a href="ebullition-estimates.html#cb120-101" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb120-102"><a href="ebullition-estimates.html#cb120-102" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-103"><a href="ebullition-estimates.html#cb120-103" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb120-104"><a href="ebullition-estimates.html#cb120-104" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-105"><a href="ebullition-estimates.html#cb120-105" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]]$backtransformed &lt;- st_apply(var.lst$kriged[[i]][1], 1:3, backtr)</span></span>
+<span id="cb120-106"><a href="ebullition-estimates.html#cb120-106" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-107"><a href="ebullition-estimates.html#cb120-107" aria-hidden="true" tabindex="-1"></a><span class="co">#   sim_vec &lt;- c()</span></span>
+<span id="cb120-108"><a href="ebullition-estimates.html#cb120-108" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(f in 1:sim_num){</span></span>
+<span id="cb120-109"><a href="ebullition-estimates.html#cb120-109" aria-hidden="true" tabindex="-1"></a><span class="co">#     sim_vec &lt;- c(sum(var.lst$kriged[[i]][2,,,f]$backtransformed, na.rm = T), sim_vec)</span></span>
+<span id="cb120-110"><a href="ebullition-estimates.html#cb120-110" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb120-111"><a href="ebullition-estimates.html#cb120-111" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb120-112"><a href="ebullition-estimates.html#cb120-112" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- bind_rows(temp_df, data.frame(site = &quot;Catfish&quot;, date = &quot;2022-09-06&quot;, period = i, gas = &quot;CH4&quot;, sum_flux = sim_vec))</span></span>
+<span id="cb120-113"><a href="ebullition-estimates.html#cb120-113" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb120-114"><a href="ebullition-estimates.html#cb120-114" aria-hidden="true" tabindex="-1"></a><span class="co">#   return(temp_df)</span></span>
+<span id="cb120-115"><a href="ebullition-estimates.html#cb120-115" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="ebullition-estimates.html#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="co"># s_time &lt;- Sys.time()</span></span>
+<span id="cb121-2"><a href="ebullition-estimates.html#cb121-2" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- list()</span></span>
+<span id="cb121-3"><a href="ebullition-estimates.html#cb121-3" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- lapply(1:20, krige_par)</span></span>
+<span id="cb121-4"><a href="ebullition-estimates.html#cb121-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb121-5"><a href="ebullition-estimates.html#cb121-5" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_eb_results &lt;- bind_rows(temp_list)</span></span>
+<span id="cb121-6"><a href="ebullition-estimates.html#cb121-6" aria-hidden="true" tabindex="-1"></a><span class="co"># e_time &lt;- Sys.time()</span></span>
+<span id="cb121-7"><a href="ebullition-estimates.html#cb121-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print(&quot;total time:&quot;)</span></span>
+<span id="cb121-8"><a href="ebullition-estimates.html#cb121-8" aria-hidden="true" tabindex="-1"></a><span class="co"># print(e_time-s_time)</span></span>
+<span id="cb121-9"><a href="ebullition-estimates.html#cb121-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb121-10"><a href="ebullition-estimates.html#cb121-10" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(catfish_06_eb_results,&quot;5-Results/1-kriged-estimates/catfish_06_eb_results.csv&quot;)</span></span></code></pre></div>
+<p>Catfish 9/18/22</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="ebullition-estimates.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # create vector of ch4 concentrations</span></span>
+<span id="cb122-2"><a href="ebullition-estimates.html#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish2_conc &lt;- read.csv(&quot;2-Clean Data/ebullition_concentrations.csv&quot;)%&gt;% </span></span>
+<span id="cb122-3"><a href="ebullition-estimates.html#cb122-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(corr_ch4 = case_when(</span></span>
+<span id="cb122-4"><a href="ebullition-estimates.html#cb122-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, </span></span>
+<span id="cb122-5"><a href="ebullition-estimates.html#cb122-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, </span></span>
+<span id="cb122-6"><a href="ebullition-estimates.html#cb122-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %&gt;% </span></span>
+<span id="cb122-7"><a href="ebullition-estimates.html#cb122-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(is.na(Data.Flag)==T) %&gt;% </span></span>
+<span id="cb122-8"><a href="ebullition-estimates.html#cb122-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(samplings, by = &quot;Collection.Date&quot;) %&gt;% </span></span>
+<span id="cb122-9"><a href="ebullition-estimates.html#cb122-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(Sampling == &quot;Catfish2&quot;) %&gt;% </span></span>
+<span id="cb122-10"><a href="ebullition-estimates.html#cb122-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(corr_ch4)</span></span>
+<span id="cb122-11"><a href="ebullition-estimates.html#cb122-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb122-12"><a href="ebullition-estimates.html#cb122-12" aria-hidden="true" tabindex="-1"></a><span class="co"># # define theoretical variogram</span></span>
+<span id="cb122-13"><a href="ebullition-estimates.html#cb122-13" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_var_eb &lt;- vgm(psill = 1, &quot;Sph&quot;, range = 10) </span></span>
+<span id="cb122-14"><a href="ebullition-estimates.html#cb122-14" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb122-15"><a href="ebullition-estimates.html#cb122-15" aria-hidden="true" tabindex="-1"></a><span class="co"># # define interpolation grid</span></span>
+<span id="cb122-16"><a href="ebullition-estimates.html#cb122-16" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_grid &lt;- st_as_stars(st_bbox(catfish), dx = 1, dy = 1)</span></span>
+<span id="cb122-17"><a href="ebullition-estimates.html#cb122-17" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_grid &lt;- catfish_grid[catfish]</span></span>
+<span id="cb122-18"><a href="ebullition-estimates.html#cb122-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb122-19"><a href="ebullition-estimates.html#cb122-19" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_eb_results &lt;- NULL</span></span>
+<span id="cb122-20"><a href="ebullition-estimates.html#cb122-20" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb122-21"><a href="ebullition-estimates.html#cb122-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb122-22"><a href="ebullition-estimates.html#cb122-22" aria-hidden="true" tabindex="-1"></a><span class="co"># # # generate variogram based only on volume</span></span>
+<span id="cb122-23"><a href="ebullition-estimates.html#cb122-23" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb122-24"><a href="ebullition-estimates.html#cb122-24" aria-hidden="true" tabindex="-1"></a><span class="co"># # catfish_18_eb_kr &lt;- catfish_pts %&gt;%</span></span>
+<span id="cb122-25"><a href="ebullition-estimates.html#cb122-25" aria-hidden="true" tabindex="-1"></a><span class="co"># #     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb122-26"><a href="ebullition-estimates.html#cb122-26" aria-hidden="true" tabindex="-1"></a><span class="co"># #                 filter(Sampling == &quot;Catfish2&quot;), by = &quot;location&quot;)</span></span>
+<span id="cb122-27"><a href="ebullition-estimates.html#cb122-27" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb122-28"><a href="ebullition-estimates.html#cb122-28" aria-hidden="true" tabindex="-1"></a><span class="co"># # periods &lt;- unique(catfish_18_eb_kr$period)</span></span>
+<span id="cb122-29"><a href="ebullition-estimates.html#cb122-29" aria-hidden="true" tabindex="-1"></a><span class="co"># # var.lst &lt;- list()</span></span>
+<span id="cb122-30"><a href="ebullition-estimates.html#cb122-30" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb122-31"><a href="ebullition-estimates.html#cb122-31" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb122-32"><a href="ebullition-estimates.html#cb122-32" aria-hidden="true" tabindex="-1"></a><span class="co"># # for(i in 1:length(periods)){</span></span>
+<span id="cb122-33"><a href="ebullition-estimates.html#cb122-33" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$data[[i]] &lt;- catfish_18_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb122-34"><a href="ebullition-estimates.html#cb122-34" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb122-35"><a href="ebullition-estimates.html#cb122-35" aria-hidden="true" tabindex="-1"></a><span class="co"># #    # quantile-quantile normal score transform data</span></span>
+<span id="cb122-36"><a href="ebullition-estimates.html#cb122-36" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$data[[i]]$vol_norm &lt;- qqnorm(var.lst$data[[i]]$gas_vol_corrected, plot.it = F)$x</span></span>
+<span id="cb122-37"><a href="ebullition-estimates.html#cb122-37" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb122-38"><a href="ebullition-estimates.html#cb122-38" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$var_df[[i]] &lt;- variogram(vol_norm~1, var.lst$data[[i]] %&gt;% filter(is.na(vol_norm) == F), cloud = T)</span></span>
+<span id="cb122-39"><a href="ebullition-estimates.html#cb122-39" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb122-40"><a href="ebullition-estimates.html#cb122-40" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb122-41"><a href="ebullition-estimates.html#cb122-41" aria-hidden="true" tabindex="-1"></a><span class="co"># #    }</span></span>
+<span id="cb122-42"><a href="ebullition-estimates.html#cb122-42" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb122-43"><a href="ebullition-estimates.html#cb122-43" aria-hidden="true" tabindex="-1"></a><span class="co"># # pdf(&quot;variograms_catfish_20220918_eb.pdf&quot;, paper=&quot;a4&quot;, width=9, height=12)</span></span>
+<span id="cb122-44"><a href="ebullition-estimates.html#cb122-44" aria-hidden="true" tabindex="-1"></a><span class="co"># # marrangeGrob(grobs=compact(var.lst$var_plot), nrow=4, ncol = 2)</span></span>
+<span id="cb122-45"><a href="ebullition-estimates.html#cb122-45" aria-hidden="true" tabindex="-1"></a><span class="co"># # dev.off()</span></span>
+<span id="cb122-46"><a href="ebullition-estimates.html#cb122-46" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb122-47"><a href="ebullition-estimates.html#cb122-47" aria-hidden="true" tabindex="-1"></a><span class="co"># sim_num &lt;- 25</span></span>
+<span id="cb122-48"><a href="ebullition-estimates.html#cb122-48" aria-hidden="true" tabindex="-1"></a><span class="co"># n_num &lt;- 500</span></span>
+<span id="cb122-49"><a href="ebullition-estimates.html#cb122-49" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb122-50"><a href="ebullition-estimates.html#cb122-50" aria-hidden="true" tabindex="-1"></a><span class="co"># krige_par &lt;- function(b){</span></span>
+<span id="cb122-51"><a href="ebullition-estimates.html#cb122-51" aria-hidden="true" tabindex="-1"></a><span class="co">#   catfish2_conc_vec &lt;- sample(catfish2_conc, 225, replace=T)</span></span>
+<span id="cb122-52"><a href="ebullition-estimates.html#cb122-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb122-53"><a href="ebullition-estimates.html#cb122-53" aria-hidden="true" tabindex="-1"></a><span class="co">#   catfish_18_eb_kr &lt;- catfish_pts %&gt;% </span></span>
+<span id="cb122-54"><a href="ebullition-estimates.html#cb122-54" aria-hidden="true" tabindex="-1"></a><span class="co">#     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb122-55"><a href="ebullition-estimates.html#cb122-55" aria-hidden="true" tabindex="-1"></a><span class="co">#                 filter(Sampling == &quot;Catfish2&quot;) %&gt;% </span></span>
+<span id="cb122-56"><a href="ebullition-estimates.html#cb122-56" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_rand = catfish2_conc_vec, </span></span>
+<span id="cb122-57"><a href="ebullition-estimates.html#cb122-57" aria-hidden="true" tabindex="-1"></a><span class="co">#                        ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %&gt;% </span></span>
+<span id="cb122-58"><a href="ebullition-estimates.html#cb122-58" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = &quot;location&quot;)</span></span>
+<span id="cb122-59"><a href="ebullition-estimates.html#cb122-59" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb122-60"><a href="ebullition-estimates.html#cb122-60" aria-hidden="true" tabindex="-1"></a><span class="co">#   periods &lt;- unique(catfish_18_eb_kr$period)</span></span>
+<span id="cb122-61"><a href="ebullition-estimates.html#cb122-61" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst &lt;- list()</span></span>
+<span id="cb122-62"><a href="ebullition-estimates.html#cb122-62" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb122-63"><a href="ebullition-estimates.html#cb122-63" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- NULL</span></span>
+<span id="cb122-64"><a href="ebullition-estimates.html#cb122-64" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb122-65"><a href="ebullition-estimates.html#cb122-65" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(i in 1:length(periods)){</span></span>
+<span id="cb122-66"><a href="ebullition-estimates.html#cb122-66" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]] &lt;- catfish_18_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb122-67"><a href="ebullition-estimates.html#cb122-67" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb122-68"><a href="ebullition-estimates.html#cb122-68" aria-hidden="true" tabindex="-1"></a><span class="co">#     # quantile-quantile normal score transform data</span></span>
+<span id="cb122-69"><a href="ebullition-estimates.html#cb122-69" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]]$norm_eb &lt;- qqnorm(var.lst$data[[i]]$ch4_eb_g_m2_hr, plot.it = F)$x</span></span>
+<span id="cb122-70"><a href="ebullition-estimates.html#cb122-70" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb122-71"><a href="ebullition-estimates.html#cb122-71" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$nscore.tab[[i]] &lt;- nscore(var.lst$data[[i]]$ch4_eb_g_m2_hr)</span></span>
+<span id="cb122-72"><a href="ebullition-estimates.html#cb122-72" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb122-73"><a href="ebullition-estimates.html#cb122-73" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_df[[i]] &lt;- variogram(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), cloud = T)</span></span>
+<span id="cb122-74"><a href="ebullition-estimates.html#cb122-74" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb122-75"><a href="ebullition-estimates.html#cb122-75" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb122-76"><a href="ebullition-estimates.html#cb122-76" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb122-77"><a href="ebullition-estimates.html#cb122-77" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb122-78"><a href="ebullition-estimates.html#cb122-78" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]] &lt;- krige(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), catfish_grid, model = catfish_18_var_eb, nsim=sim_num, maxdist = Inf,nmin = 0,omax=Inf, beta = 0, nmax = n_num, debug.level = -1)</span></span>
+<span id="cb122-79"><a href="ebullition-estimates.html#cb122-79" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb122-80"><a href="ebullition-estimates.html#cb122-80" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][(nrow(var.lst$nscore.tab[[i]])-1):nrow(var.lst$nscore.tab[[i]]),])</span></span>
+<span id="cb122-81"><a href="ebullition-estimates.html#cb122-81" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.func &lt;- function(x){</span></span>
+<span id="cb122-82"><a href="ebullition-estimates.html#cb122-82" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(above.max.lm)[[1]] + (coefficients(above.max.lm)[[2]]*x)</span></span>
+<span id="cb122-83"><a href="ebullition-estimates.html#cb122-83" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb122-84"><a href="ebullition-estimates.html#cb122-84" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][1:2,])</span></span>
+<span id="cb122-85"><a href="ebullition-estimates.html#cb122-85" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.func &lt;- function(x){</span></span>
+<span id="cb122-86"><a href="ebullition-estimates.html#cb122-86" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(below.min.lm)[[1]] + (coefficients(below.min.lm)[[2]]*x)</span></span>
+<span id="cb122-87"><a href="ebullition-estimates.html#cb122-87" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb122-88"><a href="ebullition-estimates.html#cb122-88" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb122-89"><a href="ebullition-estimates.html#cb122-89" aria-hidden="true" tabindex="-1"></a><span class="co">#     interpolate &lt;- approxfun(x=var.lst$nscore.tab[[i]]$nscore, y=var.lst$nscore.tab[[i]]$x)</span></span>
+<span id="cb122-90"><a href="ebullition-estimates.html#cb122-90" aria-hidden="true" tabindex="-1"></a><span class="co">#     backtr &lt;- function(x){</span></span>
+<span id="cb122-91"><a href="ebullition-estimates.html#cb122-91" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(is.na(x)){</span></span>
+<span id="cb122-92"><a href="ebullition-estimates.html#cb122-92" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(NA)</span></span>
+<span id="cb122-93"><a href="ebullition-estimates.html#cb122-93" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb122-94"><a href="ebullition-estimates.html#cb122-94" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&gt;max(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb122-95"><a href="ebullition-estimates.html#cb122-95" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(above.max.func(x))</span></span>
+<span id="cb122-96"><a href="ebullition-estimates.html#cb122-96" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb122-97"><a href="ebullition-estimates.html#cb122-97" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&lt;min(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb122-98"><a href="ebullition-estimates.html#cb122-98" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(below.min.func(x))</span></span>
+<span id="cb122-99"><a href="ebullition-estimates.html#cb122-99" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb122-100"><a href="ebullition-estimates.html#cb122-100" aria-hidden="true" tabindex="-1"></a><span class="co">#       else{</span></span>
+<span id="cb122-101"><a href="ebullition-estimates.html#cb122-101" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(interpolate(x))</span></span>
+<span id="cb122-102"><a href="ebullition-estimates.html#cb122-102" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb122-103"><a href="ebullition-estimates.html#cb122-103" aria-hidden="true" tabindex="-1"></a><span class="co">#       </span></span>
+<span id="cb122-104"><a href="ebullition-estimates.html#cb122-104" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb122-105"><a href="ebullition-estimates.html#cb122-105" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb122-106"><a href="ebullition-estimates.html#cb122-106" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]]$backtransformed &lt;- st_apply(var.lst$kriged[[i]][1], 1:3, backtr)</span></span>
+<span id="cb122-107"><a href="ebullition-estimates.html#cb122-107" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb122-108"><a href="ebullition-estimates.html#cb122-108" aria-hidden="true" tabindex="-1"></a><span class="co">#   sim_vec &lt;- c()</span></span>
+<span id="cb122-109"><a href="ebullition-estimates.html#cb122-109" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(f in 1:sim_num){</span></span>
+<span id="cb122-110"><a href="ebullition-estimates.html#cb122-110" aria-hidden="true" tabindex="-1"></a><span class="co">#     sim_vec &lt;- c(sum(var.lst$kriged[[i]][2,,,f]$backtransformed, na.rm = T), sim_vec)</span></span>
+<span id="cb122-111"><a href="ebullition-estimates.html#cb122-111" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb122-112"><a href="ebullition-estimates.html#cb122-112" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb122-113"><a href="ebullition-estimates.html#cb122-113" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- bind_rows(temp_df, data.frame(site = &quot;Catfish&quot;, date = &quot;2022-09-18&quot;, period = i, gas = &quot;CH4&quot;, sum_flux = sim_vec))</span></span>
+<span id="cb122-114"><a href="ebullition-estimates.html#cb122-114" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb122-115"><a href="ebullition-estimates.html#cb122-115" aria-hidden="true" tabindex="-1"></a><span class="co">#   return(temp_df)</span></span>
+<span id="cb122-116"><a href="ebullition-estimates.html#cb122-116" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="ebullition-estimates.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="co"># s_time &lt;- Sys.time()</span></span>
+<span id="cb123-2"><a href="ebullition-estimates.html#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- list()</span></span>
+<span id="cb123-3"><a href="ebullition-estimates.html#cb123-3" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- lapply(1:20, krige_par)</span></span>
+<span id="cb123-4"><a href="ebullition-estimates.html#cb123-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb123-5"><a href="ebullition-estimates.html#cb123-5" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_eb_results &lt;- bind_rows(temp_list)</span></span>
+<span id="cb123-6"><a href="ebullition-estimates.html#cb123-6" aria-hidden="true" tabindex="-1"></a><span class="co"># e_time &lt;- Sys.time()</span></span>
+<span id="cb123-7"><a href="ebullition-estimates.html#cb123-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print(&quot;total time:&quot;)</span></span>
+<span id="cb123-8"><a href="ebullition-estimates.html#cb123-8" aria-hidden="true" tabindex="-1"></a><span class="co"># print(e_time-s_time)</span></span>
+<span id="cb123-9"><a href="ebullition-estimates.html#cb123-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb123-10"><a href="ebullition-estimates.html#cb123-10" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(catfish_18_eb_results,&quot;5-Results/1-kriged-estimates/catfish_18_eb_results.csv&quot;)</span></span></code></pre></div>
+<p>Pick 9/13/22</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="ebullition-estimates.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # create vector of ch4 concentrations</span></span>
+<span id="cb124-2"><a href="ebullition-estimates.html#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pick1_conc &lt;- read.csv(&quot;2-Clean Data/ebullition_concentrations.csv&quot;)%&gt;% </span></span>
+<span id="cb124-3"><a href="ebullition-estimates.html#cb124-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(corr_ch4 = case_when(</span></span>
+<span id="cb124-4"><a href="ebullition-estimates.html#cb124-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, </span></span>
+<span id="cb124-5"><a href="ebullition-estimates.html#cb124-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, </span></span>
+<span id="cb124-6"><a href="ebullition-estimates.html#cb124-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %&gt;% </span></span>
+<span id="cb124-7"><a href="ebullition-estimates.html#cb124-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(is.na(Data.Flag)==T) %&gt;% </span></span>
+<span id="cb124-8"><a href="ebullition-estimates.html#cb124-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(samplings, by = &quot;Collection.Date&quot;) %&gt;% </span></span>
+<span id="cb124-9"><a href="ebullition-estimates.html#cb124-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(Sampling == &quot;Pick1&quot;) %&gt;% </span></span>
+<span id="cb124-10"><a href="ebullition-estimates.html#cb124-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(corr_ch4)</span></span>
+<span id="cb124-11"><a href="ebullition-estimates.html#cb124-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb124-12"><a href="ebullition-estimates.html#cb124-12" aria-hidden="true" tabindex="-1"></a><span class="co"># # define theoretical variogram</span></span>
+<span id="cb124-13"><a href="ebullition-estimates.html#cb124-13" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_13_var_eb &lt;- vgm(psill = 1, &quot;Sph&quot;, range = 10) </span></span>
+<span id="cb124-14"><a href="ebullition-estimates.html#cb124-14" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb124-15"><a href="ebullition-estimates.html#cb124-15" aria-hidden="true" tabindex="-1"></a><span class="co"># # define interpolation grid</span></span>
+<span id="cb124-16"><a href="ebullition-estimates.html#cb124-16" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_grid &lt;- st_as_stars(st_bbox(pick), dx = 1, dy = 1)</span></span>
+<span id="cb124-17"><a href="ebullition-estimates.html#cb124-17" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_grid &lt;- pick_grid[pick]</span></span>
+<span id="cb124-18"><a href="ebullition-estimates.html#cb124-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb124-19"><a href="ebullition-estimates.html#cb124-19" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_13_eb_results &lt;- NULL</span></span>
+<span id="cb124-20"><a href="ebullition-estimates.html#cb124-20" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_13_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb124-21"><a href="ebullition-estimates.html#cb124-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb124-22"><a href="ebullition-estimates.html#cb124-22" aria-hidden="true" tabindex="-1"></a><span class="co"># # generate variogram based only on volume</span></span>
+<span id="cb124-23"><a href="ebullition-estimates.html#cb124-23" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb124-24"><a href="ebullition-estimates.html#cb124-24" aria-hidden="true" tabindex="-1"></a><span class="co"># # pick_13_eb_kr &lt;- pick_pts %&gt;%</span></span>
+<span id="cb124-25"><a href="ebullition-estimates.html#cb124-25" aria-hidden="true" tabindex="-1"></a><span class="co"># #     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb124-26"><a href="ebullition-estimates.html#cb124-26" aria-hidden="true" tabindex="-1"></a><span class="co"># #                 filter(Sampling == &quot;Pick1&quot;), by = &quot;location&quot;)</span></span>
+<span id="cb124-27"><a href="ebullition-estimates.html#cb124-27" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb124-28"><a href="ebullition-estimates.html#cb124-28" aria-hidden="true" tabindex="-1"></a><span class="co"># # periods &lt;- unique(pick_13_eb_kr$period)</span></span>
+<span id="cb124-29"><a href="ebullition-estimates.html#cb124-29" aria-hidden="true" tabindex="-1"></a><span class="co"># # var.lst &lt;- list()</span></span>
+<span id="cb124-30"><a href="ebullition-estimates.html#cb124-30" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb124-31"><a href="ebullition-estimates.html#cb124-31" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb124-32"><a href="ebullition-estimates.html#cb124-32" aria-hidden="true" tabindex="-1"></a><span class="co"># # for(i in 1:length(periods)){</span></span>
+<span id="cb124-33"><a href="ebullition-estimates.html#cb124-33" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$data[[i]] &lt;- pick_13_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb124-34"><a href="ebullition-estimates.html#cb124-34" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb124-35"><a href="ebullition-estimates.html#cb124-35" aria-hidden="true" tabindex="-1"></a><span class="co"># #    # quantile-quantile normal score transform data</span></span>
+<span id="cb124-36"><a href="ebullition-estimates.html#cb124-36" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$data[[i]]$vol_norm &lt;- qqnorm(var.lst$data[[i]]$gas_vol_corrected, plot.it = F)$x</span></span>
+<span id="cb124-37"><a href="ebullition-estimates.html#cb124-37" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb124-38"><a href="ebullition-estimates.html#cb124-38" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$var_df[[i]] &lt;- variogram(vol_norm~1, var.lst$data[[i]] %&gt;% filter(is.na(vol_norm) == F), cloud = T)</span></span>
+<span id="cb124-39"><a href="ebullition-estimates.html#cb124-39" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb124-40"><a href="ebullition-estimates.html#cb124-40" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb124-41"><a href="ebullition-estimates.html#cb124-41" aria-hidden="true" tabindex="-1"></a><span class="co"># #    }</span></span>
+<span id="cb124-42"><a href="ebullition-estimates.html#cb124-42" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb124-43"><a href="ebullition-estimates.html#cb124-43" aria-hidden="true" tabindex="-1"></a><span class="co"># # pdf(&quot;5-Results/1-kriged-estimates/variograms_pick_20220913_eb.pdf&quot;, paper=&quot;a4&quot;, width=9, height=12)</span></span>
+<span id="cb124-44"><a href="ebullition-estimates.html#cb124-44" aria-hidden="true" tabindex="-1"></a><span class="co"># # marrangeGrob(grobs=compact(var.lst$var_plot), nrow=4, ncol = 2)</span></span>
+<span id="cb124-45"><a href="ebullition-estimates.html#cb124-45" aria-hidden="true" tabindex="-1"></a><span class="co"># # dev.off()</span></span>
+<span id="cb124-46"><a href="ebullition-estimates.html#cb124-46" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb124-47"><a href="ebullition-estimates.html#cb124-47" aria-hidden="true" tabindex="-1"></a><span class="co"># sim_num &lt;- 25</span></span>
+<span id="cb124-48"><a href="ebullition-estimates.html#cb124-48" aria-hidden="true" tabindex="-1"></a><span class="co"># n_num &lt;- 500</span></span>
+<span id="cb124-49"><a href="ebullition-estimates.html#cb124-49" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb124-50"><a href="ebullition-estimates.html#cb124-50" aria-hidden="true" tabindex="-1"></a><span class="co"># krige_par &lt;- function(b){</span></span>
+<span id="cb124-51"><a href="ebullition-estimates.html#cb124-51" aria-hidden="true" tabindex="-1"></a><span class="co">#   pick1_conc_vec &lt;- sample(pick1_conc, 224, replace=T)</span></span>
+<span id="cb124-52"><a href="ebullition-estimates.html#cb124-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb124-53"><a href="ebullition-estimates.html#cb124-53" aria-hidden="true" tabindex="-1"></a><span class="co">#   pick_13_eb_kr &lt;- pick_pts %&gt;% </span></span>
+<span id="cb124-54"><a href="ebullition-estimates.html#cb124-54" aria-hidden="true" tabindex="-1"></a><span class="co">#     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb124-55"><a href="ebullition-estimates.html#cb124-55" aria-hidden="true" tabindex="-1"></a><span class="co">#                 filter(Sampling == &quot;Pick1&quot;) %&gt;% </span></span>
+<span id="cb124-56"><a href="ebullition-estimates.html#cb124-56" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_rand = pick1_conc_vec, </span></span>
+<span id="cb124-57"><a href="ebullition-estimates.html#cb124-57" aria-hidden="true" tabindex="-1"></a><span class="co">#                        ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %&gt;% </span></span>
+<span id="cb124-58"><a href="ebullition-estimates.html#cb124-58" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = &quot;location&quot;)</span></span>
+<span id="cb124-59"><a href="ebullition-estimates.html#cb124-59" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb124-60"><a href="ebullition-estimates.html#cb124-60" aria-hidden="true" tabindex="-1"></a><span class="co">#   periods &lt;- unique(pick_13_eb_kr$period)</span></span>
+<span id="cb124-61"><a href="ebullition-estimates.html#cb124-61" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst &lt;- list()</span></span>
+<span id="cb124-62"><a href="ebullition-estimates.html#cb124-62" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb124-63"><a href="ebullition-estimates.html#cb124-63" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- NULL</span></span>
+<span id="cb124-64"><a href="ebullition-estimates.html#cb124-64" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb124-65"><a href="ebullition-estimates.html#cb124-65" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(i in 1:length(periods)){</span></span>
+<span id="cb124-66"><a href="ebullition-estimates.html#cb124-66" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]] &lt;- pick_13_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb124-67"><a href="ebullition-estimates.html#cb124-67" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb124-68"><a href="ebullition-estimates.html#cb124-68" aria-hidden="true" tabindex="-1"></a><span class="co">#     # quantile-quantile normal score transform data</span></span>
+<span id="cb124-69"><a href="ebullition-estimates.html#cb124-69" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]]$norm_eb &lt;- qqnorm(var.lst$data[[i]]$ch4_eb_g_m2_hr, plot.it = F)$x</span></span>
+<span id="cb124-70"><a href="ebullition-estimates.html#cb124-70" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb124-71"><a href="ebullition-estimates.html#cb124-71" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$nscore.tab[[i]] &lt;- nscore(var.lst$data[[i]]$ch4_eb_g_m2_hr)</span></span>
+<span id="cb124-72"><a href="ebullition-estimates.html#cb124-72" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb124-73"><a href="ebullition-estimates.html#cb124-73" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_df[[i]] &lt;- variogram(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), cloud = T)</span></span>
+<span id="cb124-74"><a href="ebullition-estimates.html#cb124-74" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb124-75"><a href="ebullition-estimates.html#cb124-75" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb124-76"><a href="ebullition-estimates.html#cb124-76" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb124-77"><a href="ebullition-estimates.html#cb124-77" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb124-78"><a href="ebullition-estimates.html#cb124-78" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]] &lt;- krige(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), pick_grid, model = pick_13_var_eb, nsim=sim_num, maxdist = Inf,nmin = 0,omax=Inf, beta = 0, nmax = n_num, debug.level = -1)</span></span>
+<span id="cb124-79"><a href="ebullition-estimates.html#cb124-79" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb124-80"><a href="ebullition-estimates.html#cb124-80" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][(nrow(var.lst$nscore.tab[[i]])-1):nrow(var.lst$nscore.tab[[i]]),])</span></span>
+<span id="cb124-81"><a href="ebullition-estimates.html#cb124-81" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.func &lt;- function(x){</span></span>
+<span id="cb124-82"><a href="ebullition-estimates.html#cb124-82" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(above.max.lm)[[1]] + (coefficients(above.max.lm)[[2]]*x)</span></span>
+<span id="cb124-83"><a href="ebullition-estimates.html#cb124-83" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb124-84"><a href="ebullition-estimates.html#cb124-84" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][1:2,])</span></span>
+<span id="cb124-85"><a href="ebullition-estimates.html#cb124-85" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.func &lt;- function(x){</span></span>
+<span id="cb124-86"><a href="ebullition-estimates.html#cb124-86" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(below.min.lm)[[1]] + (coefficients(below.min.lm)[[2]]*x)</span></span>
+<span id="cb124-87"><a href="ebullition-estimates.html#cb124-87" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb124-88"><a href="ebullition-estimates.html#cb124-88" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb124-89"><a href="ebullition-estimates.html#cb124-89" aria-hidden="true" tabindex="-1"></a><span class="co">#     interpolate &lt;- approxfun(x=var.lst$nscore.tab[[i]]$nscore, y=var.lst$nscore.tab[[i]]$x)</span></span>
+<span id="cb124-90"><a href="ebullition-estimates.html#cb124-90" aria-hidden="true" tabindex="-1"></a><span class="co">#     backtr &lt;- function(x){</span></span>
+<span id="cb124-91"><a href="ebullition-estimates.html#cb124-91" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(is.na(x)){</span></span>
+<span id="cb124-92"><a href="ebullition-estimates.html#cb124-92" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(NA)</span></span>
+<span id="cb124-93"><a href="ebullition-estimates.html#cb124-93" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb124-94"><a href="ebullition-estimates.html#cb124-94" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&gt;max(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb124-95"><a href="ebullition-estimates.html#cb124-95" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(above.max.func(x))</span></span>
+<span id="cb124-96"><a href="ebullition-estimates.html#cb124-96" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb124-97"><a href="ebullition-estimates.html#cb124-97" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&lt;min(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb124-98"><a href="ebullition-estimates.html#cb124-98" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(below.min.func(x))</span></span>
+<span id="cb124-99"><a href="ebullition-estimates.html#cb124-99" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb124-100"><a href="ebullition-estimates.html#cb124-100" aria-hidden="true" tabindex="-1"></a><span class="co">#       else{</span></span>
+<span id="cb124-101"><a href="ebullition-estimates.html#cb124-101" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(interpolate(x))</span></span>
+<span id="cb124-102"><a href="ebullition-estimates.html#cb124-102" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb124-103"><a href="ebullition-estimates.html#cb124-103" aria-hidden="true" tabindex="-1"></a><span class="co">#       </span></span>
+<span id="cb124-104"><a href="ebullition-estimates.html#cb124-104" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb124-105"><a href="ebullition-estimates.html#cb124-105" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb124-106"><a href="ebullition-estimates.html#cb124-106" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]]$backtransformed &lt;- st_apply(var.lst$kriged[[i]][1], 1:3, backtr)</span></span>
+<span id="cb124-107"><a href="ebullition-estimates.html#cb124-107" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb124-108"><a href="ebullition-estimates.html#cb124-108" aria-hidden="true" tabindex="-1"></a><span class="co">#   sim_vec &lt;- c()</span></span>
+<span id="cb124-109"><a href="ebullition-estimates.html#cb124-109" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(f in 1:sim_num){</span></span>
+<span id="cb124-110"><a href="ebullition-estimates.html#cb124-110" aria-hidden="true" tabindex="-1"></a><span class="co">#     sim_vec &lt;- c(sum(var.lst$kriged[[i]][2,,,f]$backtransformed, na.rm = T), sim_vec)</span></span>
+<span id="cb124-111"><a href="ebullition-estimates.html#cb124-111" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb124-112"><a href="ebullition-estimates.html#cb124-112" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb124-113"><a href="ebullition-estimates.html#cb124-113" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- bind_rows(temp_df, data.frame(site = &quot;Pick&quot;, date = &quot;2022-09-13&quot;, period = i, gas = &quot;CH4&quot;, sum_flux = sim_vec))</span></span>
+<span id="cb124-114"><a href="ebullition-estimates.html#cb124-114" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb124-115"><a href="ebullition-estimates.html#cb124-115" aria-hidden="true" tabindex="-1"></a><span class="co">#   return(temp_df)</span></span>
+<span id="cb124-116"><a href="ebullition-estimates.html#cb124-116" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="ebullition-estimates.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="co"># s_time &lt;- Sys.time()</span></span>
+<span id="cb125-2"><a href="ebullition-estimates.html#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- list()</span></span>
+<span id="cb125-3"><a href="ebullition-estimates.html#cb125-3" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- lapply(1:20, krige_par)</span></span>
+<span id="cb125-4"><a href="ebullition-estimates.html#cb125-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb125-5"><a href="ebullition-estimates.html#cb125-5" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_13_eb_results &lt;- bind_rows(temp_list)</span></span>
+<span id="cb125-6"><a href="ebullition-estimates.html#cb125-6" aria-hidden="true" tabindex="-1"></a><span class="co"># e_time &lt;- Sys.time()</span></span>
+<span id="cb125-7"><a href="ebullition-estimates.html#cb125-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print(&quot;total time:&quot;)</span></span>
+<span id="cb125-8"><a href="ebullition-estimates.html#cb125-8" aria-hidden="true" tabindex="-1"></a><span class="co"># print(e_time-s_time)</span></span>
+<span id="cb125-9"><a href="ebullition-estimates.html#cb125-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb125-10"><a href="ebullition-estimates.html#cb125-10" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(pick_13_eb_results,&quot;5-Results/1-kriged-estimates/pick_13_eb_results.csv&quot;)</span></span></code></pre></div>
+<p>Sister3 22</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="ebullition-estimates.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # create vector of ch4 concentrations</span></span>
+<span id="cb126-2"><a href="ebullition-estimates.html#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sister3_conc &lt;- read.csv(&quot;2-Clean Data/ebullition_concentrations.csv&quot;)%&gt;% </span></span>
+<span id="cb126-3"><a href="ebullition-estimates.html#cb126-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(corr_ch4 = case_when(</span></span>
+<span id="cb126-4"><a href="ebullition-estimates.html#cb126-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, </span></span>
+<span id="cb126-5"><a href="ebullition-estimates.html#cb126-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, </span></span>
+<span id="cb126-6"><a href="ebullition-estimates.html#cb126-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %&gt;% </span></span>
+<span id="cb126-7"><a href="ebullition-estimates.html#cb126-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(is.na(Data.Flag)==T) %&gt;% </span></span>
+<span id="cb126-8"><a href="ebullition-estimates.html#cb126-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(samplings, by = &quot;Collection.Date&quot;) %&gt;% </span></span>
+<span id="cb126-9"><a href="ebullition-estimates.html#cb126-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(Sampling == &quot;Sister31&quot;) %&gt;% </span></span>
+<span id="cb126-10"><a href="ebullition-estimates.html#cb126-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(corr_ch4)</span></span>
+<span id="cb126-11"><a href="ebullition-estimates.html#cb126-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb126-12"><a href="ebullition-estimates.html#cb126-12" aria-hidden="true" tabindex="-1"></a><span class="co"># # define theoretical variogram</span></span>
+<span id="cb126-13"><a href="ebullition-estimates.html#cb126-13" aria-hidden="true" tabindex="-1"></a><span class="co"># sister3_22_var_eb &lt;- vgm(psill = 1, &quot;Sph&quot;, range = 6) </span></span>
+<span id="cb126-14"><a href="ebullition-estimates.html#cb126-14" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb126-15"><a href="ebullition-estimates.html#cb126-15" aria-hidden="true" tabindex="-1"></a><span class="co"># # define interpolation grid</span></span>
+<span id="cb126-16"><a href="ebullition-estimates.html#cb126-16" aria-hidden="true" tabindex="-1"></a><span class="co"># sister3_grid &lt;- st_as_stars(st_bbox(sister3), dx = 1, dy = 1)</span></span>
+<span id="cb126-17"><a href="ebullition-estimates.html#cb126-17" aria-hidden="true" tabindex="-1"></a><span class="co"># sister3_grid &lt;- sister3_grid[sister3]</span></span>
+<span id="cb126-18"><a href="ebullition-estimates.html#cb126-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb126-19"><a href="ebullition-estimates.html#cb126-19" aria-hidden="true" tabindex="-1"></a><span class="co"># sister3_22_eb_results &lt;- NULL</span></span>
+<span id="cb126-20"><a href="ebullition-estimates.html#cb126-20" aria-hidden="true" tabindex="-1"></a><span class="co"># sister3_22_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb126-21"><a href="ebullition-estimates.html#cb126-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb126-22"><a href="ebullition-estimates.html#cb126-22" aria-hidden="true" tabindex="-1"></a><span class="co"># # generate variogram based only on volume</span></span>
+<span id="cb126-23"><a href="ebullition-estimates.html#cb126-23" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb126-24"><a href="ebullition-estimates.html#cb126-24" aria-hidden="true" tabindex="-1"></a><span class="co"># # sister3_22_eb_kr &lt;- sister3_pts %&gt;%</span></span>
+<span id="cb126-25"><a href="ebullition-estimates.html#cb126-25" aria-hidden="true" tabindex="-1"></a><span class="co"># #     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb126-26"><a href="ebullition-estimates.html#cb126-26" aria-hidden="true" tabindex="-1"></a><span class="co"># #                 filter(Sampling == &quot;Sister31&quot;), by = &quot;location&quot;)</span></span>
+<span id="cb126-27"><a href="ebullition-estimates.html#cb126-27" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb126-28"><a href="ebullition-estimates.html#cb126-28" aria-hidden="true" tabindex="-1"></a><span class="co"># # periods &lt;- unique(sister3_22_eb_kr$period)</span></span>
+<span id="cb126-29"><a href="ebullition-estimates.html#cb126-29" aria-hidden="true" tabindex="-1"></a><span class="co"># # var.lst &lt;- list()</span></span>
+<span id="cb126-30"><a href="ebullition-estimates.html#cb126-30" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb126-31"><a href="ebullition-estimates.html#cb126-31" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb126-32"><a href="ebullition-estimates.html#cb126-32" aria-hidden="true" tabindex="-1"></a><span class="co"># # for(i in 1:length(periods)){</span></span>
+<span id="cb126-33"><a href="ebullition-estimates.html#cb126-33" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$data[[i]] &lt;- sister3_22_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb126-34"><a href="ebullition-estimates.html#cb126-34" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb126-35"><a href="ebullition-estimates.html#cb126-35" aria-hidden="true" tabindex="-1"></a><span class="co"># #    # quantile-quantile normal score transform data</span></span>
+<span id="cb126-36"><a href="ebullition-estimates.html#cb126-36" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$data[[i]]$vol_norm &lt;- qqnorm(var.lst$data[[i]]$gas_vol_corrected, plot.it = F)$x</span></span>
+<span id="cb126-37"><a href="ebullition-estimates.html#cb126-37" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb126-38"><a href="ebullition-estimates.html#cb126-38" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$var_df[[i]] &lt;- variogram(vol_norm~1, var.lst$data[[i]] %&gt;% filter(is.na(vol_norm) == F), cloud = T)</span></span>
+<span id="cb126-39"><a href="ebullition-estimates.html#cb126-39" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb126-40"><a href="ebullition-estimates.html#cb126-40" aria-hidden="true" tabindex="-1"></a><span class="co"># #    var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb126-41"><a href="ebullition-estimates.html#cb126-41" aria-hidden="true" tabindex="-1"></a><span class="co"># #    }</span></span>
+<span id="cb126-42"><a href="ebullition-estimates.html#cb126-42" aria-hidden="true" tabindex="-1"></a><span class="co"># # </span></span>
+<span id="cb126-43"><a href="ebullition-estimates.html#cb126-43" aria-hidden="true" tabindex="-1"></a><span class="co"># # pdf(&quot;5-Results/1-kriged-estimates/variograms_sister3_20220822_eb.pdf&quot;, paper=&quot;a4&quot;, width=9, height=12)</span></span>
+<span id="cb126-44"><a href="ebullition-estimates.html#cb126-44" aria-hidden="true" tabindex="-1"></a><span class="co"># # marrangeGrob(grobs=compact(var.lst$var_plot), nrow=4, ncol = 2)</span></span>
+<span id="cb126-45"><a href="ebullition-estimates.html#cb126-45" aria-hidden="true" tabindex="-1"></a><span class="co"># # dev.off()</span></span>
+<span id="cb126-46"><a href="ebullition-estimates.html#cb126-46" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb126-47"><a href="ebullition-estimates.html#cb126-47" aria-hidden="true" tabindex="-1"></a><span class="co"># sim_num &lt;- 25</span></span>
+<span id="cb126-48"><a href="ebullition-estimates.html#cb126-48" aria-hidden="true" tabindex="-1"></a><span class="co"># n_num &lt;- 500</span></span>
+<span id="cb126-49"><a href="ebullition-estimates.html#cb126-49" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb126-50"><a href="ebullition-estimates.html#cb126-50" aria-hidden="true" tabindex="-1"></a><span class="co"># krige_par &lt;- function(b){</span></span>
+<span id="cb126-51"><a href="ebullition-estimates.html#cb126-51" aria-hidden="true" tabindex="-1"></a><span class="co">#   sister3_conc_vec &lt;- sample(sister3_conc, 223, replace=T)</span></span>
+<span id="cb126-52"><a href="ebullition-estimates.html#cb126-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb126-53"><a href="ebullition-estimates.html#cb126-53" aria-hidden="true" tabindex="-1"></a><span class="co">#   sister3_22_eb_kr &lt;- sister3_pts %&gt;% </span></span>
+<span id="cb126-54"><a href="ebullition-estimates.html#cb126-54" aria-hidden="true" tabindex="-1"></a><span class="co">#     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb126-55"><a href="ebullition-estimates.html#cb126-55" aria-hidden="true" tabindex="-1"></a><span class="co">#                 filter(Sampling == &quot;Sister31&quot;) %&gt;% </span></span>
+<span id="cb126-56"><a href="ebullition-estimates.html#cb126-56" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_rand = sister3_conc_vec, </span></span>
+<span id="cb126-57"><a href="ebullition-estimates.html#cb126-57" aria-hidden="true" tabindex="-1"></a><span class="co">#                        ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %&gt;% </span></span>
+<span id="cb126-58"><a href="ebullition-estimates.html#cb126-58" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = &quot;location&quot;)</span></span>
+<span id="cb126-59"><a href="ebullition-estimates.html#cb126-59" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb126-60"><a href="ebullition-estimates.html#cb126-60" aria-hidden="true" tabindex="-1"></a><span class="co">#   periods &lt;- unique(sister3_22_eb_kr$period)</span></span>
+<span id="cb126-61"><a href="ebullition-estimates.html#cb126-61" aria-hidden="true" tabindex="-1"></a><span class="co">#   var.lst &lt;- list()</span></span>
+<span id="cb126-62"><a href="ebullition-estimates.html#cb126-62" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb126-63"><a href="ebullition-estimates.html#cb126-63" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- NULL</span></span>
+<span id="cb126-64"><a href="ebullition-estimates.html#cb126-64" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb126-65"><a href="ebullition-estimates.html#cb126-65" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(i in 1:length(periods)){</span></span>
+<span id="cb126-66"><a href="ebullition-estimates.html#cb126-66" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]] &lt;- sister3_22_eb_kr %&gt;% filter(period == periods[i])</span></span>
+<span id="cb126-67"><a href="ebullition-estimates.html#cb126-67" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb126-68"><a href="ebullition-estimates.html#cb126-68" aria-hidden="true" tabindex="-1"></a><span class="co">#     # quantile-quantile normal score transform data</span></span>
+<span id="cb126-69"><a href="ebullition-estimates.html#cb126-69" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$data[[i]]$norm_eb &lt;- qqnorm(var.lst$data[[i]]$ch4_eb_g_m2_hr, plot.it = F)$x</span></span>
+<span id="cb126-70"><a href="ebullition-estimates.html#cb126-70" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb126-71"><a href="ebullition-estimates.html#cb126-71" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$nscore.tab[[i]] &lt;- nscore(var.lst$data[[i]]$ch4_eb_g_m2_hr)</span></span>
+<span id="cb126-72"><a href="ebullition-estimates.html#cb126-72" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb126-73"><a href="ebullition-estimates.html#cb126-73" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_df[[i]] &lt;- variogram(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), cloud = T)</span></span>
+<span id="cb126-74"><a href="ebullition-estimates.html#cb126-74" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb126-75"><a href="ebullition-estimates.html#cb126-75" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$var_plot[[i]] &lt;- ggplot(var.lst$var_df[[i]], aes(dist, gamma))+geom_point(size =2)+theme_bw()+labs(title = periods[i])</span></span>
+<span id="cb126-76"><a href="ebullition-estimates.html#cb126-76" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb126-77"><a href="ebullition-estimates.html#cb126-77" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb126-78"><a href="ebullition-estimates.html#cb126-78" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]] &lt;- krige(norm_eb~1, var.lst$data[[i]] %&gt;% filter(is.na(norm_eb) == F), sister3_grid, model = sister3_22_var_eb, nsim=sim_num, maxdist = Inf,nmin = 0,omax=Inf, beta = 0, nmax = n_num, debug.level = -1)</span></span>
+<span id="cb126-79"><a href="ebullition-estimates.html#cb126-79" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb126-80"><a href="ebullition-estimates.html#cb126-80" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][(nrow(var.lst$nscore.tab[[i]])-1):nrow(var.lst$nscore.tab[[i]]),])</span></span>
+<span id="cb126-81"><a href="ebullition-estimates.html#cb126-81" aria-hidden="true" tabindex="-1"></a><span class="co">#     above.max.func &lt;- function(x){</span></span>
+<span id="cb126-82"><a href="ebullition-estimates.html#cb126-82" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(above.max.lm)[[1]] + (coefficients(above.max.lm)[[2]]*x)</span></span>
+<span id="cb126-83"><a href="ebullition-estimates.html#cb126-83" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb126-84"><a href="ebullition-estimates.html#cb126-84" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.lm &lt;- lm(x~nscore, data=var.lst$nscore.tab[[i]][1:2,])</span></span>
+<span id="cb126-85"><a href="ebullition-estimates.html#cb126-85" aria-hidden="true" tabindex="-1"></a><span class="co">#     below.min.func &lt;- function(x){</span></span>
+<span id="cb126-86"><a href="ebullition-estimates.html#cb126-86" aria-hidden="true" tabindex="-1"></a><span class="co">#       coefficients(below.min.lm)[[1]] + (coefficients(below.min.lm)[[2]]*x)</span></span>
+<span id="cb126-87"><a href="ebullition-estimates.html#cb126-87" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb126-88"><a href="ebullition-estimates.html#cb126-88" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb126-89"><a href="ebullition-estimates.html#cb126-89" aria-hidden="true" tabindex="-1"></a><span class="co">#     interpolate &lt;- approxfun(x=var.lst$nscore.tab[[i]]$nscore, y=var.lst$nscore.tab[[i]]$x)</span></span>
+<span id="cb126-90"><a href="ebullition-estimates.html#cb126-90" aria-hidden="true" tabindex="-1"></a><span class="co">#     backtr &lt;- function(x){</span></span>
+<span id="cb126-91"><a href="ebullition-estimates.html#cb126-91" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(is.na(x)){</span></span>
+<span id="cb126-92"><a href="ebullition-estimates.html#cb126-92" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(NA)</span></span>
+<span id="cb126-93"><a href="ebullition-estimates.html#cb126-93" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb126-94"><a href="ebullition-estimates.html#cb126-94" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&gt;max(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb126-95"><a href="ebullition-estimates.html#cb126-95" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(above.max.func(x))</span></span>
+<span id="cb126-96"><a href="ebullition-estimates.html#cb126-96" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb126-97"><a href="ebullition-estimates.html#cb126-97" aria-hidden="true" tabindex="-1"></a><span class="co">#       if(x&lt;min(var.lst$nscore.tab[[i]]$nscore)){</span></span>
+<span id="cb126-98"><a href="ebullition-estimates.html#cb126-98" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(below.min.func(x))</span></span>
+<span id="cb126-99"><a href="ebullition-estimates.html#cb126-99" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb126-100"><a href="ebullition-estimates.html#cb126-100" aria-hidden="true" tabindex="-1"></a><span class="co">#       else{</span></span>
+<span id="cb126-101"><a href="ebullition-estimates.html#cb126-101" aria-hidden="true" tabindex="-1"></a><span class="co">#         return(interpolate(x))</span></span>
+<span id="cb126-102"><a href="ebullition-estimates.html#cb126-102" aria-hidden="true" tabindex="-1"></a><span class="co">#       }</span></span>
+<span id="cb126-103"><a href="ebullition-estimates.html#cb126-103" aria-hidden="true" tabindex="-1"></a><span class="co">#       </span></span>
+<span id="cb126-104"><a href="ebullition-estimates.html#cb126-104" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb126-105"><a href="ebullition-estimates.html#cb126-105" aria-hidden="true" tabindex="-1"></a><span class="co">#     </span></span>
+<span id="cb126-106"><a href="ebullition-estimates.html#cb126-106" aria-hidden="true" tabindex="-1"></a><span class="co">#     var.lst$kriged[[i]]$backtransformed &lt;- st_apply(var.lst$kriged[[i]][1], 1:3, backtr)</span></span>
+<span id="cb126-107"><a href="ebullition-estimates.html#cb126-107" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb126-108"><a href="ebullition-estimates.html#cb126-108" aria-hidden="true" tabindex="-1"></a><span class="co">#   sim_vec &lt;- c()</span></span>
+<span id="cb126-109"><a href="ebullition-estimates.html#cb126-109" aria-hidden="true" tabindex="-1"></a><span class="co">#   for(f in 1:sim_num){</span></span>
+<span id="cb126-110"><a href="ebullition-estimates.html#cb126-110" aria-hidden="true" tabindex="-1"></a><span class="co">#     sim_vec &lt;- c(sum(var.lst$kriged[[i]][2,,,f]$backtransformed, na.rm = T), sim_vec)</span></span>
+<span id="cb126-111"><a href="ebullition-estimates.html#cb126-111" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb126-112"><a href="ebullition-estimates.html#cb126-112" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb126-113"><a href="ebullition-estimates.html#cb126-113" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- bind_rows(temp_df, data.frame(site = &quot;Sister3&quot;, date = &quot;2022-08-22&quot;, period = i, gas = &quot;CH4&quot;, sum_flux = sim_vec))</span></span>
+<span id="cb126-114"><a href="ebullition-estimates.html#cb126-114" aria-hidden="true" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb126-115"><a href="ebullition-estimates.html#cb126-115" aria-hidden="true" tabindex="-1"></a><span class="co">#   return(temp_df)</span></span>
+<span id="cb126-116"><a href="ebullition-estimates.html#cb126-116" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="ebullition-estimates.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co"># s_time &lt;- Sys.time()</span></span>
+<span id="cb127-2"><a href="ebullition-estimates.html#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- list()</span></span>
+<span id="cb127-3"><a href="ebullition-estimates.html#cb127-3" aria-hidden="true" tabindex="-1"></a><span class="co"># temp_list &lt;- lapply(1:20, krige_par)</span></span>
+<span id="cb127-4"><a href="ebullition-estimates.html#cb127-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb127-5"><a href="ebullition-estimates.html#cb127-5" aria-hidden="true" tabindex="-1"></a><span class="co"># sister3_22_eb_results &lt;- bind_rows(temp_list)</span></span>
+<span id="cb127-6"><a href="ebullition-estimates.html#cb127-6" aria-hidden="true" tabindex="-1"></a><span class="co"># e_time &lt;- Sys.time()</span></span>
+<span id="cb127-7"><a href="ebullition-estimates.html#cb127-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print(&quot;total time:&quot;)</span></span>
+<span id="cb127-8"><a href="ebullition-estimates.html#cb127-8" aria-hidden="true" tabindex="-1"></a><span class="co"># print(e_time-s_time)</span></span>
+<span id="cb127-9"><a href="ebullition-estimates.html#cb127-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb127-10"><a href="ebullition-estimates.html#cb127-10" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(sister3_22_eb_results,&quot;5-Results/1-kriged-estimates/sister3_22_eb_results.csv&quot;)</span></span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="diffusion-estimates.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="flux-summary-stats-prep.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/07-ebullition-estimates.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

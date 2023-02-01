@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 Flux summary stats prep | Naslund Chapter 1 Analysis</title>
+  <meta name="description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 Flux summary stats prep | Naslund Chapter 1 Analysis" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 Flux summary stats prep | Naslund Chapter 1 Analysis" />
+  
+  <meta name="twitter:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
+  
+
+<meta name="author" content="Laura Naslund" />
+
+
+<meta name="date" content="2023-02-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ebullition-estimates.html"/>
+<link rel="next" href="total-flux-estimates.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_c85ba2-1/data_stars_co2krigedsimsk411d29e06.txt"></script>
+<script src="libs/joda-0.0.1/joda.js"></script>
+<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_dcb584-1/data_stars_co2krigedsimsk421d4c8eb.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_afe19c-1/data_stars_co2krigedsimsk431c5bf06.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_967ed3-1/data_stars_co2krigedsimsk4412bf34c.txt"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Naslund Chapter 1 Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Sampling scheme</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#dissolved-oxygen"><i class="fa fa-check"></i><b>1.1</b> Dissolved oxygen</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#deans"><i class="fa fa-check"></i><b>1.1.1</b> Deans</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#catfish"><i class="fa fa-check"></i><b>1.1.2</b> Catfish</a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#sister-3"><i class="fa fa-check"></i><b>1.1.3</b> Sister 3</a></li>
+<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#pick"><i class="fa fa-check"></i><b>1.1.4</b> Pick</a></li>
+<li class="chapter" data-level="1.1.5" data-path="index.html"><a href="index.html#all-impoundments-top-do"><i class="fa fa-check"></i><b>1.1.5</b> All impoundments top DO</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#temperature"><i class="fa fa-check"></i><b>1.2</b> Temperature</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#deans-1"><i class="fa fa-check"></i><b>1.2.1</b> Deans</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#catfish-1"><i class="fa fa-check"></i><b>1.2.2</b> Catfish</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#sister-3-1"><i class="fa fa-check"></i><b>1.2.3</b> Sister 3</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#pick-1"><i class="fa fa-check"></i><b>1.2.4</b> Pick</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#label"><i class="fa fa-check"></i><b>1.3</b> Residence time calculation</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html"><i class="fa fa-check"></i><b>2</b> Diffusive emissions</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-cloud-comparison"><i class="fa fa-check"></i><b>2.1</b> Deans Cloud Comparison</a></li>
+<li class="chapter" data-level="2.2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-81622-81722"><i class="fa fa-check"></i><b>2.2</b> Deans 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="2.3" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-83022-83122"><i class="fa fa-check"></i><b>2.3</b> Deans 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="2.4" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-cloud-comparison"><i class="fa fa-check"></i><b>2.4</b> Catfish Cloud Comparison</a></li>
+<li class="chapter" data-level="2.5" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-9622-9722"><i class="fa fa-check"></i><b>2.5</b> Catfish 9/6/22-9/7/22</a></li>
+<li class="chapter" data-level="2.6" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-91822-91922"><i class="fa fa-check"></i><b>2.6</b> Catfish 9/18/22-9/19/22</a></li>
+<li class="chapter" data-level="2.7" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#pick-91322--91422"><i class="fa fa-check"></i><b>2.7</b> Pick 9/13/22- 9/14/22</a></li>
+<li class="chapter" data-level="2.8" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#sister3-82222-82322"><i class="fa fa-check"></i><b>2.8</b> Sister3 8/22/22-8/23/22</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ebullition.html"><a href="ebullition.html"><i class="fa fa-check"></i><b>3</b> Ebullition</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="ebullition.html"><a href="ebullition.html#deans-81622-81722-1"><i class="fa fa-check"></i><b>3.1</b> Deans 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="3.2" data-path="ebullition.html"><a href="ebullition.html#deans-83022-83122-1"><i class="fa fa-check"></i><b>3.2</b> Deans 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="3.3" data-path="ebullition.html"><a href="ebullition.html#catfish-90622-90722-clouds-cleared-by-9am-sparce-clouds-until-4-cleared-around-7-overcast-the-next-morning"><i class="fa fa-check"></i><b>3.3</b> Catfish 9/06/22-9/07/22 (Clouds cleared by 9AM, sparce clouds until ~ 4, cleared around 7, overcast the next morning)</a></li>
+<li class="chapter" data-level="3.4" data-path="ebullition.html"><a href="ebullition.html#catfish-91822-91922-cloudless-until-12-3-pretty-cloudy"><i class="fa fa-check"></i><b>3.4</b> Catfish 9/18/22-9/19/22 (cloudless until 12-3 pretty cloudy)</a></li>
+<li class="chapter" data-level="3.5" data-path="ebullition.html"><a href="ebullition.html#pick-91322-91422"><i class="fa fa-check"></i><b>3.5</b> Pick 9/13/22-9/14/22</a></li>
+<li class="chapter" data-level="3.6" data-path="ebullition.html"><a href="ebullition.html#sister-3-82222-82322"><i class="fa fa-check"></i><b>3.6</b> Sister 3 8/22/22-8/23/22</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="simple-kriging-just-in-space.html"><a href="simple-kriging-just-in-space.html"><i class="fa fa-check"></i><b>4</b> Simple kriging just in space</a></li>
+<li class="chapter" data-level="5" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html"><i class="fa fa-check"></i><b>5</b> Diffusive analysis</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#catfish-cloud-comparison-1"><i class="fa fa-check"></i><b>5.1</b> Catfish Cloud Comparison</a></li>
+<li class="chapter" data-level="5.2" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#deans-cloud-comparison-1"><i class="fa fa-check"></i><b>5.2</b> Deans Cloud Comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html"><i class="fa fa-check"></i><b>6</b> Ebullition Analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#plots"><i class="fa fa-check"></i><b>6.1</b> Plots</a></li>
+<li class="chapter" data-level="6.2" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod1-non-zero-data-fixed-effects-only"><i class="fa fa-check"></i><b>6.2</b> Mod1: Non-zero data, fixed effects only</a></li>
+<li class="chapter" data-level="6.3" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2-non-zero-data-mixed-model"><i class="fa fa-check"></i><b>6.3</b> Mod2: Non zero data, mixed model</a></li>
+<li class="chapter" data-level="6.4" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2.a-non-zero-data-mixed-model-without-picks"><i class="fa fa-check"></i><b>6.4</b> Mod2.a: Non zero data, mixed model without Picks</a></li>
+<li class="chapter" data-level="6.5" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2.b-non-zero-data-mixed-model-only-picks"><i class="fa fa-check"></i><b>6.5</b> Mod2.b: Non zero data, mixed model only Picks</a></li>
+<li class="chapter" data-level="6.6" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod3-logistic-regression-fixed-effects-only"><i class="fa fa-check"></i><b>6.6</b> Mod3: Logistic regression, fixed effects only</a></li>
+<li class="chapter" data-level="6.7" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4-logistic-regression-mixed-model"><i class="fa fa-check"></i><b>6.7</b> Mod4: Logistic regression, mixed model</a></li>
+<li class="chapter" data-level="6.8" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4.a-logistic-regression-mixed-model-without-picks"><i class="fa fa-check"></i><b>6.8</b> Mod4.a: Logistic regression, mixed model without Picks</a></li>
+<li class="chapter" data-level="6.9" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4.b-logistic-regression-mixed-model-only-picks"><i class="fa fa-check"></i><b>6.9</b> Mod4.b: Logistic regression, mixed model only Picks</a></li>
+<li class="chapter" data-level="6.10" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod5-hurdle-model-predictors-generate-structural-zeros"><i class="fa fa-check"></i><b>6.10</b> Mod5: Hurdle model, predictors generate structural zeros</a></li>
+<li class="chapter" data-level="6.11" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#model-selection-with-mod5-predictors"><i class="fa fa-check"></i><b>6.11</b> Model selection with Mod5 predictors</a></li>
+<li class="chapter" data-level="6.12" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod6-hurdle-model-equal-probability-of-structural-zeros"><i class="fa fa-check"></i><b>6.12</b> Mod6: Hurdle model, equal probability of structural zeros</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="diffusion-estimates.html"><a href="diffusion-estimates.html"><i class="fa fa-check"></i><b>7</b> Diffusion estimates</a></li>
+<li class="chapter" data-level="8" data-path="ebullition-estimates.html"><a href="ebullition-estimates.html"><i class="fa fa-check"></i><b>8</b> Ebullition estimates</a></li>
+<li class="chapter" data-level="9" data-path="flux-summary-stats-prep.html"><a href="flux-summary-stats-prep.html"><i class="fa fa-check"></i><b>9</b> Flux summary stats prep</a></li>
+<li class="chapter" data-level="10" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html"><i class="fa fa-check"></i><b>10</b> Total flux estimates</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-ch4"><i class="fa fa-check"></i><b>10.1</b> Diel Diffusive CH4</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#log-transformed-axis"><i class="fa fa-check"></i><b>10.1.1</b> Log-transformed axis</a></li>
+<li class="chapter" data-level="10.1.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-axis"><i class="fa fa-check"></i><b>10.1.2</b> Untransformed axis</a></li>
+<li class="chapter" data-level="10.1.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-without-picks"><i class="fa fa-check"></i><b>10.1.3</b> Untransformed without Picks</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-co2"><i class="fa fa-check"></i><b>10.2</b> Diel Diffusive CO2</a></li>
+<li class="chapter" data-level="10.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed"><i class="fa fa-check"></i><b>10.3</b> Untransformed</a></li>
+<li class="chapter" data-level="10.4" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-without-picks-1"><i class="fa fa-check"></i><b>10.4</b> Untransformed without Picks</a></li>
+<li class="chapter" data-level="10.5" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-ebullition"><i class="fa fa-check"></i><b>10.5</b> Diel ebullition</a></li>
+<li class="chapter" data-level="10.6" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-1"><i class="fa fa-check"></i><b>10.6</b> Untransformed</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="untransformed-without-picks-2.html"><a href="untransformed-without-picks-2.html"><i class="fa fa-check"></i><b>11</b> Untransformed without Picks</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Naslund Chapter 1 Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="flux-summary-stats-prep" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> Flux summary stats prep<a href="flux-summary-stats-prep.html#flux-summary-stats-prep" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Deans 8/16/22
+Will need to rerun this</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="flux-summary-stats-prep.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="co"># deans1_conc &lt;- read.csv(&quot;2-Clean Data/ebullition_concentrations.csv&quot;)%&gt;% </span></span>
+<span id="cb128-2"><a href="flux-summary-stats-prep.html#cb128-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(corr_ch4 = case_when(</span></span>
+<span id="cb128-3"><a href="flux-summary-stats-prep.html#cb128-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, </span></span>
+<span id="cb128-4"><a href="flux-summary-stats-prep.html#cb128-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, </span></span>
+<span id="cb128-5"><a href="flux-summary-stats-prep.html#cb128-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %&gt;% </span></span>
+<span id="cb128-6"><a href="flux-summary-stats-prep.html#cb128-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(is.na(Data.Flag)==T) %&gt;% </span></span>
+<span id="cb128-7"><a href="flux-summary-stats-prep.html#cb128-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(samplings, by = &quot;Collection.Date&quot;) %&gt;% </span></span>
+<span id="cb128-8"><a href="flux-summary-stats-prep.html#cb128-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(Sampling == &quot;Deans1&quot;) %&gt;% </span></span>
+<span id="cb128-9"><a href="flux-summary-stats-prep.html#cb128-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(corr_ch4)</span></span>
+<span id="cb128-10"><a href="flux-summary-stats-prep.html#cb128-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-11"><a href="flux-summary-stats-prep.html#cb128-11" aria-hidden="true" tabindex="-1"></a><span class="co"># deans1_conc_vec &lt;- sample(deans1_conc, 200, replace=T)</span></span>
+<span id="cb128-12"><a href="flux-summary-stats-prep.html#cb128-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb128-13"><a href="flux-summary-stats-prep.html#cb128-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   deans_16_eb_kr &lt;- deans_pts %&gt;% </span></span>
+<span id="cb128-14"><a href="flux-summary-stats-prep.html#cb128-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb128-15"><a href="flux-summary-stats-prep.html#cb128-15" aria-hidden="true" tabindex="-1"></a><span class="co">#                 filter(Sampling == &quot;Deans1&quot;) %&gt;% </span></span>
+<span id="cb128-16"><a href="flux-summary-stats-prep.html#cb128-16" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_rand = deans1_conc_vec, </span></span>
+<span id="cb128-17"><a href="flux-summary-stats-prep.html#cb128-17" aria-hidden="true" tabindex="-1"></a><span class="co">#                        ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %&gt;% </span></span>
+<span id="cb128-18"><a href="flux-summary-stats-prep.html#cb128-18" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = &quot;location&quot;)</span></span>
+<span id="cb128-19"><a href="flux-summary-stats-prep.html#cb128-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-20"><a href="flux-summary-stats-prep.html#cb128-20" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_16_eb_results &lt;- read.csv(&quot;5-Results/1-kriged-estimates/deans_16_eb_results.csv&quot;)</span></span>
+<span id="cb128-21"><a href="flux-summary-stats-prep.html#cb128-21" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_16_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb128-22"><a href="flux-summary-stats-prep.html#cb128-22" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-23"><a href="flux-summary-stats-prep.html#cb128-23" aria-hidden="true" tabindex="-1"></a><span class="co"># for(i in 1:length(periods)){</span></span>
+<span id="cb128-24"><a href="flux-summary-stats-prep.html#cb128-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp &lt;- deans_16_eb_results %&gt;% filter(period == periods[i]) %&gt;% pull(sum_flux)</span></span>
+<span id="cb128-25"><a href="flux-summary-stats-prep.html#cb128-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb128-26"><a href="flux-summary-stats-prep.html#cb128-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- data.frame(site = &quot;Deans&quot;, date = &quot;2022-08-16&quot;, period = i, flux_2.5 = as.numeric(quantile(temp, 0.025)), flux_97.5 = as.numeric(quantile(temp, 0.975)), mean_flux = mean(temp))</span></span>
+<span id="cb128-27"><a href="flux-summary-stats-prep.html#cb128-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb128-28"><a href="flux-summary-stats-prep.html#cb128-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   deans_16_eb_results_summarized &lt;- bind_rows(deans_16_eb_results_summarized, temp_df)</span></span>
+<span id="cb128-29"><a href="flux-summary-stats-prep.html#cb128-29" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb128-30"><a href="flux-summary-stats-prep.html#cb128-30" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-31"><a href="flux-summary-stats-prep.html#cb128-31" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_16_eb_results_summarized &lt;- deans_16_eb_results_summarized %&gt;% mutate(period= periods[period])%&gt;% left_join(ebullition_kriging %&gt;% filter(Sampling == &quot;Deans1&quot;) %&gt;% group_by(period) %&gt;% summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) </span></span>
+<span id="cb128-32"><a href="flux-summary-stats-prep.html#cb128-32" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-33"><a href="flux-summary-stats-prep.html#cb128-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(deans_16_eb_results_summarized, aes(period, mean_flux))+</span></span>
+<span id="cb128-34"><a href="flux-summary-stats-prep.html#cb128-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point()+</span></span>
+<span id="cb128-35"><a href="flux-summary-stats-prep.html#cb128-35" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_errorbar(aes(ymin = flux_2.5, ymax = flux_97.5))+</span></span>
+<span id="cb128-36"><a href="flux-summary-stats-prep.html#cb128-36" aria-hidden="true" tabindex="-1"></a><span class="co">#   ylab(&quot;total ebullition (g/hr)&quot;)</span></span>
+<span id="cb128-37"><a href="flux-summary-stats-prep.html#cb128-37" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-38"><a href="flux-summary-stats-prep.html#cb128-38" aria-hidden="true" tabindex="-1"></a><span class="co"># # calculating by averaging instead of kriging</span></span>
+<span id="cb128-39"><a href="flux-summary-stats-prep.html#cb128-39" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_16_eb_kr %&gt;% </span></span>
+<span id="cb128-40"><a href="flux-summary-stats-prep.html#cb128-40" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(eb_avg = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * mean(deans1_conc) * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %&gt;% </span></span>
+<span id="cb128-41"><a href="flux-summary-stats-prep.html#cb128-41" aria-hidden="true" tabindex="-1"></a><span class="co">#   group_by(period) %&gt;% </span></span>
+<span id="cb128-42"><a href="flux-summary-stats-prep.html#cb128-42" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(average_eb = mean(eb_avg, na.rm=T)) %&gt;% </span></span>
+<span id="cb128-43"><a href="flux-summary-stats-prep.html#cb128-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(average_eb = average_eb * st_area(deans) %&gt;% as.numeric()) %&gt;% </span></span>
+<span id="cb128-44"><a href="flux-summary-stats-prep.html#cb128-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(ebullition_kriging %&gt;% </span></span>
+<span id="cb128-45"><a href="flux-summary-stats-prep.html#cb128-45" aria-hidden="true" tabindex="-1"></a><span class="co">#               filter(Sampling == &quot;Deans1&quot;) %&gt;% </span></span>
+<span id="cb128-46"><a href="flux-summary-stats-prep.html#cb128-46" aria-hidden="true" tabindex="-1"></a><span class="co">#               group_by(period) %&gt;% </span></span>
+<span id="cb128-47"><a href="flux-summary-stats-prep.html#cb128-47" aria-hidden="true" tabindex="-1"></a><span class="co">#               summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) %&gt;% </span></span>
+<span id="cb128-48"><a href="flux-summary-stats-prep.html#cb128-48" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(flux_g = average_eb * avg_time)%&gt;% </span></span>
+<span id="cb128-49"><a href="flux-summary-stats-prep.html#cb128-49" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(sum_flux = sum(flux_g)) %&gt;% </span></span>
+<span id="cb128-50"><a href="flux-summary-stats-prep.html#cb128-50" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(sum_flux_g_m2_day = sum_flux/st_area(deans))</span></span>
+<span id="cb128-51"><a href="flux-summary-stats-prep.html#cb128-51" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-52"><a href="flux-summary-stats-prep.html#cb128-52" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(deans_16_eb_results_summarized, &quot;5-Results/1-kriged-estimates/deans_16_eb_results_summarized.csv&quot;)</span></span>
+<span id="cb128-53"><a href="flux-summary-stats-prep.html#cb128-53" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-54"><a href="flux-summary-stats-prep.html#cb128-54" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_16_ch4_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/deans_16_ch4_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CH4&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Deans1&quot;)</span></span>
+<span id="cb128-55"><a href="flux-summary-stats-prep.html#cb128-55" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb128-56"><a href="flux-summary-stats-prep.html#cb128-56" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_16_co2_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/deans_16_co2_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CO2&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Deans1&quot;)</span></span></code></pre></div>
+<p>Deans 8/30/22</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="flux-summary-stats-prep.html#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_30_eb_results &lt;- read.csv(&quot;5-Results/1-kriged-estimates/deans_30_eb_results.csv&quot;)</span></span>
+<span id="cb129-2"><a href="flux-summary-stats-prep.html#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_30_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb129-3"><a href="flux-summary-stats-prep.html#cb129-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb129-4"><a href="flux-summary-stats-prep.html#cb129-4" aria-hidden="true" tabindex="-1"></a><span class="co"># for(i in 1:length(periods)){</span></span>
+<span id="cb129-5"><a href="flux-summary-stats-prep.html#cb129-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp &lt;- deans_30_eb_results %&gt;% filter(period == i) %&gt;% pull(sum_flux)</span></span>
+<span id="cb129-6"><a href="flux-summary-stats-prep.html#cb129-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb129-7"><a href="flux-summary-stats-prep.html#cb129-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- data.frame(site = &quot;Deans&quot;, date = &quot;2022-08-30&quot;, period = i, flux_2.5 = as.numeric(quantile(temp, 0.025)), flux_97.5 = as.numeric(quantile(temp, 0.975)), mean_flux = mean(temp))</span></span>
+<span id="cb129-8"><a href="flux-summary-stats-prep.html#cb129-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb129-9"><a href="flux-summary-stats-prep.html#cb129-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   deans_30_eb_results_summarized &lt;- bind_rows(deans_30_eb_results_summarized, temp_df)</span></span>
+<span id="cb129-10"><a href="flux-summary-stats-prep.html#cb129-10" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb129-11"><a href="flux-summary-stats-prep.html#cb129-11" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb129-12"><a href="flux-summary-stats-prep.html#cb129-12" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_30_eb_results_summarized &lt;- deans_30_eb_results_summarized %&gt;% mutate(period= periods[period])%&gt;% left_join(ebullition_kriging %&gt;% filter(Sampling == &quot;Deans2&quot;) %&gt;% group_by(period) %&gt;% summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) </span></span>
+<span id="cb129-13"><a href="flux-summary-stats-prep.html#cb129-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb129-14"><a href="flux-summary-stats-prep.html#cb129-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(deans_30_eb_results_summarized, aes(period, mean_flux))+</span></span>
+<span id="cb129-15"><a href="flux-summary-stats-prep.html#cb129-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point()+</span></span>
+<span id="cb129-16"><a href="flux-summary-stats-prep.html#cb129-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_errorbar(aes(ymin = flux_2.5, ymax = flux_97.5))+</span></span>
+<span id="cb129-17"><a href="flux-summary-stats-prep.html#cb129-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   ylab(&quot;total ebullition (g/hr)&quot;)</span></span>
+<span id="cb129-18"><a href="flux-summary-stats-prep.html#cb129-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb129-19"><a href="flux-summary-stats-prep.html#cb129-19" aria-hidden="true" tabindex="-1"></a><span class="co"># # calculating by averaging instead of kriging</span></span>
+<span id="cb129-20"><a href="flux-summary-stats-prep.html#cb129-20" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_30_eb_kr %&gt;% </span></span>
+<span id="cb129-21"><a href="flux-summary-stats-prep.html#cb129-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(eb_avg = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * mean(deans2_conc) * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %&gt;% </span></span>
+<span id="cb129-22"><a href="flux-summary-stats-prep.html#cb129-22" aria-hidden="true" tabindex="-1"></a><span class="co">#   group_by(period) %&gt;% </span></span>
+<span id="cb129-23"><a href="flux-summary-stats-prep.html#cb129-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(average_eb = mean(eb_avg, na.rm=T)) %&gt;% </span></span>
+<span id="cb129-24"><a href="flux-summary-stats-prep.html#cb129-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(average_eb = average_eb * st_area(deans) %&gt;% as.numeric()) %&gt;% </span></span>
+<span id="cb129-25"><a href="flux-summary-stats-prep.html#cb129-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(ebullition_kriging %&gt;% </span></span>
+<span id="cb129-26"><a href="flux-summary-stats-prep.html#cb129-26" aria-hidden="true" tabindex="-1"></a><span class="co">#               filter(Sampling == &quot;Deans2&quot;) %&gt;% </span></span>
+<span id="cb129-27"><a href="flux-summary-stats-prep.html#cb129-27" aria-hidden="true" tabindex="-1"></a><span class="co">#               group_by(period) %&gt;% </span></span>
+<span id="cb129-28"><a href="flux-summary-stats-prep.html#cb129-28" aria-hidden="true" tabindex="-1"></a><span class="co">#               summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) %&gt;% </span></span>
+<span id="cb129-29"><a href="flux-summary-stats-prep.html#cb129-29" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(flux_g = average_eb * avg_time)%&gt;% </span></span>
+<span id="cb129-30"><a href="flux-summary-stats-prep.html#cb129-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(sum_flux = sum(flux_g)) %&gt;% </span></span>
+<span id="cb129-31"><a href="flux-summary-stats-prep.html#cb129-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(sum_flux_g_m2_day = sum_flux/st_area(deans))</span></span>
+<span id="cb129-32"><a href="flux-summary-stats-prep.html#cb129-32" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb129-33"><a href="flux-summary-stats-prep.html#cb129-33" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(deans_30_eb_results_summarized, &quot;5-Results/1-kriged-estimates/deans_30_eb_results_summarized.csv&quot;)</span></span>
+<span id="cb129-34"><a href="flux-summary-stats-prep.html#cb129-34" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb129-35"><a href="flux-summary-stats-prep.html#cb129-35" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_30_ch4_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/deans_30_ch4_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CH4&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Deans2&quot;)</span></span>
+<span id="cb129-36"><a href="flux-summary-stats-prep.html#cb129-36" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb129-37"><a href="flux-summary-stats-prep.html#cb129-37" aria-hidden="true" tabindex="-1"></a><span class="co"># deans_30_co2_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/deans_30_co2_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CO2&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Deans2&quot;)</span></span></code></pre></div>
+<p>Catfish 9/6/22</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="flux-summary-stats-prep.html#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_eb_results &lt;- read.csv(&quot;5-Results/1-kriged-estimates/catfish_06_eb_results.csv&quot;)</span></span>
+<span id="cb130-2"><a href="flux-summary-stats-prep.html#cb130-2" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb130-3"><a href="flux-summary-stats-prep.html#cb130-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb130-4"><a href="flux-summary-stats-prep.html#cb130-4" aria-hidden="true" tabindex="-1"></a><span class="co"># for(i in 1:length(periods)){</span></span>
+<span id="cb130-5"><a href="flux-summary-stats-prep.html#cb130-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp &lt;- catfish_06_eb_results %&gt;% filter(period == i) %&gt;% pull(sum_flux)</span></span>
+<span id="cb130-6"><a href="flux-summary-stats-prep.html#cb130-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb130-7"><a href="flux-summary-stats-prep.html#cb130-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- data.frame(site = &quot;Catfish&quot;, date = &quot;2022-09-06&quot;, period = i, flux_2.5 = as.numeric(quantile(temp, 0.025)), flux_97.5 = as.numeric(quantile(temp, 0.975)), mean_flux = mean(temp))</span></span>
+<span id="cb130-8"><a href="flux-summary-stats-prep.html#cb130-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb130-9"><a href="flux-summary-stats-prep.html#cb130-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   catfish_06_eb_results_summarized &lt;- bind_rows(catfish_06_eb_results_summarized, temp_df)</span></span>
+<span id="cb130-10"><a href="flux-summary-stats-prep.html#cb130-10" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb130-11"><a href="flux-summary-stats-prep.html#cb130-11" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb130-12"><a href="flux-summary-stats-prep.html#cb130-12" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_eb_results_summarized &lt;- catfish_06_eb_results_summarized %&gt;% mutate(period= periods[period])%&gt;% left_join(ebullition_kriging %&gt;% filter(Sampling == &quot;Catfish1&quot;) %&gt;% group_by(period) %&gt;% summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) </span></span>
+<span id="cb130-13"><a href="flux-summary-stats-prep.html#cb130-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb130-14"><a href="flux-summary-stats-prep.html#cb130-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(catfish_06_eb_results_summarized, aes(period, mean_flux))+</span></span>
+<span id="cb130-15"><a href="flux-summary-stats-prep.html#cb130-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point()+</span></span>
+<span id="cb130-16"><a href="flux-summary-stats-prep.html#cb130-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_errorbar(aes(ymin = flux_2.5, ymax = flux_97.5))+</span></span>
+<span id="cb130-17"><a href="flux-summary-stats-prep.html#cb130-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   ylab(&quot;total ebullition (g/hr)&quot;)</span></span>
+<span id="cb130-18"><a href="flux-summary-stats-prep.html#cb130-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb130-19"><a href="flux-summary-stats-prep.html#cb130-19" aria-hidden="true" tabindex="-1"></a><span class="co"># # calculating by averaging instead of kriging</span></span>
+<span id="cb130-20"><a href="flux-summary-stats-prep.html#cb130-20" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_eb_kr %&gt;% </span></span>
+<span id="cb130-21"><a href="flux-summary-stats-prep.html#cb130-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(eb_avg = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * mean(catfish1_conc) * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %&gt;% </span></span>
+<span id="cb130-22"><a href="flux-summary-stats-prep.html#cb130-22" aria-hidden="true" tabindex="-1"></a><span class="co">#   group_by(period) %&gt;% </span></span>
+<span id="cb130-23"><a href="flux-summary-stats-prep.html#cb130-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(average_eb = mean(eb_avg, na.rm=T)) %&gt;% </span></span>
+<span id="cb130-24"><a href="flux-summary-stats-prep.html#cb130-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(average_eb = average_eb * st_area(catfish) %&gt;% as.numeric()) %&gt;% </span></span>
+<span id="cb130-25"><a href="flux-summary-stats-prep.html#cb130-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(ebullition_kriging %&gt;% </span></span>
+<span id="cb130-26"><a href="flux-summary-stats-prep.html#cb130-26" aria-hidden="true" tabindex="-1"></a><span class="co">#               filter(Sampling == &quot;Catfish1&quot;) %&gt;% </span></span>
+<span id="cb130-27"><a href="flux-summary-stats-prep.html#cb130-27" aria-hidden="true" tabindex="-1"></a><span class="co">#               group_by(period) %&gt;% </span></span>
+<span id="cb130-28"><a href="flux-summary-stats-prep.html#cb130-28" aria-hidden="true" tabindex="-1"></a><span class="co">#               summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) %&gt;% </span></span>
+<span id="cb130-29"><a href="flux-summary-stats-prep.html#cb130-29" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(flux_g = average_eb * avg_time)%&gt;% </span></span>
+<span id="cb130-30"><a href="flux-summary-stats-prep.html#cb130-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(sum_flux = sum(flux_g)) %&gt;% </span></span>
+<span id="cb130-31"><a href="flux-summary-stats-prep.html#cb130-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(sum_flux_g_m2_day = sum_flux/st_area(catfish))</span></span>
+<span id="cb130-32"><a href="flux-summary-stats-prep.html#cb130-32" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb130-33"><a href="flux-summary-stats-prep.html#cb130-33" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(catfish_06_eb_results_summarized, &quot;5-Results/1-kriged-estimates/catfish_06_eb_results_summarized.csv&quot;)</span></span>
+<span id="cb130-34"><a href="flux-summary-stats-prep.html#cb130-34" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb130-35"><a href="flux-summary-stats-prep.html#cb130-35" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_ch4_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/catfish_06_ch4_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CH4&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Catfish1&quot;)</span></span>
+<span id="cb130-36"><a href="flux-summary-stats-prep.html#cb130-36" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb130-37"><a href="flux-summary-stats-prep.html#cb130-37" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_06_co2_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/catfish_06_co2_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CO2&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Catfish1&quot;)</span></span></code></pre></div>
+<p>Catfish 9/18/22</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="flux-summary-stats-prep.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish2_conc &lt;- read.csv(&quot;ebullition_concentrations.csv&quot;)%&gt;% </span></span>
+<span id="cb131-2"><a href="flux-summary-stats-prep.html#cb131-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(corr_ch4 = case_when(</span></span>
+<span id="cb131-3"><a href="flux-summary-stats-prep.html#cb131-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, </span></span>
+<span id="cb131-4"><a href="flux-summary-stats-prep.html#cb131-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, </span></span>
+<span id="cb131-5"><a href="flux-summary-stats-prep.html#cb131-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %&gt;% </span></span>
+<span id="cb131-6"><a href="flux-summary-stats-prep.html#cb131-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(is.na(Data.Flag)==T) %&gt;% </span></span>
+<span id="cb131-7"><a href="flux-summary-stats-prep.html#cb131-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(samplings, by = &quot;Collection.Date&quot;) %&gt;% </span></span>
+<span id="cb131-8"><a href="flux-summary-stats-prep.html#cb131-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(Sampling == &quot;Catfish2&quot;) %&gt;% </span></span>
+<span id="cb131-9"><a href="flux-summary-stats-prep.html#cb131-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(corr_ch4)</span></span>
+<span id="cb131-10"><a href="flux-summary-stats-prep.html#cb131-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb131-11"><a href="flux-summary-stats-prep.html#cb131-11" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish2_conc_vec &lt;- sample(catfish2_conc, 225, replace=T)</span></span>
+<span id="cb131-12"><a href="flux-summary-stats-prep.html#cb131-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb131-13"><a href="flux-summary-stats-prep.html#cb131-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   catfish_18_eb_kr &lt;- catfish_pts %&gt;% </span></span>
+<span id="cb131-14"><a href="flux-summary-stats-prep.html#cb131-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb131-15"><a href="flux-summary-stats-prep.html#cb131-15" aria-hidden="true" tabindex="-1"></a><span class="co">#                 filter(Sampling == &quot;Catfish2&quot;) %&gt;% </span></span>
+<span id="cb131-16"><a href="flux-summary-stats-prep.html#cb131-16" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_rand = catfish2_conc_vec, </span></span>
+<span id="cb131-17"><a href="flux-summary-stats-prep.html#cb131-17" aria-hidden="true" tabindex="-1"></a><span class="co">#                        ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %&gt;% </span></span>
+<span id="cb131-18"><a href="flux-summary-stats-prep.html#cb131-18" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = &quot;location&quot;)</span></span>
+<span id="cb131-19"><a href="flux-summary-stats-prep.html#cb131-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb131-20"><a href="flux-summary-stats-prep.html#cb131-20" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_eb_results &lt;- read.csv(&quot;5-Results/1-kriged-estimates/catfish_18_eb_results.csv&quot;)</span></span>
+<span id="cb131-21"><a href="flux-summary-stats-prep.html#cb131-21" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb131-22"><a href="flux-summary-stats-prep.html#cb131-22" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb131-23"><a href="flux-summary-stats-prep.html#cb131-23" aria-hidden="true" tabindex="-1"></a><span class="co"># for(i in 1:length(periods)){</span></span>
+<span id="cb131-24"><a href="flux-summary-stats-prep.html#cb131-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp &lt;- catfish_18_eb_results %&gt;% filter(period == i) %&gt;% pull(sum_flux)</span></span>
+<span id="cb131-25"><a href="flux-summary-stats-prep.html#cb131-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb131-26"><a href="flux-summary-stats-prep.html#cb131-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- data.frame(site = &quot;Catfish&quot;, date = &quot;2022-09-18&quot;, period = i, flux_2.5 = as.numeric(quantile(temp, 0.025)), flux_97.5 = as.numeric(quantile(temp, 0.975)), mean_flux = mean(temp))</span></span>
+<span id="cb131-27"><a href="flux-summary-stats-prep.html#cb131-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb131-28"><a href="flux-summary-stats-prep.html#cb131-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   catfish_18_eb_results_summarized &lt;- bind_rows(catfish_18_eb_results_summarized, temp_df)</span></span>
+<span id="cb131-29"><a href="flux-summary-stats-prep.html#cb131-29" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb131-30"><a href="flux-summary-stats-prep.html#cb131-30" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb131-31"><a href="flux-summary-stats-prep.html#cb131-31" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_eb_results_summarized &lt;- catfish_18_eb_results_summarized %&gt;% mutate(period= periods[period])%&gt;% left_join(ebullition_kriging %&gt;% filter(Sampling == &quot;Catfish2&quot;) %&gt;% group_by(period) %&gt;% summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) </span></span>
+<span id="cb131-32"><a href="flux-summary-stats-prep.html#cb131-32" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb131-33"><a href="flux-summary-stats-prep.html#cb131-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(catfish_18_eb_results_summarized, aes(period, mean_flux))+</span></span>
+<span id="cb131-34"><a href="flux-summary-stats-prep.html#cb131-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point()+</span></span>
+<span id="cb131-35"><a href="flux-summary-stats-prep.html#cb131-35" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_errorbar(aes(ymin = flux_2.5, ymax = flux_97.5))+</span></span>
+<span id="cb131-36"><a href="flux-summary-stats-prep.html#cb131-36" aria-hidden="true" tabindex="-1"></a><span class="co">#   ylab(&quot;total ebullition (g/hr)&quot;)</span></span>
+<span id="cb131-37"><a href="flux-summary-stats-prep.html#cb131-37" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb131-38"><a href="flux-summary-stats-prep.html#cb131-38" aria-hidden="true" tabindex="-1"></a><span class="co"># # calculating by averaging instead of kriging</span></span>
+<span id="cb131-39"><a href="flux-summary-stats-prep.html#cb131-39" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_eb_kr %&gt;% </span></span>
+<span id="cb131-40"><a href="flux-summary-stats-prep.html#cb131-40" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(eb_avg = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * mean(catfish2_conc) * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %&gt;% </span></span>
+<span id="cb131-41"><a href="flux-summary-stats-prep.html#cb131-41" aria-hidden="true" tabindex="-1"></a><span class="co">#   group_by(period) %&gt;% </span></span>
+<span id="cb131-42"><a href="flux-summary-stats-prep.html#cb131-42" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(average_eb = mean(eb_avg, na.rm=T)) %&gt;% </span></span>
+<span id="cb131-43"><a href="flux-summary-stats-prep.html#cb131-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(average_eb = average_eb * st_area(catfish) %&gt;% as.numeric()) %&gt;% </span></span>
+<span id="cb131-44"><a href="flux-summary-stats-prep.html#cb131-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(ebullition_kriging %&gt;% </span></span>
+<span id="cb131-45"><a href="flux-summary-stats-prep.html#cb131-45" aria-hidden="true" tabindex="-1"></a><span class="co">#               filter(Sampling == &quot;Catfish2&quot;) %&gt;% </span></span>
+<span id="cb131-46"><a href="flux-summary-stats-prep.html#cb131-46" aria-hidden="true" tabindex="-1"></a><span class="co">#               group_by(period) %&gt;% </span></span>
+<span id="cb131-47"><a href="flux-summary-stats-prep.html#cb131-47" aria-hidden="true" tabindex="-1"></a><span class="co">#               summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) %&gt;% </span></span>
+<span id="cb131-48"><a href="flux-summary-stats-prep.html#cb131-48" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(flux_g = average_eb * avg_time)%&gt;% </span></span>
+<span id="cb131-49"><a href="flux-summary-stats-prep.html#cb131-49" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(sum_flux = sum(flux_g)) %&gt;% </span></span>
+<span id="cb131-50"><a href="flux-summary-stats-prep.html#cb131-50" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(sum_flux_g_m2_day = sum_flux/st_area(catfish))</span></span>
+<span id="cb131-51"><a href="flux-summary-stats-prep.html#cb131-51" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb131-52"><a href="flux-summary-stats-prep.html#cb131-52" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(catfish_18_eb_results_summarized, &quot;5-Results/1-kriged-estimates/catfish_18_eb_results_summarized.csv&quot;)</span></span>
+<span id="cb131-53"><a href="flux-summary-stats-prep.html#cb131-53" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb131-54"><a href="flux-summary-stats-prep.html#cb131-54" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_ch4_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/catfish_18_ch4_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CH4&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Catfish2&quot;)</span></span>
+<span id="cb131-55"><a href="flux-summary-stats-prep.html#cb131-55" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb131-56"><a href="flux-summary-stats-prep.html#cb131-56" aria-hidden="true" tabindex="-1"></a><span class="co"># catfish_18_co2_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/catfish_18_co2_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CO2&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Catfish2&quot;)</span></span></code></pre></div>
+<p>Sister 3 8/22/22</p>
+<p>Pick 9/13/22</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="flux-summary-stats-prep.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pick1_conc &lt;- read.csv(&quot;ebullition_concentrations.csv&quot;)%&gt;% </span></span>
+<span id="cb132-2"><a href="flux-summary-stats-prep.html#cb132-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(corr_ch4 = case_when(</span></span>
+<span id="cb132-3"><a href="flux-summary-stats-prep.html#cb132-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, </span></span>
+<span id="cb132-4"><a href="flux-summary-stats-prep.html#cb132-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, </span></span>
+<span id="cb132-5"><a href="flux-summary-stats-prep.html#cb132-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %&gt;% </span></span>
+<span id="cb132-6"><a href="flux-summary-stats-prep.html#cb132-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(is.na(Data.Flag)==T) %&gt;% </span></span>
+<span id="cb132-7"><a href="flux-summary-stats-prep.html#cb132-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(samplings, by = &quot;Collection.Date&quot;) %&gt;% </span></span>
+<span id="cb132-8"><a href="flux-summary-stats-prep.html#cb132-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(Sampling == &quot;Pick1&quot;) %&gt;% </span></span>
+<span id="cb132-9"><a href="flux-summary-stats-prep.html#cb132-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(corr_ch4)</span></span>
+<span id="cb132-10"><a href="flux-summary-stats-prep.html#cb132-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb132-11"><a href="flux-summary-stats-prep.html#cb132-11" aria-hidden="true" tabindex="-1"></a><span class="co"># pick1_conc_vec &lt;- sample(pick1_conc, 224, replace=T)</span></span>
+<span id="cb132-12"><a href="flux-summary-stats-prep.html#cb132-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb132-13"><a href="flux-summary-stats-prep.html#cb132-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   pick1_13_eb_kr &lt;- pick_pts %&gt;% </span></span>
+<span id="cb132-14"><a href="flux-summary-stats-prep.html#cb132-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     full_join(ebullition_kriging %&gt;%</span></span>
+<span id="cb132-15"><a href="flux-summary-stats-prep.html#cb132-15" aria-hidden="true" tabindex="-1"></a><span class="co">#                 filter(Sampling == &quot;Pick1&quot;) %&gt;% </span></span>
+<span id="cb132-16"><a href="flux-summary-stats-prep.html#cb132-16" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_rand = pick1_conc_vec, </span></span>
+<span id="cb132-17"><a href="flux-summary-stats-prep.html#cb132-17" aria-hidden="true" tabindex="-1"></a><span class="co">#                        ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %&gt;% </span></span>
+<span id="cb132-18"><a href="flux-summary-stats-prep.html#cb132-18" aria-hidden="true" tabindex="-1"></a><span class="co">#                 mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = &quot;location&quot;)</span></span>
+<span id="cb132-19"><a href="flux-summary-stats-prep.html#cb132-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb132-20"><a href="flux-summary-stats-prep.html#cb132-20" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_13_eb_results &lt;- read.csv(&quot;pick_13_eb_results.csv&quot;)</span></span>
+<span id="cb132-21"><a href="flux-summary-stats-prep.html#cb132-21" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_13_eb_results_summarized &lt;- NULL</span></span>
+<span id="cb132-22"><a href="flux-summary-stats-prep.html#cb132-22" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb132-23"><a href="flux-summary-stats-prep.html#cb132-23" aria-hidden="true" tabindex="-1"></a><span class="co"># for(i in 1:length(periods)){</span></span>
+<span id="cb132-24"><a href="flux-summary-stats-prep.html#cb132-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp &lt;- pick_13_eb_results %&gt;% filter(period == i) %&gt;% pull(sum_flux)</span></span>
+<span id="cb132-25"><a href="flux-summary-stats-prep.html#cb132-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb132-26"><a href="flux-summary-stats-prep.html#cb132-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   temp_df &lt;- data.frame(site = &quot;Pick&quot;, date = &quot;2022-09-13&quot;, period = i, flux_2.5 = as.numeric(quantile(temp, 0.025)), flux_97.5 = as.numeric(quantile(temp, 0.975)), mean_flux = mean(temp))</span></span>
+<span id="cb132-27"><a href="flux-summary-stats-prep.html#cb132-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   </span></span>
+<span id="cb132-28"><a href="flux-summary-stats-prep.html#cb132-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   pick_13_eb_results_summarized &lt;- bind_rows(pick_13_eb_results_summarized, temp_df)</span></span>
+<span id="cb132-29"><a href="flux-summary-stats-prep.html#cb132-29" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb132-30"><a href="flux-summary-stats-prep.html#cb132-30" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb132-31"><a href="flux-summary-stats-prep.html#cb132-31" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_13_eb_results_summarized &lt;- pick_13_eb_results_summarized %&gt;% mutate(period= periods[period])%&gt;% left_join(ebullition_kriging %&gt;% filter(Sampling == &quot;Pick1&quot;) %&gt;% group_by(period) %&gt;% summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) </span></span>
+<span id="cb132-32"><a href="flux-summary-stats-prep.html#cb132-32" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb132-33"><a href="flux-summary-stats-prep.html#cb132-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(pick_13_eb_results_summarized, aes(period, mean_flux))+</span></span>
+<span id="cb132-34"><a href="flux-summary-stats-prep.html#cb132-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_point()+</span></span>
+<span id="cb132-35"><a href="flux-summary-stats-prep.html#cb132-35" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_errorbar(aes(ymin = flux_2.5, ymax = flux_97.5))+</span></span>
+<span id="cb132-36"><a href="flux-summary-stats-prep.html#cb132-36" aria-hidden="true" tabindex="-1"></a><span class="co">#   ylab(&quot;total ebullition (g/hr)&quot;)</span></span>
+<span id="cb132-37"><a href="flux-summary-stats-prep.html#cb132-37" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb132-38"><a href="flux-summary-stats-prep.html#cb132-38" aria-hidden="true" tabindex="-1"></a><span class="co"># # calculating by averaging instead of kriging</span></span>
+<span id="cb132-39"><a href="flux-summary-stats-prep.html#cb132-39" aria-hidden="true" tabindex="-1"></a><span class="co"># pick1_13_eb_kr %&gt;% </span></span>
+<span id="cb132-40"><a href="flux-summary-stats-prep.html#cb132-40" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(eb_avg = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * mean(pick1_conc) * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %&gt;% </span></span>
+<span id="cb132-41"><a href="flux-summary-stats-prep.html#cb132-41" aria-hidden="true" tabindex="-1"></a><span class="co">#   group_by(period) %&gt;% </span></span>
+<span id="cb132-42"><a href="flux-summary-stats-prep.html#cb132-42" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(average_eb = mean(eb_avg, na.rm=T)) %&gt;% </span></span>
+<span id="cb132-43"><a href="flux-summary-stats-prep.html#cb132-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(average_eb = average_eb * st_area(pick) %&gt;% as.numeric()) %&gt;% </span></span>
+<span id="cb132-44"><a href="flux-summary-stats-prep.html#cb132-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   left_join(ebullition_kriging %&gt;% </span></span>
+<span id="cb132-45"><a href="flux-summary-stats-prep.html#cb132-45" aria-hidden="true" tabindex="-1"></a><span class="co">#               filter(Sampling == &quot;Pick1&quot;) %&gt;% </span></span>
+<span id="cb132-46"><a href="flux-summary-stats-prep.html#cb132-46" aria-hidden="true" tabindex="-1"></a><span class="co">#               group_by(period) %&gt;% </span></span>
+<span id="cb132-47"><a href="flux-summary-stats-prep.html#cb132-47" aria-hidden="true" tabindex="-1"></a><span class="co">#               summarize(avg_time = mean(time_hr, na.rm = T)), by = &quot;period&quot;) %&gt;% </span></span>
+<span id="cb132-48"><a href="flux-summary-stats-prep.html#cb132-48" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(flux_g = average_eb * avg_time)%&gt;% </span></span>
+<span id="cb132-49"><a href="flux-summary-stats-prep.html#cb132-49" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(sum_flux = sum(flux_g)) %&gt;% </span></span>
+<span id="cb132-50"><a href="flux-summary-stats-prep.html#cb132-50" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(sum_flux_g_m2_day = sum_flux/st_area(pick))</span></span>
+<span id="cb132-51"><a href="flux-summary-stats-prep.html#cb132-51" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb132-52"><a href="flux-summary-stats-prep.html#cb132-52" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(pick_13_eb_results_summarized, &quot;5-Results/1-kriged-estimates/pick_13_eb_results_summarized.csv&quot;)</span></span>
+<span id="cb132-53"><a href="flux-summary-stats-prep.html#cb132-53" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb132-54"><a href="flux-summary-stats-prep.html#cb132-54" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_13_ch4_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/pick_13_ch4_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CH4&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Pick1&quot;)</span></span>
+<span id="cb132-55"><a href="flux-summary-stats-prep.html#cb132-55" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb132-56"><a href="flux-summary-stats-prep.html#cb132-56" aria-hidden="true" tabindex="-1"></a><span class="co"># pick_13_co2_diff &lt;- read.csv(&quot;5-Results/1-kriged-estimates/pick_13_co2_results_summarized.csv&quot;) %&gt;% mutate(pathway = &quot;diffusion&quot;, gas = &quot;CO2&quot;, period = as.character(period), avg_time = 3, sampling = &quot;Pick1&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="flux-summary-stats-prep.html#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all_fluxes_periods &lt;-</span></span>
+<span id="cb133-2"><a href="flux-summary-stats-prep.html#cb133-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   bind_rows(</span></span>
+<span id="cb133-3"><a href="flux-summary-stats-prep.html#cb133-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     deans_16_eb_results_summarized %&gt;% </span></span>
+<span id="cb133-4"><a href="flux-summary-stats-prep.html#cb133-4" aria-hidden="true" tabindex="-1"></a><span class="co">#       mutate(pathway = &quot;ebullition&quot;, gas = &quot;CH4&quot;, sampling = &quot;Deans1&quot;),</span></span>
+<span id="cb133-5"><a href="flux-summary-stats-prep.html#cb133-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     deans_30_eb_results_summarized %&gt;% </span></span>
+<span id="cb133-6"><a href="flux-summary-stats-prep.html#cb133-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       mutate(pathway = &quot;ebullition&quot;, gas = &quot;CH4&quot;, sampling = &quot;Deans2&quot;),</span></span>
+<span id="cb133-7"><a href="flux-summary-stats-prep.html#cb133-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     catfish_06_eb_results_summarized %&gt;%</span></span>
+<span id="cb133-8"><a href="flux-summary-stats-prep.html#cb133-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       mutate(pathway = &quot;ebullition&quot;, gas = &quot;CH4&quot;, sampling = &quot;Catfish1&quot;),</span></span>
+<span id="cb133-9"><a href="flux-summary-stats-prep.html#cb133-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     catfish_18_eb_results_summarized %&gt;% </span></span>
+<span id="cb133-10"><a href="flux-summary-stats-prep.html#cb133-10" aria-hidden="true" tabindex="-1"></a><span class="co">#       mutate(pathway = &quot;ebullition&quot;, gas = &quot;CH4&quot;, sampling = &quot;Catfish2&quot;), </span></span>
+<span id="cb133-11"><a href="flux-summary-stats-prep.html#cb133-11" aria-hidden="true" tabindex="-1"></a><span class="co">#     sister3_22_eb_results_summarized %&gt;% </span></span>
+<span id="cb133-12"><a href="flux-summary-stats-prep.html#cb133-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       mutate(pathway = &quot;ebullition&quot;, gas = &quot;CH4&quot;, sampling = &quot;Sister31&quot;),</span></span>
+<span id="cb133-13"><a href="flux-summary-stats-prep.html#cb133-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     pick_13_eb_results_summarized %&gt;% </span></span>
+<span id="cb133-14"><a href="flux-summary-stats-prep.html#cb133-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       mutate(pathway = &quot;ebullition&quot;, gas = &quot;CH4&quot;, sampling = &quot;Pick1&quot;),</span></span>
+<span id="cb133-15"><a href="flux-summary-stats-prep.html#cb133-15" aria-hidden="true" tabindex="-1"></a><span class="co">#     deans_16_ch4_diff,</span></span>
+<span id="cb133-16"><a href="flux-summary-stats-prep.html#cb133-16" aria-hidden="true" tabindex="-1"></a><span class="co">#     deans_16_co2_diff,</span></span>
+<span id="cb133-17"><a href="flux-summary-stats-prep.html#cb133-17" aria-hidden="true" tabindex="-1"></a><span class="co">#     deans_30_ch4_diff,</span></span>
+<span id="cb133-18"><a href="flux-summary-stats-prep.html#cb133-18" aria-hidden="true" tabindex="-1"></a><span class="co">#     deans_30_co2_diff,</span></span>
+<span id="cb133-19"><a href="flux-summary-stats-prep.html#cb133-19" aria-hidden="true" tabindex="-1"></a><span class="co">#     catfish_06_ch4_diff,</span></span>
+<span id="cb133-20"><a href="flux-summary-stats-prep.html#cb133-20" aria-hidden="true" tabindex="-1"></a><span class="co">#     catfish_06_co2_diff,</span></span>
+<span id="cb133-21"><a href="flux-summary-stats-prep.html#cb133-21" aria-hidden="true" tabindex="-1"></a><span class="co">#     catfish_18_ch4_diff,</span></span>
+<span id="cb133-22"><a href="flux-summary-stats-prep.html#cb133-22" aria-hidden="true" tabindex="-1"></a><span class="co">#     catfish_18_co2_diff,</span></span>
+<span id="cb133-23"><a href="flux-summary-stats-prep.html#cb133-23" aria-hidden="true" tabindex="-1"></a><span class="co">#     sister3_22_ch4_diff,</span></span>
+<span id="cb133-24"><a href="flux-summary-stats-prep.html#cb133-24" aria-hidden="true" tabindex="-1"></a><span class="co">#     sister3_22_co2_diff, </span></span>
+<span id="cb133-25"><a href="flux-summary-stats-prep.html#cb133-25" aria-hidden="true" tabindex="-1"></a><span class="co">#     pick_13_ch4_diff,</span></span>
+<span id="cb133-26"><a href="flux-summary-stats-prep.html#cb133-26" aria-hidden="true" tabindex="-1"></a><span class="co">#     pick_13_co2_diff</span></span>
+<span id="cb133-27"><a href="flux-summary-stats-prep.html#cb133-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   ) %&gt;% </span></span>
+<span id="cb133-28"><a href="flux-summary-stats-prep.html#cb133-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   rename(&quot;mean_flux_g_hr&quot; = &quot;mean_flux&quot;, &quot;flux_2.5_g_hr&quot; = &quot;flux_2.5&quot;, &quot;flux_97.5_g_hr&quot; = &quot;flux_97.5&quot;) %&gt;% </span></span>
+<span id="cb133-29"><a href="flux-summary-stats-prep.html#cb133-29" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(flux_g_mean = avg_time * mean_flux_g_hr, </span></span>
+<span id="cb133-30"><a href="flux-summary-stats-prep.html#cb133-30" aria-hidden="true" tabindex="-1"></a><span class="co">#          flux_g_2.5 = avg_time * flux_2.5_g_hr, </span></span>
+<span id="cb133-31"><a href="flux-summary-stats-prep.html#cb133-31" aria-hidden="true" tabindex="-1"></a><span class="co">#          flux_g_97.5 = avg_time * flux_97.5_g_hr)</span></span>
+<span id="cb133-32"><a href="flux-summary-stats-prep.html#cb133-32" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb133-33"><a href="flux-summary-stats-prep.html#cb133-33" aria-hidden="true" tabindex="-1"></a><span class="co"># all_fluxes_pathways &lt;- all_fluxes_periods %&gt;% </span></span>
+<span id="cb133-34"><a href="flux-summary-stats-prep.html#cb133-34" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(area = case_when(site == &quot;Deans&quot; ~ st_area(deans) %&gt;% as.numeric(),</span></span>
+<span id="cb133-35"><a href="flux-summary-stats-prep.html#cb133-35" aria-hidden="true" tabindex="-1"></a><span class="co">#                           site == &quot;Picks&quot; ~ st_area(pick) %&gt;% as.numeric(),</span></span>
+<span id="cb133-36"><a href="flux-summary-stats-prep.html#cb133-36" aria-hidden="true" tabindex="-1"></a><span class="co">#                           site == &quot;Catfish&quot; ~ st_area(catfish) %&gt;% as.numeric(),</span></span>
+<span id="cb133-37"><a href="flux-summary-stats-prep.html#cb133-37" aria-hidden="true" tabindex="-1"></a><span class="co">#                           site == &quot;Sister3&quot; ~ st_area(sister3) %&gt;% as.numeric()) </span></span>
+<span id="cb133-38"><a href="flux-summary-stats-prep.html#cb133-38" aria-hidden="true" tabindex="-1"></a><span class="co">#          ) %&gt;% </span></span>
+<span id="cb133-39"><a href="flux-summary-stats-prep.html#cb133-39" aria-hidden="true" tabindex="-1"></a><span class="co"># group_by(sampling, area, pathway,gas) %&gt;% </span></span>
+<span id="cb133-40"><a href="flux-summary-stats-prep.html#cb133-40" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarize(flux_mean_g_day = sum(flux_g_mean, na.rm = T), flux_2.5_g_day = sum(flux_g_2.5, na.rm = T), flux_97.5_g_day = sum(flux_g_97.5, na.rm = T)) %&gt;% </span></span>
+<span id="cb133-41"><a href="flux-summary-stats-prep.html#cb133-41" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(co2_eq_conv = case_when(gas == &quot;CO2&quot; ~ 1, </span></span>
+<span id="cb133-42"><a href="flux-summary-stats-prep.html#cb133-42" aria-hidden="true" tabindex="-1"></a><span class="co">#                                  gas == &quot;CH4&quot; ~ 25)) %&gt;% </span></span>
+<span id="cb133-43"><a href="flux-summary-stats-prep.html#cb133-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(flux_mean_g_m2_day=flux_mean_g_day/area,</span></span>
+<span id="cb133-44"><a href="flux-summary-stats-prep.html#cb133-44" aria-hidden="true" tabindex="-1"></a><span class="co">#          flux_2.5_g_m2_day =flux_2.5_g_day/area,</span></span>
+<span id="cb133-45"><a href="flux-summary-stats-prep.html#cb133-45" aria-hidden="true" tabindex="-1"></a><span class="co">#          flux_97.5_g_m2_day=flux_97.5_g_day/area,</span></span>
+<span id="cb133-46"><a href="flux-summary-stats-prep.html#cb133-46" aria-hidden="true" tabindex="-1"></a><span class="co">#          flux_mean_g_day_co2_eq =flux_mean_g_day * co2_eq_conv,</span></span>
+<span id="cb133-47"><a href="flux-summary-stats-prep.html#cb133-47" aria-hidden="true" tabindex="-1"></a><span class="co">#          flux_2.5_g_day_co2_eq =flux_2.5_g_day * co2_eq_conv,</span></span>
+<span id="cb133-48"><a href="flux-summary-stats-prep.html#cb133-48" aria-hidden="true" tabindex="-1"></a><span class="co">#          flux_97.5_g_day_co2_eq = flux_97.5_g_day * co2_eq_conv)</span></span>
+<span id="cb133-49"><a href="flux-summary-stats-prep.html#cb133-49" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb133-50"><a href="flux-summary-stats-prep.html#cb133-50" aria-hidden="true" tabindex="-1"></a><span class="co"># all_fluxes_pathways %&gt;% group_by(sampling) %&gt;% summarize(sum_co2_eq = sum(flux_mean_g_day_co2_eq))</span></span>
+<span id="cb133-51"><a href="flux-summary-stats-prep.html#cb133-51" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb133-52"><a href="flux-summary-stats-prep.html#cb133-52" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(all_fluxes_periods, &quot;5-Results/1-kriged-estimates/all_fluxes_periods.csv&quot;)</span></span>
+<span id="cb133-53"><a href="flux-summary-stats-prep.html#cb133-53" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(all_fluxes_pathways, &quot;5-Results/1-kriged-estimates/all_fluxes_pathways.csv&quot;)</span></span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ebullition-estimates.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="total-flux-estimates.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/08-flux-summary-stat-prep.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

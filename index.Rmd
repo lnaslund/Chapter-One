@@ -13,8 +13,6 @@ link-citations: yes
 github-repo: "rstudio/bookdown-demo"
 ---
 
-# Sampling scheme
-
 ```{r include=FALSE}
 # automatically create a bib database for R packages
 knitr::write_bib(c(
@@ -22,7 +20,9 @@ knitr::write_bib(c(
 ), 'packages.bib')
 ```
 
-```{r about setup, include=F}
+# Sampling scheme
+
+```{r load packages dfs, include=F}
 library(tidyverse)
 library(mapview)
 library(lubridate)
@@ -35,11 +35,19 @@ library(stars)
 library(automap)
 library(viridis)
 library(tmap)
+library(gridExtra)
+library(lme4)
+library(glmmTMB)
+library(AICcmodavg)
 
 
+# Trap locations and pond polygons in WGS 84 / UTM zone 17N
+
+# Create sf object of ebullition trap locations
 trap_locations <- read.csv("2-Clean Data/ebullition-trap-locations.csv") %>% 
   filter(str_sub(Name, 2,2) %>% str_detect("[:alpha:]")==F) %>% 
-  st_as_sf(coords = c("Longitude", "Latitude"), crs=4326) %>% st_transform(crs = 32617)%>% 
+  st_as_sf(coords = c("Longitude", "Latitude"), crs=4326) %>% 
+  st_transform(crs = 32617)%>% 
   mutate(Site = case_when(
     str_sub(Name, 1, 1) == "P" ~"Pick",
     str_sub(Name, 1, 1) == "D" ~"Deans",
@@ -48,13 +56,20 @@ trap_locations <- read.csv("2-Clean Data/ebullition-trap-locations.csv") %>%
   )) %>% 
   select(-Description)
 
+# Create sf object of pond inlets
 inlet_locations <- read.csv("2-Clean Data/inlet-locations.csv") %>% 
-  st_as_sf(coords = c("Longitude", "Latitude"), crs=4326) %>% st_transform(crs = 32617)
+  st_as_sf(coords = c("Longitude", "Latitude"), crs=4326) %>% 
+  st_transform(crs = 32617)
 
-deans <- read_sf("2-Clean Data/site_shapefiles/Deans.shp") %>% st_transform(crs = 32617)
-catfish <- read_sf("2-Clean Data/site_shapefiles/Catfish.shp") %>% st_transform(crs = 32617)
-sister3 <- read_sf("2-Clean Data/Site_Shapefiles/Sister3.shp") %>% st_transform(crs = 32617)
-pick <- read_sf("2-Clean Data/Site_Shapefiles/Pick.shp") %>% st_transform(crs = 32617)
+# Create sf objects of ponds
+deans <- read_sf("2-Clean Data/site_shapefiles/Deans.shp") %>% 
+  st_transform(crs = 32617)
+catfish <- read_sf("2-Clean Data/site_shapefiles/Catfish.shp") %>% 
+  st_transform(crs = 32617)
+sister3 <- read_sf("2-Clean Data/Site_Shapefiles/Sister3.shp") %>% 
+  st_transform(crs = 32617)
+pick <- read_sf("2-Clean Data/Site_Shapefiles/Pick.shp") %>% 
+  st_transform(crs = 32617)
 ```
 
 

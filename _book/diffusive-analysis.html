@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Diffusive analysis | Naslund Chapter 1 Analysis</title>
   <meta name="description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Diffusive analysis | Naslund Chapter 1 Analysis" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2023-01-19" />
+<meta name="date" content="2023-02-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -76,13 +76,12 @@
 <script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
 <script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
 <link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
-<script src="libs/co2.kriged[5] - 1_07128a-1/data_stars_co2kriged510c6ae5.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_c85ba2-1/data_stars_co2krigedsimsk411d29e06.txt"></script>
 <script src="libs/joda-0.0.1/joda.js"></script>
 <script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_517eb8-1/data_stars_co2krigedsimsk411513ce0.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_316dfa-1/data_stars_co2krigedsimsk4217f6013.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_8fadeb-1/data_stars_co2krigedsimsk43107b268.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_1a53e9-1/data_stars_co2krigedsimsk441ba0cd8.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_dcb584-1/data_stars_co2krigedsimsk421d4c8eb.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_afe19c-1/data_stars_co2krigedsimsk431c5bf06.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_967ed3-1/data_stars_co2krigedsimsk4412bf34c.txt"></script>
 
 
 <style type="text/css">
@@ -212,7 +211,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#catfish-cloud-comparison-1"><i class="fa fa-check"></i><b>5.1</b> Catfish Cloud Comparison</a></li>
 <li class="chapter" data-level="5.2" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#deans-cloud-comparison-1"><i class="fa fa-check"></i><b>5.2</b> Deans Cloud Comparison</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html"><i class="fa fa-check"></i><b>6</b> Ebullition Analysis</a></li>
+<li class="chapter" data-level="6" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html"><i class="fa fa-check"></i><b>6</b> Ebullition Analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#plots"><i class="fa fa-check"></i><b>6.1</b> Plots</a></li>
+<li class="chapter" data-level="6.2" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod1-non-zero-data-fixed-effects-only"><i class="fa fa-check"></i><b>6.2</b> Mod1: Non-zero data, fixed effects only</a></li>
+<li class="chapter" data-level="6.3" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2-non-zero-data-mixed-model"><i class="fa fa-check"></i><b>6.3</b> Mod2: Non zero data, mixed model</a></li>
+<li class="chapter" data-level="6.4" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2.a-non-zero-data-mixed-model-without-picks"><i class="fa fa-check"></i><b>6.4</b> Mod2.a: Non zero data, mixed model without Picks</a></li>
+<li class="chapter" data-level="6.5" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2.b-non-zero-data-mixed-model-only-picks"><i class="fa fa-check"></i><b>6.5</b> Mod2.b: Non zero data, mixed model only Picks</a></li>
+<li class="chapter" data-level="6.6" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod3-logistic-regression-fixed-effects-only"><i class="fa fa-check"></i><b>6.6</b> Mod3: Logistic regression, fixed effects only</a></li>
+<li class="chapter" data-level="6.7" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4-logistic-regression-mixed-model"><i class="fa fa-check"></i><b>6.7</b> Mod4: Logistic regression, mixed model</a></li>
+<li class="chapter" data-level="6.8" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4.a-logistic-regression-mixed-model-without-picks"><i class="fa fa-check"></i><b>6.8</b> Mod4.a: Logistic regression, mixed model without Picks</a></li>
+<li class="chapter" data-level="6.9" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4.b-logistic-regression-mixed-model-only-picks"><i class="fa fa-check"></i><b>6.9</b> Mod4.b: Logistic regression, mixed model only Picks</a></li>
+<li class="chapter" data-level="6.10" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod5-hurdle-model-predictors-generate-structural-zeros"><i class="fa fa-check"></i><b>6.10</b> Mod5: Hurdle model, predictors generate structural zeros</a></li>
+<li class="chapter" data-level="6.11" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#model-selection-with-mod5-predictors"><i class="fa fa-check"></i><b>6.11</b> Model selection with Mod5 predictors</a></li>
+<li class="chapter" data-level="6.12" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod6-hurdle-model-equal-probability-of-structural-zeros"><i class="fa fa-check"></i><b>6.12</b> Mod6: Hurdle model, equal probability of structural zeros</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="diffusion-estimates.html"><a href="diffusion-estimates.html"><i class="fa fa-check"></i><b>7</b> Diffusion estimates</a></li>
+<li class="chapter" data-level="8" data-path="ebullition-estimates.html"><a href="ebullition-estimates.html"><i class="fa fa-check"></i><b>8</b> Ebullition estimates</a></li>
+<li class="chapter" data-level="9" data-path="flux-summary-stats-prep.html"><a href="flux-summary-stats-prep.html"><i class="fa fa-check"></i><b>9</b> Flux summary stats prep</a></li>
+<li class="chapter" data-level="10" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html"><i class="fa fa-check"></i><b>10</b> Total flux estimates</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-ch4"><i class="fa fa-check"></i><b>10.1</b> Diel Diffusive CH4</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#log-transformed-axis"><i class="fa fa-check"></i><b>10.1.1</b> Log-transformed axis</a></li>
+<li class="chapter" data-level="10.1.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-axis"><i class="fa fa-check"></i><b>10.1.2</b> Untransformed axis</a></li>
+<li class="chapter" data-level="10.1.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-without-picks"><i class="fa fa-check"></i><b>10.1.3</b> Untransformed without Picks</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-co2"><i class="fa fa-check"></i><b>10.2</b> Diel Diffusive CO2</a></li>
+<li class="chapter" data-level="10.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed"><i class="fa fa-check"></i><b>10.3</b> Untransformed</a></li>
+<li class="chapter" data-level="10.4" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-without-picks-1"><i class="fa fa-check"></i><b>10.4</b> Untransformed without Picks</a></li>
+<li class="chapter" data-level="10.5" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-ebullition"><i class="fa fa-check"></i><b>10.5</b> Diel ebullition</a></li>
+<li class="chapter" data-level="10.6" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#untransformed-1"><i class="fa fa-check"></i><b>10.6</b> Untransformed</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="untransformed-without-picks-2.html"><a href="untransformed-without-picks-2.html"><i class="fa fa-check"></i><b>11</b> Untransformed without Picks</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -242,7 +273,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <iframe src="https://www.youtube.com/embed/y2M4VBIx9a0" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
 </div>
 </div>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="diffusive-analysis.html#cb53-1" aria-hidden="true" tabindex="-1"></a>catfish_pts_06 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/6-9/7&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(catfish_pts_18 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/18-9/19&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean_co2 =</span> <span class="fu">mean</span>(flux_co2_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, mean_co2, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="diffusive-analysis.html#cb51-1" aria-hidden="true" tabindex="-1"></a>catfish_pts_06 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/6-9/7&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(catfish_pts_18 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/18-9/19&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean_co2 =</span> <span class="fu">mean</span>(flux_co2_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, mean_co2, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by &#39;date&#39;. You can override using the `.groups` argument.</code></pre>
 <p><img src="_main_files/figure-html/catfish%20average%20diff%20co2-1.png" width="672" /></p>
 </div>
@@ -253,16 +284,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <iframe src="https://www.youtube.com/embed/oMqE6EcmbUg" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
 </div>
 </div>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="diffusive-analysis.html#cb55-1" aria-hidden="true" tabindex="-1"></a>deans_pts_16 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;8/16-8/17&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(deans_pts_30 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;8/30-8/31&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean_co2 =</span> <span class="fu">mean</span>(flux_co2_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, mean_co2, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="diffusive-analysis.html#cb53-1" aria-hidden="true" tabindex="-1"></a>deans_pts_16 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;8/16-8/17&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(deans_pts_30 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;8/30-8/31&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean_co2 =</span> <span class="fu">mean</span>(flux_co2_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, mean_co2, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by &#39;date&#39;. You can override using the `.groups` argument.</code></pre>
 <p><img src="_main_files/figure-html/deans%20average%20diff%20co2-1.png" width="672" /></p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="diffusive-analysis.html#cb57-1" aria-hidden="true" tabindex="-1"></a>catfish_pts_06 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/6-9/7&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(catfish_pts_18 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/18-9/19&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean_ch4 =</span> <span class="fu">mean</span>(flux_ch4_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, mean_ch4, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="diffusive-analysis.html#cb55-1" aria-hidden="true" tabindex="-1"></a>catfish_pts_06 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/6-9/7&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(catfish_pts_18 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/18-9/19&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean_ch4 =</span> <span class="fu">mean</span>(flux_ch4_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, mean_ch4, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by &#39;date&#39;. You can override using the `.groups` argument.</code></pre>
 <p><img src="_main_files/figure-html/catfish%20average%20diff%20ch4-1.png" width="672" /></p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="diffusive-analysis.html#cb59-1" aria-hidden="true" tabindex="-1"></a>catfish_pts_06 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/6-9/7&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(catfish_pts_18 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/18-9/19&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">med_ch4 =</span> <span class="fu">median</span>(flux_ch4_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, med_ch4, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="diffusive-analysis.html#cb57-1" aria-hidden="true" tabindex="-1"></a>catfish_pts_06 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/6-9/7&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(catfish_pts_18 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;9/18-9/19&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">med_ch4 =</span> <span class="fu">median</span>(flux_ch4_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, med_ch4, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by &#39;date&#39;. You can override using the `.groups` argument.</code></pre>
 <p><img src="_main_files/figure-html/catfish%20average%20diff%20ch4-2.png" width="672" /></p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="diffusive-analysis.html#cb61-1" aria-hidden="true" tabindex="-1"></a>deans_pts_16 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;8/16-8/17&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(deans_pts_30 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;8/30-8/31&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean_ch4 =</span> <span class="fu">mean</span>(flux_ch4_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, mean_ch4, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="diffusive-analysis.html#cb59-1" aria-hidden="true" tabindex="-1"></a>deans_pts_16 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;8/16-8/17&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(deans_pts_30 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">date =</span> <span class="st">&quot;8/30-8/31&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(date, trip) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean_ch4 =</span> <span class="fu">mean</span>(flux_ch4_g_hr)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, mean_ch4, <span class="at">color =</span> date))<span class="sc">+</span><span class="fu">geom_line</span>()</span></code></pre></div>
 <pre><code>## `summarise()` has grouped output by &#39;date&#39;. You can override using the `.groups` argument.</code></pre>
 <p><img src="_main_files/figure-html/deans%20average%20diff%20ch4-1.png" width="672" /></p>
 

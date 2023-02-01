@@ -57,46 +57,50 @@ samplings <- read.csv("2-Clean Data/sampling-events.csv") %>%
   pivot_longer(cols = c("Start.Date", "End.Date"), names_to = "Date.Type", values_to = "Collection.Date") %>%
   mutate(Sampling = paste0(Site, Event)) %>% select(Sampling, Collection.Date)
 
+# Set to NA gas volumes <-0.5, set volumes between -0.5 and 0 to 0
+# Filter out all 8~9 period for first Deans sampling because times are negative (we sampled ebullition traps before diffusion due to rain)
 gas_vols <- gas_vols %>% 
   mutate(gas_vol_corrected = if_else(gas_accumulated >0, gas_accumulated, if_else(gas_accumulated < -0.5,  -9999, 0))) %>%
   mutate(gas_vol_corrected = na_if(gas_vol_corrected, -9999)) %>%
-  
   left_join(samplings %>% mutate(Collection.Date = mdy(Collection.Date)), by = "Collection.Date") %>%
   filter(period != "NA~0") %>%
-  filter(!(Sampling == "Deans1" & period == "8~9")) %>%
+  filter(!(Sampling == "Deans1" & period == "8~9")) %>% 
   mutate(area = pi * 81 * 0.0001) %>%
   mutate(location = Trap)
 
+# Calculate mean concentrations for sampling events for summary figures
 conc <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>% 
   mutate(corr_ch4 = case_when(
-  Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, 
+  Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, # empirical dilution during GC run
   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, 
-  Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)
-) %>% filter(is.na(Data.Flag)==T) %>% 
-  left_join(samplings, by = "Collection.Date") %>% group_by(Sampling) %>% 
+  Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %>% 
+  filter(is.na(Data.Flag)==T) %>% 
+  left_join(samplings, by = "Collection.Date") %>% 
+  group_by(Sampling) %>% 
   summarize(mean_ch4_ppm = mean(corr_ch4, na.rm =T))
 
+# Identify trap periods with concentrations to ensure they are not assigned mean concentrations for summary figures
 conc_match <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>% 
   mutate(corr_ch4 = case_when(
   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, 
   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, 
-  Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)
-) %>% filter(is.na(Data.Flag)==T) %>% 
+  Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %>% 
+  filter(is.na(Data.Flag)==T) %>% 
   filter(str_detect(Location, "^[:alpha:][:digit:][:alpha:]$")==TRUE) %>% 
   mutate(Collection.Date = mdy(Collection.Date)) %>% 
   mutate(Trap = case_when(
     Site == "Picks" ~ paste0("P", str_sub(Location, 2,3)), 
     Site == "Deans" ~ paste0("D", str_sub(Location, 2,3)),
     Site == "Sister 3" ~ paste0("S", str_sub(Location, 2,3)),
-    Site == "Catfish" ~ paste0("C", str_sub(Location, 2,3))
-  )) %>% 
+    Site == "Catfish" ~ paste0("C", str_sub(Location, 2,3)))) %>% 
   mutate(period = paste0((Rep-1), "~", Rep))
   
 ebullition <- gas_vols %>% 
   left_join(conc_match %>% select(Trap, Collection.Date, period, corr_ch4), by = c("Trap", "Collection.Date", "period")) %>% 
   left_join(conc, by = "Sampling") %>% 
   mutate(ch4_conc = if_else(is.na(corr_ch4)==T, mean_ch4_ppm, corr_ch4)) %>%
-  mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %>% mutate(row_id = row_number()) %>% filter(!(row_id)%in% c(1201,1202, 1602,1603))
+  mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %>% 
+  mutate(row_id = row_number()) %>% filter(!(row_id)%in% c(1201,1202, 1602,1603))
 
 deans_16_eb <- ebullition %>%
   filter(Sampling == "Deans1") %>%

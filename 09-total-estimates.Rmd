@@ -214,7 +214,6 @@ all_fluxes_periods %>%
 
 Untransformed without Picks
 ```{r}
-# note log transformation of the y axis
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "ebullition", period != "0~1", period != "8~9", site != "Pick") %>% 
    mutate(trip = case_when(

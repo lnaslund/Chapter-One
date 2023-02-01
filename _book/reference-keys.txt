@@ -49,12 +49,5 @@ ebullition-estimates
 flux-summary-stats-prep
 total-flux-estimates
 diel-diffusive-ch4
-log-transformed-axis
-untransformed-axis
-untransformed-without-picks
 diel-diffusive-co2
-untransformed
-untransformed-without-picks-1
 diel-ebullition
-untransformed-1
-untransformed-without-picks-2

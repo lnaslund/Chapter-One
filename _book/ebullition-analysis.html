@@ -23,7 +23,7 @@
 <meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2023-02-01" />
+<meta name="date" content="2023-02-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -76,12 +76,12 @@
 <script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
 <script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
 <link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
-<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_ce8a9d-1/data_stars_co2krigedsimsk4110825ec.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_d2897e-1/data_stars_co2krigedsimsk41139eba0.txt"></script>
 <script src="libs/joda-0.0.1/joda.js"></script>
 <script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_820637-1/data_stars_co2krigedsimsk421bc6a31.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_e02f5a-1/data_stars_co2krigedsimsk431638251.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_893f16-1/data_stars_co2krigedsimsk44103829e.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_7fe59a-1/data_stars_co2krigedsimsk421e5a42b.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_2e60f1-1/data_stars_co2krigedsimsk431b9a4f0.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_a7cd85-1/data_stars_co2krigedsimsk441520aef.txt"></script>
 
 
 <style type="text/css">
@@ -183,7 +183,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#sister-3-1"><i class="fa fa-check"></i><b>1.2.3</b> Sister 3</a></li>
 <li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#pick-1"><i class="fa fa-check"></i><b>1.2.4</b> Pick</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#label"><i class="fa fa-check"></i><b>1.3</b> Residence time calculation</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#par"><i class="fa fa-check"></i><b>1.3</b> PAR</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#deans-2"><i class="fa fa-check"></i><b>1.3.1</b> Deans</a></li>
+<li class="chapter" data-level="1.3.2" data-path="index.html"><a href="index.html#catfish-2"><i class="fa fa-check"></i><b>1.3.2</b> Catfish</a></li>
+<li class="chapter" data-level="1.3.3" data-path="index.html"><a href="index.html#pick-2"><i class="fa fa-check"></i><b>1.3.3</b> Pick</a></li>
+<li class="chapter" data-level="1.3.4" data-path="index.html"><a href="index.html#sister3"><i class="fa fa-check"></i><b>1.3.4</b> Sister3</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#dissolved-gas-concentrations"><i class="fa fa-check"></i><b>1.4</b> Dissolved gas concentrations</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#label"><i class="fa fa-check"></i><b>1.5</b> Residence time calculation</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html"><i class="fa fa-check"></i><b>2</b> Diffusive emissions</a>
 <ul>
@@ -258,19 +266,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="ebullition-analysis" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Ebullition Analysis<a href="ebullition-analysis.html#ebullition-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>I want to evaluate the relationship between ebullitive flux of CH4 and depth and distance to the inlet. I hypothesized that both depth and distance to the inlet will be negatively associated with ebullitive flux. Ultimately, we have to deal with the fact that the data are zero-inflated and bounded by 0. I tried multiple models below to address these characteristics</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="ebullition-analysis.html#cb61-1" aria-hidden="true" tabindex="-1"></a>eb_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sister3_pts_22_eb <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Site =</span><span class="st">&quot;Sister3&quot;</span>), </span>
-<span id="cb61-2"><a href="ebullition-analysis.html#cb61-2" aria-hidden="true" tabindex="-1"></a>                    pick_pts_13_eb,</span>
-<span id="cb61-3"><a href="ebullition-analysis.html#cb61-3" aria-hidden="true" tabindex="-1"></a>                    catfish_pts_18_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(catfish_dist_1, catfish_dist_2)),</span>
-<span id="cb61-4"><a href="ebullition-analysis.html#cb61-4" aria-hidden="true" tabindex="-1"></a>                    catfish_pts_06_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(catfish_dist_1, catfish_dist_2)),</span>
-<span id="cb61-5"><a href="ebullition-analysis.html#cb61-5" aria-hidden="true" tabindex="-1"></a>                    deans_pts_30_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(deans_dist_1, deans_dist_2)),</span>
-<span id="cb61-6"><a href="ebullition-analysis.html#cb61-6" aria-hidden="true" tabindex="-1"></a>                    deans_pts_16_eb<span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(deans_dist_1, deans_dist_2))) <span class="sc">%&gt;%</span> </span>
-<span id="cb61-7"><a href="ebullition-analysis.html#cb61-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Site =</span> <span class="fu">as.factor</span>(Site))<span class="sc">%&gt;%</span> </span>
-<span id="cb61-8"><a href="ebullition-analysis.html#cb61-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Depth_scale =</span> <span class="fu">scale</span>(Depth), <span class="at">inlet_dist_scale =</span> <span class="fu">scale</span>(inlet_dist))</span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="ebullition-analysis.html#cb80-1" aria-hidden="true" tabindex="-1"></a>eb_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sister3_pts_22_eb <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Site =</span><span class="st">&quot;Sister3&quot;</span>), </span>
+<span id="cb80-2"><a href="ebullition-analysis.html#cb80-2" aria-hidden="true" tabindex="-1"></a>                    pick_pts_13_eb,</span>
+<span id="cb80-3"><a href="ebullition-analysis.html#cb80-3" aria-hidden="true" tabindex="-1"></a>                    catfish_pts_18_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(catfish_dist_1, catfish_dist_2)),</span>
+<span id="cb80-4"><a href="ebullition-analysis.html#cb80-4" aria-hidden="true" tabindex="-1"></a>                    catfish_pts_06_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(catfish_dist_1, catfish_dist_2)),</span>
+<span id="cb80-5"><a href="ebullition-analysis.html#cb80-5" aria-hidden="true" tabindex="-1"></a>                    deans_pts_30_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(deans_dist_1, deans_dist_2)),</span>
+<span id="cb80-6"><a href="ebullition-analysis.html#cb80-6" aria-hidden="true" tabindex="-1"></a>                    deans_pts_16_eb<span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(deans_dist_1, deans_dist_2))) <span class="sc">%&gt;%</span> </span>
+<span id="cb80-7"><a href="ebullition-analysis.html#cb80-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Site =</span> <span class="fu">as.factor</span>(Site))<span class="sc">%&gt;%</span> </span>
+<span id="cb80-8"><a href="ebullition-analysis.html#cb80-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Depth_scale =</span> <span class="fu">scale</span>(Depth), <span class="at">inlet_dist_scale =</span> <span class="fu">scale</span>(inlet_dist))</span></code></pre></div>
 <div id="plots" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Plots<a href="ebullition-analysis.html#plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="ebullition-analysis.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Depth and inlet distance are correlated, VIF of mod1 = 1.2</span></span>
-<span id="cb62-2"><a href="ebullition-analysis.html#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(eb_all<span class="sc">$</span>Depth, eb_all<span class="sc">$</span>inlet_dist, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning in cor.test.default(eb_all$Depth, eb_all$inlet_dist, method = &quot;spearman&quot;): Cannot compute exact p-value with ties</code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="ebullition-analysis.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Depth and inlet distance are correlated, VIF of mod1 = 1.2</span></span>
+<span id="cb81-2"><a href="ebullition-analysis.html#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(eb_all<span class="sc">$</span>Depth, eb_all<span class="sc">$</span>inlet_dist, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in cor.test.default(eb_all$Depth, eb_all$inlet_dist, method = &quot;spearman&quot;): Cannot compute exact
+## p-value with ties</code></pre>
 <pre><code>## 
 ##  Spearman&#39;s rank correlation rho
 ## 
@@ -280,12 +289,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## sample estimates:
 ##       rho 
 ## 0.3853327</code></pre>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="ebullition-analysis.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(eb_all, <span class="fu">aes</span>(Depth, ch4_eb_g_m2_hr, <span class="at">color =</span> Site)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="ebullition-analysis.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(eb_all, <span class="fu">aes</span>(Depth, ch4_eb_g_m2_hr, <span class="at">color =</span> Site)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 102 rows containing missing values (geom_point).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="ebullition-analysis.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(eb_all, <span class="fu">aes</span>(inlet_dist, ch4_eb_g_m2_hr, <span class="at">color =</span> Site)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="ebullition-analysis.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(eb_all, <span class="fu">aes</span>(inlet_dist, ch4_eb_g_m2_hr, <span class="at">color =</span> Site)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
 <pre><code>## Warning: Removed 99 rows containing missing values (geom_point).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
 </div>
 <div id="mod1-non-zero-data-fixed-effects-only" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Mod1: Non-zero data, fixed effects only<a href="ebullition-analysis.html#mod1-non-zero-data-fixed-effects-only" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -339,7 +348,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Fixed effects:
 ##                  Estimate Std. Error t value Pr(&gt;|z|)    
-## (Intercept)      -5.06381    0.34462 -14.694   &lt;2e-16 ***
+## (Intercept)      -5.06381    0.34463 -14.693   &lt;2e-16 ***
 ## Depth_scale      -0.12711    0.05697  -2.231   0.0257 *  
 ## inlet_dist_scale -0.04192    0.07967  -0.526   0.5988    
 ## ---
@@ -354,8 +363,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="mod2.a-non-zero-data-mixed-model-without-picks" class="section level2 hasAnchor" number="6.4">
 <h2><span class="header-section-number">6.4</span> Mod2.a: Non zero data, mixed model without Picks<a href="ebullition-analysis.html#mod2.a-non-zero-data-mixed-model-without-picks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="ebullition-analysis.html#cb73-1" aria-hidden="true" tabindex="-1"></a>mod2.a <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr <span class="sc">&gt;</span> <span class="dv">0</span>, Site <span class="sc">!=</span> <span class="st">&quot;Picks&quot;</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
-<span id="cb73-2"><a href="ebullition-analysis.html#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2.a)</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="ebullition-analysis.html#cb92-1" aria-hidden="true" tabindex="-1"></a>mod2.a <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr <span class="sc">&gt;</span> <span class="dv">0</span>, Site <span class="sc">!=</span> <span class="st">&quot;Picks&quot;</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
+<span id="cb92-2"><a href="ebullition-analysis.html#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2.a)</span></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
 ##  Family: Gamma  ( log )
 ## Formula: ch4_eb_g_m2_hr ~ Depth_scale + inlet_dist_scale + (1 | Site) +      (1 | trip_wr)
@@ -387,15 +396,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##             (Intr) Dpth_s
 ## Depth_scale -0.162       
 ## inlt_dst_sc  0.316 -0.537</code></pre>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="ebullition-analysis.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, Site <span class="sc">!=</span> <span class="st">&quot;Picks&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Depth), <span class="at">na.rm=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="ebullition-analysis.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, Site <span class="sc">!=</span> <span class="st">&quot;Picks&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Depth), <span class="at">na.rm=</span>T)</span></code></pre></div>
 <pre><code>## [1] 0.8934819</code></pre>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="ebullition-analysis.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, Site <span class="sc">!=</span> <span class="st">&quot;Picks&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(inlet_dist), <span class="at">na.rm=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="ebullition-analysis.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, Site <span class="sc">!=</span> <span class="st">&quot;Picks&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(inlet_dist), <span class="at">na.rm=</span>T)</span></code></pre></div>
 <pre><code>## [1] 28.12695</code></pre>
 </div>
 <div id="mod2.b-non-zero-data-mixed-model-only-picks" class="section level2 hasAnchor" number="6.5">
 <h2><span class="header-section-number">6.5</span> Mod2.b: Non zero data, mixed model only Picks<a href="ebullition-analysis.html#mod2.b-non-zero-data-mixed-model-only-picks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="ebullition-analysis.html#cb79-1" aria-hidden="true" tabindex="-1"></a>mod2.b <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr <span class="sc">&gt;</span> <span class="dv">0</span>, Site <span class="sc">==</span> <span class="st">&quot;Picks&quot;</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
-<span id="cb79-2"><a href="ebullition-analysis.html#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2.b)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="ebullition-analysis.html#cb98-1" aria-hidden="true" tabindex="-1"></a>mod2.b <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr <span class="sc">&gt;</span> <span class="dv">0</span>, Site <span class="sc">==</span> <span class="st">&quot;Picks&quot;</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
+<span id="cb98-2"><a href="ebullition-analysis.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2.b)</span></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
 ##  Family: Gamma  ( log )
 ## Formula: ch4_eb_g_m2_hr ~ Depth_scale + inlet_dist_scale + (1 | trip_wr)
@@ -429,8 +438,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="mod3-logistic-regression-fixed-effects-only" class="section level2 hasAnchor" number="6.6">
 <h2><span class="header-section-number">6.6</span> Mod3: Logistic regression, fixed effects only<a href="ebullition-analysis.html#mod3-logistic-regression-fixed-effects-only" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="ebullition-analysis.html#cb81-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(ch4_eb_bin <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale, <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ch4_eb_bin =</span> <span class="fu">if_else</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">0</span>)), <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb81-2"><a href="ebullition-analysis.html#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="ebullition-analysis.html#cb100-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(ch4_eb_bin <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale, <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ch4_eb_bin =</span> <span class="fu">if_else</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">0</span>)), <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb100-2"><a href="ebullition-analysis.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = ch4_eb_bin ~ Depth_scale + inlet_dist_scale, family = binomial(link = &quot;logit&quot;), 
@@ -460,8 +469,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="mod4-logistic-regression-mixed-model" class="section level2 hasAnchor" number="6.7">
 <h2><span class="header-section-number">6.7</span> Mod4: Logistic regression, mixed model<a href="ebullition-analysis.html#mod4-logistic-regression-mixed-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="ebullition-analysis.html#cb83-1" aria-hidden="true" tabindex="-1"></a>mod4 <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_bin <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ch4_eb_bin =</span> <span class="fu">if_else</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">0</span>)), <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb83-2"><a href="ebullition-analysis.html#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod4)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="ebullition-analysis.html#cb102-1" aria-hidden="true" tabindex="-1"></a>mod4 <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_bin <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ch4_eb_bin =</span> <span class="fu">if_else</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">0</span>)), <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb102-2"><a href="ebullition-analysis.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod4)</span></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
 ##  Family: binomial  ( logit )
 ## Formula: ch4_eb_bin ~ Depth_scale + inlet_dist_scale + (1 | Site) + (1 |      trip_wr)
@@ -482,9 +491,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Fixed effects:
 ##                  Estimate Std. Error z value Pr(&gt;|z|)   
-## (Intercept)       0.15483    0.30482   0.508  0.61150   
-## Depth_scale      -0.22743    0.07682  -2.960  0.00307 **
-## inlet_dist_scale -0.16836    0.11242  -1.498  0.13423   
+## (Intercept)       0.15482    0.30482   0.508  0.61152   
+## Depth_scale      -0.22744    0.07682  -2.961  0.00307 **
+## inlet_dist_scale -0.16835    0.11242  -1.498  0.13424   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -495,12 +504,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="mod4.a-logistic-regression-mixed-model-without-picks" class="section level2 hasAnchor" number="6.8">
 <h2><span class="header-section-number">6.8</span> Mod4.a: Logistic regression, mixed model without Picks<a href="ebullition-analysis.html#mod4.a-logistic-regression-mixed-model-without-picks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="ebullition-analysis.html#cb85-1" aria-hidden="true" tabindex="-1"></a>mod4.a <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_bin <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Site <span class="sc">!=</span> <span class="st">&quot;Picks&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ch4_eb_bin =</span> <span class="fu">if_else</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">0</span>)), <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb85-2"><a href="ebullition-analysis.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod4.a)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="ebullition-analysis.html#cb104-1" aria-hidden="true" tabindex="-1"></a>mod4.a <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_bin <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Site <span class="sc">!=</span> <span class="st">&quot;Picks&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ch4_eb_bin =</span> <span class="fu">if_else</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">0</span>)), <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb104-2"><a href="ebullition-analysis.html#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod4.a)</span></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
 ##  Family: binomial  ( logit )
 ## Formula: ch4_eb_bin ~ Depth_scale + inlet_dist_scale + (1 | Site) + (1 |      trip_wr)
-##    Data: eb_all %&gt;% filter(Site != &quot;Picks&quot;) %&gt;% mutate(ch4_eb_bin = if_else(ch4_eb_g_m2_hr &gt;      0, 1, 0))
+##    Data: eb_all %&gt;% filter(Site != &quot;Picks&quot;) %&gt;% mutate(ch4_eb_bin = if_else(ch4_eb_g_m2_hr &gt;  
+##     0, 1, 0))
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
 ##   1380.1   1404.8   -685.0   1370.1     1040 
@@ -530,13 +540,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="mod4.b-logistic-regression-mixed-model-only-picks" class="section level2 hasAnchor" number="6.9">
 <h2><span class="header-section-number">6.9</span> Mod4.b: Logistic regression, mixed model only Picks<a href="ebullition-analysis.html#mod4.b-logistic-regression-mixed-model-only-picks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="ebullition-analysis.html#cb87-1" aria-hidden="true" tabindex="-1"></a>mod4.b <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_bin <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Site <span class="sc">==</span> <span class="st">&quot;Picks&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ch4_eb_bin =</span> <span class="fu">if_else</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">0</span>)), <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="ebullition-analysis.html#cb106-1" aria-hidden="true" tabindex="-1"></a>mod4.b <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_bin <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Site <span class="sc">==</span> <span class="st">&quot;Picks&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ch4_eb_bin =</span> <span class="fu">if_else</span>(ch4_eb_g_m2_hr<span class="sc">&gt;</span><span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">0</span>)), <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>))</span></code></pre></div>
 <pre><code>## boundary (singular) fit: see help(&#39;isSingular&#39;)</code></pre>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="ebullition-analysis.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod4.b)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="ebullition-analysis.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod4.b)</span></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
 ##  Family: binomial  ( logit )
 ## Formula: ch4_eb_bin ~ Depth_scale + inlet_dist_scale + (1 | trip_wr)
-##    Data: eb_all %&gt;% filter(Site == &quot;Picks&quot;) %&gt;% mutate(ch4_eb_bin = if_else(ch4_eb_g_m2_hr &gt;      0, 1, 0))
+##    Data: eb_all %&gt;% filter(Site == &quot;Picks&quot;) %&gt;% mutate(ch4_eb_bin = if_else(ch4_eb_g_m2_hr &gt;  
+##     0, 1, 0))
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
 ##    227.3    240.0   -109.7    219.3      171 
@@ -567,8 +578,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="mod5-hurdle-model-predictors-generate-structural-zeros" class="section level2 hasAnchor" number="6.10">
 <h2><span class="header-section-number">6.10</span> Mod5: Hurdle model, predictors generate structural zeros<a href="ebullition-analysis.html#mod5-hurdle-model-predictors-generate-structural-zeros" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="ebullition-analysis.html#cb91-1" aria-hidden="true" tabindex="-1"></a>mod5 <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(ch4_eb_g_m2_hr)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(),  <span class="at">ziformula =</span> <span class="sc">~</span>., <span class="at">family =</span> ziGamma)</span>
-<span id="cb91-2"><a href="ebullition-analysis.html#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod5)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="ebullition-analysis.html#cb110-1" aria-hidden="true" tabindex="-1"></a>mod5 <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(ch4_eb_g_m2_hr)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(),  <span class="at">ziformula =</span> <span class="sc">~</span>., <span class="at">family =</span> ziGamma)</span>
+<span id="cb110-2"><a href="ebullition-analysis.html#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod5)</span></code></pre></div>
 <pre><code>##  Family: Gamma  ( inverse )
 ## Formula:          ch4_eb_g_m2_hr ~ Depth_scale + inlet_dist_scale + (1 | Site) +      (1 | trip_wr)
 ## Zero inflation:                  ~.
@@ -611,14 +622,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="model-selection-with-mod5-predictors" class="section level2 hasAnchor" number="6.11">
 <h2><span class="header-section-number">6.11</span> Model selection with Mod5 predictors<a href="ebullition-analysis.html#model-selection-with-mod5-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="ebullition-analysis.html#cb93-1" aria-hidden="true" tabindex="-1"></a>mod5.a <span class="ot">&lt;-</span>  <span class="fu">glmmTMB</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(ch4_eb_g_m2_hr)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(),  <span class="at">ziformula =</span> <span class="sc">~</span>., <span class="at">family =</span> ziGamma)</span>
-<span id="cb93-2"><a href="ebullition-analysis.html#cb93-2" aria-hidden="true" tabindex="-1"></a>mod5.b <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(ch4_eb_g_m2_hr <span class="sc">~</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(ch4_eb_g_m2_hr)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(),  <span class="at">ziformula =</span> <span class="sc">~</span>., <span class="at">family =</span> ziGamma)</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="ebullition-analysis.html#cb112-1" aria-hidden="true" tabindex="-1"></a>mod5.a <span class="ot">&lt;-</span>  <span class="fu">glmmTMB</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(ch4_eb_g_m2_hr)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(),  <span class="at">ziformula =</span> <span class="sc">~</span>., <span class="at">family =</span> ziGamma)</span>
+<span id="cb112-2"><a href="ebullition-analysis.html#cb112-2" aria-hidden="true" tabindex="-1"></a>mod5.b <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(ch4_eb_g_m2_hr <span class="sc">~</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(ch4_eb_g_m2_hr)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(),  <span class="at">ziformula =</span> <span class="sc">~</span>., <span class="at">family =</span> ziGamma)</span></code></pre></div>
 <pre><code>## Warning in (function (start, objective, gradient = NULL, hessian = NULL, : NA/NaN function evaluation</code></pre>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="ebullition-analysis.html#cb95-1" aria-hidden="true" tabindex="-1"></a>cand.models <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;mod5&quot;</span><span class="ot">=</span>mod5, </span>
-<span id="cb95-2"><a href="ebullition-analysis.html#cb95-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;mod5.a&quot;</span><span class="ot">=</span>mod5.a,</span>
-<span id="cb95-3"><a href="ebullition-analysis.html#cb95-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;mod5.b&quot;</span><span class="ot">=</span>mod5.b)</span>
-<span id="cb95-4"><a href="ebullition-analysis.html#cb95-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-5"><a href="ebullition-analysis.html#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="fu">aictab</span>(cand.models)</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="ebullition-analysis.html#cb114-1" aria-hidden="true" tabindex="-1"></a>cand.models <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;mod5&quot;</span><span class="ot">=</span>mod5, </span>
+<span id="cb114-2"><a href="ebullition-analysis.html#cb114-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;mod5.a&quot;</span><span class="ot">=</span>mod5.a,</span>
+<span id="cb114-3"><a href="ebullition-analysis.html#cb114-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;mod5.b&quot;</span><span class="ot">=</span>mod5.b)</span>
+<span id="cb114-4"><a href="ebullition-analysis.html#cb114-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-5"><a href="ebullition-analysis.html#cb114-5" aria-hidden="true" tabindex="-1"></a><span class="fu">aictab</span>(cand.models)</span></code></pre></div>
 <pre><code>## 
 ## Model selection based on AICc:
 ## 
@@ -626,7 +637,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## mod5.b  9 -3309.40       0.00      1      1 1663.77
 ## mod5.a  9 -3297.87      11.53      0      1 1658.01
 ## mod5   11 -3296.00      13.40      0      1 1659.11</code></pre>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="ebullition-analysis.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod5.b)</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="ebullition-analysis.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod5.b)</span></code></pre></div>
 <pre><code>##  Family: Gamma  ( inverse )
 ## Formula:          ch4_eb_g_m2_hr ~ inlet_dist_scale + (1 | Site) + (1 | trip_wr)
 ## Zero inflation:                  ~.
@@ -667,9 +678,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="mod6-hurdle-model-equal-probability-of-structural-zeros" class="section level2 hasAnchor" number="6.12">
 <h2><span class="header-section-number">6.12</span> Mod6: Hurdle model, equal probability of structural zeros<a href="ebullition-analysis.html#mod6-hurdle-model-equal-probability-of-structural-zeros" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="ebullition-analysis.html#cb99-1" aria-hidden="true" tabindex="-1"></a>mod6 <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(ch4_eb_g_m2_hr)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(),  <span class="at">ziformula =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="at">family =</span> ziGamma)</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="ebullition-analysis.html#cb118-1" aria-hidden="true" tabindex="-1"></a>mod6 <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(ch4_eb_g_m2_hr <span class="sc">~</span> Depth_scale <span class="sc">+</span> inlet_dist_scale <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Site)  <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>trip_wr), <span class="at">data =</span> eb_all <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(ch4_eb_g_m2_hr)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(),  <span class="at">ziformula =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="at">family =</span> ziGamma)</span></code></pre></div>
 <pre><code>## Warning in (function (start, objective, gradient = NULL, hessian = NULL, : NA/NaN function evaluation</code></pre>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="ebullition-analysis.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod6)</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="ebullition-analysis.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod6)</span></code></pre></div>
 <pre><code>##  Family: Gamma  ( inverse )
 ## Formula:          ch4_eb_g_m2_hr ~ Depth_scale + inlet_dist_scale + (1 | Site) +      (1 | trip_wr)
 ## Zero inflation:                  ~1

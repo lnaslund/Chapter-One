@@ -7,7 +7,7 @@
 # mutate(row_id = row_number()) %>% filter(!(row_id)%in% c(1201,1202, 1602,1603))
 ```
 
-Deans 8/16/22
+Deans 8/16/22 Ebullition Estimate
 ```{r deans 16 eb set up}
 # to run again
 # sim_num <- 2
@@ -120,7 +120,7 @@ Deans 8/16/22
 # write.csv(deans_16_eb_results,"5-Results/1-kriged-estimates/deans_16_eb_results.csv")
 ```
 
-Deans 8/30/22
+Deans 8/30/22 Ebullition Estimate
 ```{r}
 # sim_num <- 25
 # n_num <- 500
@@ -207,7 +207,7 @@ Deans 8/30/22
 # write.csv(deans_30_eb_results,"5-Results/1-kriged-estimates/deans_30_eb_results.csv")
 ```
 
-Catfish 9/06/22
+Catfish 9/06/22 Ebullition Estimate
 ```{r catfish 06 eb set up}
 # catfish1_conc <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>%
 #   mutate(corr_ch4 = case_when(
@@ -339,7 +339,7 @@ Catfish 9/06/22
 # write.csv(catfish_06_eb_results,"5-Results/1-kriged-estimates/catfish_06_eb_results.csv")
 ```
 
-Catfish 9/18/22
+Catfish 9/18/22 Ebullition Estimate
 ```{r catfish 18 eb set up}
 # # create vector of ch4 concentrations
 # catfish2_conc <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>% 
@@ -472,7 +472,7 @@ Catfish 9/18/22
 # write.csv(catfish_18_eb_results,"5-Results/1-kriged-estimates/catfish_18_eb_results.csv")
 ```
 
-Pick 9/13/22
+Pick 9/13/22 Ebullition Estimate
 ```{r pick 13 eb set up}
 # # create vector of ch4 concentrations
 # pick1_conc <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>% 
@@ -605,7 +605,7 @@ Pick 9/13/22
 # write.csv(pick_13_eb_results,"5-Results/1-kriged-estimates/pick_13_eb_results.csv")
 ```
 
-Sister3 22
+Sister3 22 Ebullition Estimate
 ```{r sister3 22 eb set up}
 # # create vector of ch4 concentrations
 # sister3_conc <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>% 

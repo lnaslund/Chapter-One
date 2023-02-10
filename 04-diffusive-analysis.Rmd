@@ -1,6 +1,6 @@
 # Diffusive analysis
 
-## Catfish Cloud Comparison
+## Catfish Clouds
 ```{r, echo = F}
 embed_url("https://youtu.be/y2M4VBIx9a0")
 ```
@@ -9,7 +9,7 @@ embed_url("https://youtu.be/y2M4VBIx9a0")
 catfish_pts_06 %>% mutate(date = "9/6-9/7") %>% bind_rows(catfish_pts_18 %>% mutate(date = "9/18-9/19")) %>% group_by(date, trip) %>% summarize(mean_co2 = mean(flux_co2_g_hr)) %>% ggplot(aes(trip, mean_co2, color = date))+geom_line()
 ```
 
-## Deans Cloud Comparison
+## Deans Clouds
 ```{r, echo = F}
 library("vembedr")
 embed_url("https://youtu.be/oMqE6EcmbUg")

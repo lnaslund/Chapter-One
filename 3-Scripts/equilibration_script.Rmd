@@ -139,3 +139,28 @@ write.csv(data_20221014 %>% filter(is.na(Original_Liq_CH4_umol)==F), "GC_Data_20
 
 ```
 
+```{r}
+gc1 <- read.csv("../3-Scripts/GC_Data_20221011_dissolved.csv") %>% filter(is.na(Data_Flag)==T) %>%  select(Site, Location, Rep, Collection.Date, Notes, Original_Liq_CH4_umol, Original_Liq_CO2_umol)
+gc2 <- read.csv("../3-Scripts/GC_Data_20221012_dissolved.csv") %>% filter(is.na(Data_Flag)==T)%>% select(Site, Location, Rep, Collection.Date, Notes, Original_Liq_CH4_umol, Original_Liq_CO2_umol)
+gc3 <- read.csv("../3-Scripts/GC_Data_20221013_dissolved.csv") %>% filter(is.na(Data_Flag)==T)%>% select(Site, Location, Rep, Collection.Date, Notes, Original_Liq_CH4_umol, Original_Liq_CO2_umol)
+gc4 <- read.csv("../3-Scripts/GC_Data_20221014_dissolved.csv") %>% filter(is.na(Data_Flag)==T)%>% select(Site, Location, Rep, Collection.Date, Notes, Original_Liq_CH4_umol, Original_Liq_CO2_umol)
+
+gc <- bind_rows(gc1, gc2, gc3, gc4)
+
+write.csv(gc, "../2-Clean Data/dissolved-gas.csv", row.names = F)
+
+# repeat_records <- gc %>% mutate_if(is.character, 
+#                 str_replace_all, 
+#                 pattern = "Picks", 
+#                 replacement = "Pick") %>% 
+#   mutate_if(is.character, 
+#             str_replace_all,
+#             pattern = "oulet", 
+#             replacement = "outlet") %>% 
+#   group_by(Site, Collection.Date, Location) %>% 
+#   summarize(CH4_count = n()) %>% 
+#   filter(CH4_count > 3) 
+
+```
+
+

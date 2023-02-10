@@ -85,6 +85,20 @@ mapview(deans, col.regions = "#DCE319FF", alpha.regions = 1)+
   mapview(inlet_locations, col.regions = "black", alpha.regions = 1)
 ```
 
+```{r}
+
+mapshot(
+ mapview(deans, col.regions = "#2D708EFF", alpha.regions = 1, legend = FALSE, homebutton=FALSE)+
+  mapview(catfish, col.regions = "#2D708EFF", alpha.regions = 1, legend = FALSE, homebutton=FALSE)+
+  mapview(sister3, col.regions = "#2D708EFF", alpha.regions = 1, legend = FALSE, homebutton=FALSE)+
+  mapview(pick, col.regions = "#2D708EFF", alpha.regions = 1, legend = FALSE, homebutton=FALSE),
+  file = "site_map.png",
+ remove_controls = c("zoomControl", "layersControl", "homeButton", 
+    "drawToolbar", "easyButton"),
+)
+
+```
+
 
 |Site      |Area (km^2^)|Max Depth (m)|Mean Depth (m)|Residence Time (days)|Dates Sampled  |
 |----------|------------|-------------|--------------|---------------------|---------------|
@@ -271,6 +285,150 @@ dygraph(pick_temp) %>%
   dyAxis("y", label = "Temperature (C)")
 ```
 
+## PAR
+All sensors were submerged ~0.25m below the water surface
+```{r par set up, include = F}
+# need to confirm calibrated units, probably umol/m2/s
+par <- read.csv("2-Clean Data/par-data.csv") %>% mutate(date_time = ymd_hms(date_time, tz = "America/New_York"))
+
+
+deans.xts <- as.xts(par %>% filter(site == "Deans", date_time < ymd_hms("2022-08-17 09:50:00")) %>% pull(calibrated), order.by = par %>% filter(site == "Deans", date_time < ymd_hms("2022-08-17 09:50:00")) %>% pull(date_time))
+catfish.xts <- as.xts(par %>% filter(site == "Catfish") %>% pull(calibrated), order.by = par %>% filter(site == "Catfish") %>% pull(date_time))
+pick.xts <- as.xts(par %>% filter(site == "Pick", is.na(date_time)==FALSE) %>% pull(calibrated), order.by = par %>% filter(site == "Pick", is.na(date_time)==FALSE) %>% pull(date_time))
+sister3.xts <- as.xts(par %>% filter(site == "Sister3", is.na(date_time)==FALSE) %>% pull(calibrated), order.by = par %>% filter(site == "Sister3", is.na(date_time)==FALSE) %>% pull(date_time))
+```
+
+### Deans
+Sensor casing cracked, so no available PAR data for second Deans sampling
+```{r deans par}
+dygraph(deans.xts) %>% 
+  dyOptions(colors = "#DCE319FF") %>% 
+  dyAxis("y", label = "PAR (umol/m2/s)")
+```
+
+8/16/22
+```{r deans day par}
+deans16.xts <- as.xts(par %>% filter(site == "Deans", date_time > ymd_hms("2022-08-16 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-08-17 09:50:00", tz = "America/New_York")) %>% pull(calibrated), order.by = par %>% filter(site == "Deans", date_time > ymd_hms("2022-08-16 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-08-17 09:50:00", tz = "America/New_York")) %>% pull(date_time))
+
+dygraph(deans16.xts) %>% 
+  dyOptions(colors = "#DCE319FF") %>% 
+  dyAxis("y", label = "PAR (umol/m2/s)")
+```
+
+### Catfish
+```{r catfish par}
+dygraph(catfish.xts) %>% 
+  dyOptions(colors = "#55C667FF") %>% 
+  dyAxis("y", label = "PAR (umol/m2/s)")
+```
+
+9/6/22
+```{r}
+catfish06_same.xts <-
+  as.xts(
+    par %>% filter(
+      site == "Catfish",
+      date_time > ymd_hms("2022-09-06 06:00:00", tz = "America/New_York"),
+      date_time < ymd_hms("2022-09-07 12:00:00", tz = "America/New_York")
+    ) %>% mutate(
+      date_time_same = if_else(date == "06/09/2022 ", paste0("1900-01-01", time) %>% ymd_hms(tz = "America/New_York"), paste0("1900-01-02", time) %>% ymd_hms(tz = "America/New_York"))
+    ) %>% pull(calibrated),
+    order.by = par %>% filter(
+      site == "Catfish",
+      date_time > ymd_hms("2022-09-06 06:00:00", tz = "America/New_York"),
+      date_time < ymd_hms("2022-09-07 12:00:00", tz = "America/New_York")
+    ) %>% mutate(
+      date_time_same = if_else(date == "06/09/2022 ", paste0("1900-01-01", time) %>% ymd_hms(tz = "America/New_York"), paste0("1900-01-02", time) %>% ymd_hms(tz = "America/New_York"))
+    ) %>% pull(date_time_same)
+  )
+
+dygraph(catfish06_same.xts)
+
+catfish18_same.xts <-
+  as.xts(
+    par %>% filter(
+      site == "Catfish",
+      date_time > ymd_hms("2022-09-18 06:00:00", tz = "America/New_York"),
+      date_time < ymd_hms("2022-09-19 12:00:00", tz = "America/New_York")
+    ) %>% mutate(
+      date_time_same = if_else(date == "18/09/2022 ", paste0("1900-01-01", time) %>% ymd_hms(tz = "America/New_York"), paste0("1900-01-02", time) %>% ymd_hms(tz = "America/New_York"))
+    ) %>% pull(calibrated),
+    order.by = par %>% filter(
+      site == "Catfish",
+      date_time > ymd_hms("2022-09-18 06:00:00", tz = "America/New_York"),
+      date_time < ymd_hms("2022-09-19 12:00:00", tz = "America/New_York")
+    ) %>% mutate(
+      date_time_same = if_else(date == "18/09/2022 ", paste0("1900-01-01", time) %>% ymd_hms(tz = "America/New_York"), paste0("1900-01-02", time) %>% ymd_hms(tz = "America/New_York"))
+    ) %>% pull(date_time_same)
+  )
+
+catfish_day.xts <- cbind(catfish06_same.xts, catfish18_same.xts)
+
+pal <- c("#55C667FF", "#143C1B")
+dygraph(catfish_day.xts) %>% 
+  dyOptions(colors = pal) %>% 
+  dyAxis("y", label = "PAR (umol/m2/s)")
+```
+
+
+
+### Pick
+```{r}
+dygraph(pick.xts) %>% 
+  dyOptions(colors = "#440154FF") %>% 
+  dyAxis("y", label = "PAR (umol/m2/s)")
+```
+
+#9/13/22
+```{r}
+pick13.xts <- as.xts(par %>% filter(site == "Pick", date_time > ymd_hms("2022-09-13 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-09-14 12:00:00", tz = "America/New_York")) %>% pull(calibrated), order.by = par %>% filter(site == "Pick", date_time > ymd_hms("2022-09-13 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-09-14 12:00:00", tz = "America/New_York")) %>% pull(date_time))
+
+dygraph(pick13.xts) %>% 
+  dyOptions(colors = "#440154FF") %>% 
+  dyAxis("y", label = "PAR (umol/m2/s)")
+```
+
+### Sister3
+```{r}
+dygraph(sister3.xts) %>% 
+  dyOptions(colors = "#2D708EFF") %>% 
+  dyAxis("y", label = "PAR (umol/m2/s)")
+```
+
+#8/22/22
+```{r}
+sister322.xts <- as.xts(par %>% filter(site == "Sister3", date_time > ymd_hms("2022-08-22 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-08-23 12:00:00", tz = "America/New_York")) %>% pull(calibrated), order.by = par %>% filter(site == "Sister3", date_time > ymd_hms("2022-08-22 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-08-23 12:00:00", tz = "America/New_York")) %>% pull(date_time))
+
+dygraph(sister322.xts) %>% 
+  dyOptions(colors = "#2D708EFF") %>% 
+  dyAxis("y", label = "PAR (umol/m2/s)")
+```
+
+## Dissolved gas concentrations
+I sampled for dissolved gas 0.25 m from the surface of the impoundments, 0.1m from the bottom, in the inlet stream, and in the outlet stream. The dissolved gas samples from Catfish on 9/18/22-9/19/22 were not handled properly, thus those values are excluded from the summaries.
+```{r}
+gc <- read.csv("2-Clean Data/dissolved-gas.csv")
+
+gc_summarized <- gc %>% mutate_if(is.character, 
+                str_replace_all, 
+                pattern = "Picks", 
+                replacement = "Pick") %>% 
+  mutate_if(is.character, 
+                str_replace_all, 
+                pattern = "oulet", 
+                replacement = "outlet")%>% 
+  group_by(Site, Collection.Date, Location) %>% 
+  summarize(CH4_avg_umol = mean(Original_Liq_CH4_umol), CO2_avg_umol = mean(Original_Liq_CO2_umol), CH4_sd = sd(Original_Liq_CH4_umol, na.rm = T), CO2_sd = sd(Original_Liq_CO2_umol, na.rm = T), reps = n()) %>% 
+  mutate(Location = factor(Location, levels = c("top","bottom", "inlet", "outlet")))
+
+gc_summarized %>% filter(mdy(Collection.Date)>mdy("08/15/22"), Collection.Date!="9/19/2022") %>% select(-CO2_avg_umol, -CO2_sd) %>%  arrange(Location, desc(CH4_avg_umol))
+
+gc_summarized %>% filter(mdy(Collection.Date)>mdy("08/15/22"), Collection.Date!="9/19/2022") %>% select(-CH4_avg_umol, -CH4_sd) %>%arrange(Location, desc(CO2_avg_umol))
+
+```
+
+
+
 ## Residence time calculation {#label}
 I took a point estimate of discharge from the ponds while sampling, but these discharge values gave unrealistic residence times. I instead calculated discharge from a regional regression equation using average annual precipitation and watershed area (Gotvald et al. 2017). 
 
@@ -317,4 +475,5 @@ res_time <- data.frame(
 
 
 ```
+
 

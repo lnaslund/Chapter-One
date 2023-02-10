@@ -1,6 +1,6 @@
 # Diffusion estimates
 
-Deans 8/16/22 CO2
+Deans 8/16/22 CO2 Estimate
 ```{r Deans1 CO2}
 # sim_num <- 500
 # n_num <- 500
@@ -87,7 +87,7 @@ Deans 8/16/22 CO2
 # write.csv(deans_16_co2_results_summarized, "5-Results/1-kriged-estimates/deans_16_co2_results_summarized.csv", row.names = F)
 ```
 
-Deans 8/16/22 CH4
+Deans 8/16/22 CH4 Estimate
 ```{r Deans 1 CH4}
 # sim_num <- 500
 # n_num <- 500
@@ -174,7 +174,7 @@ Deans 8/16/22 CH4
 # write.csv(deans_16_ch4_results_summarized, "5-Results/1-kriged-estimates/deans_16_ch4_results_summarized.csv", row.names = F)
 ```
 
-Deans 8/30/22 CO2
+Deans 8/30/22 CO2 Estimate
 ```{r Deans2 CO2}
 # sim_num <- 500
 # n_num <- 500
@@ -261,7 +261,7 @@ Deans 8/30/22 CO2
 # write.csv(deans_30_co2_results_summarized, "5-Results/1-kriged-estimates/deans_30_co2_results_summarized.csv", row.names = F)
 ```
 
-Deans 8/30/22 CH4
+Deans 8/30/22 CH4 Estimate
 ```{r Deans2 CH4}
 # sim_num <- 500
 # n_num <- 500
@@ -348,7 +348,7 @@ Deans 8/30/22 CH4
 # write.csv(deans_30_ch4_results_summarized, "5-Results/1-kriged-estimates/deans_30_ch4_results_summarized.csv", row.names = F)
 ```
 
-Catfish 9/6/22 CO2
+Catfish 9/6/22 CO2 Estimate
 ```{r Catfish1 CO2}
 # sim_num <- 500
 # n_num <- 500
@@ -435,7 +435,7 @@ Catfish 9/6/22 CO2
 # write.csv(catfish_06_co2_results_summarized, "5-Results/1-kriged-estimates/catfish_06_co2_results_summarized.csv", row.names = F)
 ```
 
-Catfish 9/6/22 CH4
+Catfish 9/6/22 CH4 Estimate
 ```{r Catfish1 CH4}
 # sim_num <- 500
 # n_num <- 500
@@ -522,7 +522,7 @@ Catfish 9/6/22 CH4
 # write.csv(catfish_06_ch4_results_summarized, "5-Results/1-kriged-estimates/catfish_06_ch4_results_summarized.csv", row.names = F)
 ```
 
-Catfish 9/18/22 CO2
+Catfish 9/18/22 CO2 Estimate
 ```{r Catfish2 CO2}
 # sim_num <- 500
 # n_num <- 500
@@ -609,7 +609,7 @@ Catfish 9/18/22 CO2
 # write.csv(catfish_18_co2_results_summarized, "5-Results/1-kriged-estimates/catfish_18_co2_results_summarized.csv", row.names = F)
 ```
 
-Catfish 9/18/22 CH4
+Catfish 9/18/22 CH4 Estimate
 ```{r Catfish2 CH4}
 # sim_num <- 500
 # n_num <- 500
@@ -696,7 +696,7 @@ Catfish 9/18/22 CH4
 # write.csv(catfish_18_ch4_results_summarized, "5-Results/1-kriged-estimates/catfish_18_ch4_results_summarized.csv", row.names = F)
 ```
 
-Sister3 8/22/22 CO2
+Sister3 8/22/22 CO2 Estimate
 ```{r Sister3 CO2}
 # sim_num <- 500
 # n_num <- 500
@@ -783,7 +783,7 @@ Sister3 8/22/22 CO2
 # write.csv(sister3_22_co2_results_summarized, "5-Results/1-kriged-estimates/sister3_22_co2_results_summarized.csv", row.names = F)
 ```
 
-Sister3 8/22/22 CH4
+Sister3 8/22/22 CH4 Estimate
 ```{r Sister3 CH4}
 # sim_num <- 500
 # n_num <- 500
@@ -871,7 +871,7 @@ Sister3 8/22/22 CH4
 # write.csv(sister3_22_ch4_results_summarized, "5-Results/1-kriged-estimates/sister3_22_ch4_results_summarized.csv", row.names = F)
 ```
 
-Pick 9/13/22 CO2
+Pick 9/13/22 CO2 Estimate
 ```{r Pick CO2}
 # # modeling with a trend
 # sim_num <- 500
@@ -971,7 +971,7 @@ Pick 9/13/22 CO2
 # write.csv(pick_13_co2_results_summarized, "5-Results/1-kriged-estimates/pick_13_co2_results_summarized.csv", row.names = F)
 ```
 
-Pick 9/13/22 CH4
+Pick 9/13/22 CH4 Estimate
 ```{r Pick CH4}
 # sim_num <- 500
 # n_num <- 500

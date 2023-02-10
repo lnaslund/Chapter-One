@@ -23,7 +23,7 @@
 <meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2023-02-01" />
+<meta name="date" content="2023-02-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,102 +52,9 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/proj4-2.6.2/proj4.min.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
-<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
-<script src="libs/HomeButton-0.0.1/home-button.js"></script>
-<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
-<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
-<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
-<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
-<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
-<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
-<script src="libs/dygraphs-1.1.1/shapes.js"></script>
-<script src="libs/moment-2.8.4/moment.js"></script>
-<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
-<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
-<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
 <link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
-<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_ce8a9d-1/data_stars_co2krigedsimsk4110825ec.txt"></script>
-<script src="libs/joda-0.0.1/joda.js"></script>
-<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_820637-1/data_stars_co2krigedsimsk421bc6a31.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_e02f5a-1/data_stars_co2krigedsimsk431638251.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_893f16-1/data_stars_co2krigedsimsk44103829e.txt"></script>
 
 
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -183,33 +90,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#sister-3-1"><i class="fa fa-check"></i><b>1.2.3</b> Sister 3</a></li>
 <li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#pick-1"><i class="fa fa-check"></i><b>1.2.4</b> Pick</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#label"><i class="fa fa-check"></i><b>1.3</b> Residence time calculation</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#par"><i class="fa fa-check"></i><b>1.3</b> PAR</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#deans-2"><i class="fa fa-check"></i><b>1.3.1</b> Deans</a></li>
+<li class="chapter" data-level="1.3.2" data-path="index.html"><a href="index.html#catfish-2"><i class="fa fa-check"></i><b>1.3.2</b> Catfish</a></li>
+<li class="chapter" data-level="1.3.3" data-path="index.html"><a href="index.html#pick-2"><i class="fa fa-check"></i><b>1.3.3</b> Pick</a></li>
+<li class="chapter" data-level="1.3.4" data-path="index.html"><a href="index.html#sister3"><i class="fa fa-check"></i><b>1.3.4</b> Sister3</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#dissolved-gas-concentrations"><i class="fa fa-check"></i><b>1.4</b> Dissolved gas concentrations</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#label"><i class="fa fa-check"></i><b>1.5</b> Residence time calculation</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html"><i class="fa fa-check"></i><b>2</b> Diffusive emissions</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-cloud-comparison"><i class="fa fa-check"></i><b>2.1</b> Deans Cloud Comparison</a></li>
-<li class="chapter" data-level="2.2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-81622-81722"><i class="fa fa-check"></i><b>2.2</b> Deans 8/16/22-8/17/22</a></li>
-<li class="chapter" data-level="2.3" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-83022-83122"><i class="fa fa-check"></i><b>2.3</b> Deans 8/30/22-8/31/22</a></li>
-<li class="chapter" data-level="2.4" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-cloud-comparison"><i class="fa fa-check"></i><b>2.4</b> Catfish Cloud Comparison</a></li>
-<li class="chapter" data-level="2.5" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-9622-9722"><i class="fa fa-check"></i><b>2.5</b> Catfish 9/6/22-9/7/22</a></li>
-<li class="chapter" data-level="2.6" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-91822-91922"><i class="fa fa-check"></i><b>2.6</b> Catfish 9/18/22-9/19/22</a></li>
-<li class="chapter" data-level="2.7" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#pick-91322--91422"><i class="fa fa-check"></i><b>2.7</b> Pick 9/13/22- 9/14/22</a></li>
-<li class="chapter" data-level="2.8" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#sister3-82222-82322"><i class="fa fa-check"></i><b>2.8</b> Sister3 8/22/22-8/23/22</a></li>
+<li class="chapter" data-level="2.1" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-diffusive-81622-81722"><i class="fa fa-check"></i><b>2.1</b> Deans Diffusive 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="2.2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-diffusive-83022-83122"><i class="fa fa-check"></i><b>2.2</b> Deans Diffusive 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="2.3" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-cloud-comparison"><i class="fa fa-check"></i><b>2.3</b> Deans Cloud Comparison</a></li>
+<li class="chapter" data-level="2.4" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-diffusive-9622-9722"><i class="fa fa-check"></i><b>2.4</b> Catfish Diffusive 9/6/22-9/7/22</a></li>
+<li class="chapter" data-level="2.5" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-diffusive-91822-91922"><i class="fa fa-check"></i><b>2.5</b> Catfish Diffusive 9/18/22-9/19/22</a></li>
+<li class="chapter" data-level="2.6" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-cloud-comparison"><i class="fa fa-check"></i><b>2.6</b> Catfish Cloud Comparison</a></li>
+<li class="chapter" data-level="2.7" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#pick-diffusive-91322--91422"><i class="fa fa-check"></i><b>2.7</b> Pick Diffusive 9/13/22- 9/14/22</a></li>
+<li class="chapter" data-level="2.8" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#sister3-diffusive-82222-82322"><i class="fa fa-check"></i><b>2.8</b> Sister3 Diffusive 8/22/22-8/23/22</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="ebullition.html"><a href="ebullition.html"><i class="fa fa-check"></i><b>3</b> Ebullition</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="ebullition.html"><a href="ebullition.html#deans-81622-81722-1"><i class="fa fa-check"></i><b>3.1</b> Deans 8/16/22-8/17/22</a></li>
-<li class="chapter" data-level="3.2" data-path="ebullition.html"><a href="ebullition.html#deans-83022-83122-1"><i class="fa fa-check"></i><b>3.2</b> Deans 8/30/22-8/31/22</a></li>
-<li class="chapter" data-level="3.3" data-path="ebullition.html"><a href="ebullition.html#catfish-90622-90722-clouds-cleared-by-9am-sparce-clouds-until-4-cleared-around-7-overcast-the-next-morning"><i class="fa fa-check"></i><b>3.3</b> Catfish 9/06/22-9/07/22 (Clouds cleared by 9AM, sparce clouds until ~ 4, cleared around 7, overcast the next morning)</a></li>
-<li class="chapter" data-level="3.4" data-path="ebullition.html"><a href="ebullition.html#catfish-91822-91922-cloudless-until-12-3-pretty-cloudy"><i class="fa fa-check"></i><b>3.4</b> Catfish 9/18/22-9/19/22 (cloudless until 12-3 pretty cloudy)</a></li>
-<li class="chapter" data-level="3.5" data-path="ebullition.html"><a href="ebullition.html#pick-91322-91422"><i class="fa fa-check"></i><b>3.5</b> Pick 9/13/22-9/14/22</a></li>
-<li class="chapter" data-level="3.6" data-path="ebullition.html"><a href="ebullition.html#sister-3-82222-82322"><i class="fa fa-check"></i><b>3.6</b> Sister 3 8/22/22-8/23/22</a></li>
+<li class="chapter" data-level="3.1" data-path="ebullition.html"><a href="ebullition.html#deans-ebullitive-81622-81722"><i class="fa fa-check"></i><b>3.1</b> Deans Ebullitive 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="3.2" data-path="ebullition.html"><a href="ebullition.html#deans-ebullitive-83022-83122"><i class="fa fa-check"></i><b>3.2</b> Deans Ebullitive 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="3.3" data-path="ebullition.html"><a href="ebullition.html#catfish-ebullitive-90622-90722"><i class="fa fa-check"></i><b>3.3</b> Catfish Ebullitive 9/06/22-9/07/22</a></li>
+<li class="chapter" data-level="3.4" data-path="ebullition.html"><a href="ebullition.html#catfish-ebullitive-91822-91922"><i class="fa fa-check"></i><b>3.4</b> Catfish Ebullitive 9/18/22-9/19/22</a></li>
+<li class="chapter" data-level="3.5" data-path="ebullition.html"><a href="ebullition.html#pick-ebullitive-91322-91422"><i class="fa fa-check"></i><b>3.5</b> Pick Ebullitive 9/13/22-9/14/22</a></li>
+<li class="chapter" data-level="3.6" data-path="ebullition.html"><a href="ebullition.html#sister-ebullitive-3-82222-82322"><i class="fa fa-check"></i><b>3.6</b> Sister Ebullitive 3 8/22/22-8/23/22</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="simple-kriging-just-in-space.html"><a href="simple-kriging-just-in-space.html"><i class="fa fa-check"></i><b>4</b> Simple kriging just in space</a></li>
 <li class="chapter" data-level="5" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html"><i class="fa fa-check"></i><b>5</b> Diffusive analysis</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#catfish-cloud-comparison-1"><i class="fa fa-check"></i><b>5.1</b> Catfish Cloud Comparison</a></li>
-<li class="chapter" data-level="5.2" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#deans-cloud-comparison-1"><i class="fa fa-check"></i><b>5.2</b> Deans Cloud Comparison</a></li>
+<li class="chapter" data-level="5.1" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#catfish-clouds"><i class="fa fa-check"></i><b>5.1</b> Catfish Clouds</a></li>
+<li class="chapter" data-level="5.2" data-path="diffusive-analysis.html"><a href="diffusive-analysis.html#deans-clouds"><i class="fa fa-check"></i><b>5.2</b> Deans Clouds</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html"><i class="fa fa-check"></i><b>6</b> Ebullition Analysis</a>
 <ul>
@@ -231,9 +146,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9" data-path="flux-summary-stats-prep.html"><a href="flux-summary-stats-prep.html"><i class="fa fa-check"></i><b>9</b> Flux summary stats prep</a></li>
 <li class="chapter" data-level="10" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html"><i class="fa fa-check"></i><b>10</b> Total flux estimates</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-ch4"><i class="fa fa-check"></i><b>10.1</b> Diel Diffusive CH4</a></li>
-<li class="chapter" data-level="10.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-co2"><i class="fa fa-check"></i><b>10.2</b> Diel Diffusive CO2</a></li>
-<li class="chapter" data-level="10.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-ebullition"><i class="fa fa-check"></i><b>10.3</b> Diel ebullition</a></li>
+<li class="chapter" data-level="10.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#summary-flux-table-masses-and-rates"><i class="fa fa-check"></i><b>10.1</b> Summary flux table masses and rates</a></li>
+<li class="chapter" data-level="10.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#summary-table-co2-eq"><i class="fa fa-check"></i><b>10.2</b> Summary Table CO2-eq</a></li>
+<li class="chapter" data-level="10.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-ch4"><i class="fa fa-check"></i><b>10.3</b> Diel Diffusive CH4</a></li>
+<li class="chapter" data-level="10.4" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-co2"><i class="fa fa-check"></i><b>10.4</b> Diel Diffusive CO2</a></li>
+<li class="chapter" data-level="10.5" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-ebullition"><i class="fa fa-check"></i><b>10.5</b> Diel ebullition</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -257,49 +174,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="diffusive-emissions" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Diffusive emissions<a href="diffusive-emissions.html#diffusive-emissions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="deans-cloud-comparison" class="section level2 hasAnchor" number="2.1">
-<h2><span class="header-section-number">2.1</span> Deans Cloud Comparison<a href="diffusive-emissions.html#deans-cloud-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="deans-diffusive-81622-81722" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Deans Diffusive 8/16/22-8/17/22<a href="diffusive-emissions.html#deans-diffusive-81622-81722" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="_main_files/figure-html/deans%20diff%20ch4%208.16-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/deans%20diff%20co2%208.16-1.png" width="672" /></p>
+</div>
+<div id="deans-diffusive-83022-83122" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Deans Diffusive 8/30/22-8/31/22<a href="diffusive-emissions.html#deans-diffusive-83022-83122" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="_main_files/figure-html/deans%20diff%20ch4%208.30-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/deans%20diff%20co2%208.30-1.png" width="672" /></p>
+</div>
+<div id="deans-cloud-comparison" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Deans Cloud Comparison<a href="diffusive-emissions.html#deans-cloud-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="vembedr">
 <div>
 <iframe src="https://www.youtube.com/embed/oMqE6EcmbUg" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
 </div>
 </div>
 </div>
-<div id="deans-81622-81722" class="section level2 hasAnchor" number="2.2">
-<h2><span class="header-section-number">2.2</span> Deans 8/16/22-8/17/22<a href="diffusive-emissions.html#deans-81622-81722" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><img src="_main_files/figure-html/deans%20diff%20ch4%208.16-1.png" width="672" /></p>
-<p><img src="_main_files/figure-html/deans%20diff%20co2%208.16-1.png" width="672" /></p>
+<div id="catfish-diffusive-9622-9722" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Catfish Diffusive 9/6/22-9/7/22<a href="diffusive-emissions.html#catfish-diffusive-9622-9722" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="_main_files/figure-html/catfish%20diff%20ch4%209.6-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/catfish%20diff%20co2%209.6-1.png" width="672" /></p>
 </div>
-<div id="deans-83022-83122" class="section level2 hasAnchor" number="2.3">
-<h2><span class="header-section-number">2.3</span> Deans 8/30/22-8/31/22<a href="diffusive-emissions.html#deans-83022-83122" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><img src="_main_files/figure-html/deans%20diff%20ch4%208.30-1.png" width="672" /></p>
-<p><img src="_main_files/figure-html/deans%20diff%20co2%208.30-1.png" width="672" /></p>
+<div id="catfish-diffusive-91822-91922" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Catfish Diffusive 9/18/22-9/19/22<a href="diffusive-emissions.html#catfish-diffusive-91822-91922" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="_main_files/figure-html/catfish%20diff%20ch4%209.18-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/catfish%20diff%20co2%209.18-1.png" width="672" /></p>
 </div>
-<div id="catfish-cloud-comparison" class="section level2 hasAnchor" number="2.4">
-<h2><span class="header-section-number">2.4</span> Catfish Cloud Comparison<a href="diffusive-emissions.html#catfish-cloud-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="catfish-cloud-comparison" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Catfish Cloud Comparison<a href="diffusive-emissions.html#catfish-cloud-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="vembedr">
 <div>
 <iframe src="https://www.youtube.com/embed/y2M4VBIx9a0" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
 </div>
 </div>
 </div>
-<div id="catfish-9622-9722" class="section level2 hasAnchor" number="2.5">
-<h2><span class="header-section-number">2.5</span> Catfish 9/6/22-9/7/22<a href="diffusive-emissions.html#catfish-9622-9722" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><img src="_main_files/figure-html/catfish%20diff%20ch4%209.6-1.png" width="672" /></p>
-<p><img src="_main_files/figure-html/catfish%20diff%20co2%209.6-1.png" width="672" /></p>
-</div>
-<div id="catfish-91822-91922" class="section level2 hasAnchor" number="2.6">
-<h2><span class="header-section-number">2.6</span> Catfish 9/18/22-9/19/22<a href="diffusive-emissions.html#catfish-91822-91922" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><img src="_main_files/figure-html/catfish%20diff%20ch4%209.18-1.png" width="672" /></p>
-<p><img src="_main_files/figure-html/catfish%20diff%20co2%209.18-1.png" width="672" /></p>
-</div>
-<div id="pick-91322--91422" class="section level2 hasAnchor" number="2.7">
-<h2><span class="header-section-number">2.7</span> Pick 9/13/22- 9/14/22<a href="diffusive-emissions.html#pick-91322--91422" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="pick-diffusive-91322--91422" class="section level2 hasAnchor" number="2.7">
+<h2><span class="header-section-number">2.7</span> Pick Diffusive 9/13/22- 9/14/22<a href="diffusive-emissions.html#pick-diffusive-91322--91422" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><img src="_main_files/figure-html/pick%20diff%20ch4-1.png" width="672" /></p>
 <p><img src="_main_files/figure-html/pick%20diff%20co2-1.png" width="672" /></p>
 </div>
-<div id="sister3-82222-82322" class="section level2 hasAnchor" number="2.8">
-<h2><span class="header-section-number">2.8</span> Sister3 8/22/22-8/23/22<a href="diffusive-emissions.html#sister3-82222-82322" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="sister3-diffusive-82222-82322" class="section level2 hasAnchor" number="2.8">
+<h2><span class="header-section-number">2.8</span> Sister3 Diffusive 8/22/22-8/23/22<a href="diffusive-emissions.html#sister3-diffusive-82222-82322" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><img src="_main_files/figure-html/sister%20diff%20ch4-1.png" width="672" /></p>
 <p><img src="_main_files/figure-html/sister%20diff%20co2-1.png" width="672" /></p>
 

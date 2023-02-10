@@ -114,13 +114,7 @@ sister3_22 <- diffusion %>%
 sister3_pts_22 <- sister3_pts %>% full_join(sister3_22, by = "location") %>% filter(is.na(flux_ch4_mmol)==F)
 ```
 
-## Deans Cloud Comparison
-```{r, echo = F}
-library("vembedr")
-embed_url("https://youtu.be/oMqE6EcmbUg")
-```
-
-## Deans 8/16/22-8/17/22
+## Deans Diffusive 8/16/22-8/17/22
 ```{r deans diff ch4 8.16, width = 5, units = "in",  echo = F}
 tm_shape(deans)+
   tm_polygons(col = "white")+
@@ -143,7 +137,7 @@ tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 # breaks for g/m2day , breaks = c(0,2,4,6,8,10,12)
 ```
 
-## Deans 8/30/22-8/31/22
+## Deans Diffusive 8/30/22-8/31/22
 ```{r deans diff ch4 8.30, echo = F}
 tm_shape(deans)+
   tm_polygons(col = "white")+
@@ -166,12 +160,14 @@ tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 #, breaks = c(0,2,4,6,8,10,12)
 ```
 
-## Catfish Cloud Comparison
+## Deans Cloud Comparison
 ```{r, echo = F}
-embed_url("https://youtu.be/y2M4VBIx9a0")
+library("vembedr")
+embed_url("https://youtu.be/oMqE6EcmbUg")
 ```
 
-## Catfish 9/6/22-9/7/22 
+
+## Catfish Diffusive 9/6/22-9/7/22 
 ```{r catfish diff ch4 9.6, echo = F}
 tm_shape(catfish)+
   tm_polygons(col = "white")+
@@ -194,7 +190,7 @@ tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
 #, breaks = c(0,2,4,6,8,10,12,14)
 ```
 
-## Catfish 9/18/22-9/19/22 
+## Catfish Diffusive 9/18/22-9/19/22 
 ```{r catfish diff ch4 9.18, echo = F}
 tm_shape(catfish)+
   tm_polygons(col = "white")+
@@ -217,7 +213,12 @@ tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
 # , breaks = c(0,2,4,6,8,10,12,14)
 ```
 
-## Pick 9/13/22- 9/14/22
+## Catfish Cloud Comparison
+```{r, echo = F}
+embed_url("https://youtu.be/y2M4VBIx9a0")
+```
+
+## Pick Diffusive 9/13/22- 9/14/22
 ```{r pick diff ch4, echo = F}
 tm_shape(pick)+
   tm_polygons(col = "white")+
@@ -236,7 +237,7 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
 ```
 
-## Sister3 8/22/22-8/23/22
+## Sister3 Diffusive 8/22/22-8/23/22
 ```{r sister diff ch4, echo = F}
 tm_shape(sister3)+
   tm_polygons(col = "white")+

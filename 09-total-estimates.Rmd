@@ -10,17 +10,22 @@ all_fluxes_pathways <- read.csv("5-Results/1-kriged-estimates/all_fluxes_pathway
                           sampling == "Pick1" ~ "09/13/22",
                           sampling == "Sister31" ~ "08/22/22"
          ))
+
 all_fluxes_periods <- read.csv("5-Results/1-kriged-estimates/all_fluxes_periods.csv")%>% select(-X)
 ```
 
+## Summary flux table masses and rates
 ```{r summary flux pathways}
 all_fluxes_pathways  %>% select(site, date, pathway:flux_97.5_g_day, flux_mean_g_m2_day:flux_97.5_g_day_co2_eq)
+```
 
-all_fluxes_pathways %>% select(site, date, pathway, gas, flux_mean_g_day_co2_eq:flux_97.5_g_day_co2_eq)
+## Summary Table CO2-eq
+```{r co2 eq table}
+all_fluxes_pathways %>% mutate(flux_mean_g_m2_day_co2_eq =  flux_mean_g_day_co2_eq/area,flux_2.5_g_m2_day_co2_eq= flux_2.5_g_day_co2_eq/area, flux_97.5_g_m2_day_co2_eq= flux_97.5_g_day_co2_eq/area)%>% select(site, date, pathway, gas, flux_mean_g_day_co2_eq:flux_97.5_g_m2_day_co2_eq) %>% group_by(site, date) %>% summarize(mean_total_kg_co2_eq_day = sum(flux_mean_g_day_co2_eq)*1e-3, mean_total_kg_co2_eq_m2_day = sum(flux_mean_g_m2_day_co2_eq)*1e-3)
 ```
 
 
-```{r summary co2 eq table}
+```{r summary co2 eq table, include = F}
 all_fluxes_pathways %>% 
   group_by(sampling, site, date) %>% 
   summarize(co2_eq_total_mean = sum(flux_mean_g_day_co2_eq), co2_eq_total_2.5 = sum(flux_2.5_g_day_co2_eq), co2_eq_total_97.5 = sum(flux_97.5_g_day_co2_eq)) %>% 

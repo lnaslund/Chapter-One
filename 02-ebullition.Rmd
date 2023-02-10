@@ -196,7 +196,7 @@ sister3_pts_22_eb <- sister3_pts %>% full_join(sister3_22_eb, by = "location")
 
 Because there was insufficient gas volume to measure CH4 concentration at every time-point, I used the average CH4 concentration measured from ebullition in a sampling event to calculate ebullition for the following figures. 
 
-## Deans 8/16/22-8/17/22
+## Deans Ebullitive 8/16/22-8/17/22
 ```{r, width = 5, units = "in",  echo = F}
 tm_shape(deans)+
   tm_polygons(col = "white")+
@@ -206,7 +206,7 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 ```
 
-## Deans 8/30/22-8/31/22
+## Deans Ebullitive 8/30/22-8/31/22
 ```{r, width = 5, units = "in",  echo = F}
 tm_shape(deans)+
   tm_polygons(col = "white")+
@@ -216,7 +216,7 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 ```
 
-## Catfish 9/06/22-9/07/22 (Clouds cleared by 9AM, sparce clouds until ~ 4, cleared around 7, overcast the next morning)
+## Catfish Ebullitive 9/06/22-9/07/22 
 ```{r, width = 5, units = "in",  echo = F}
 tm_shape(catfish)+
   tm_polygons(col = "white")+
@@ -226,7 +226,7 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 ```
 
-## Catfish 9/18/22-9/19/22 (cloudless until 12-3 pretty cloudy)
+## Catfish Ebullitive 9/18/22-9/19/22 
 ```{r, width = 5, units = "in",  echo = F}
 tm_shape(catfish)+
   tm_polygons(col = "white")+
@@ -236,7 +236,7 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 ```
 
-## Pick 9/13/22-9/14/22
+## Pick Ebullitive 9/13/22-9/14/22
 ```{r, width = 5, units = "in",  echo = F}
 tm_shape(pick)+
   tm_polygons(col = "white")+
@@ -246,7 +246,7 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 ```
 
-## Sister 3 8/22/22-8/23/22
+## Sister Ebullitive 3 8/22/22-8/23/22
 ```{r}
 tm_shape(sister3)+
   tm_polygons(col = "white")+

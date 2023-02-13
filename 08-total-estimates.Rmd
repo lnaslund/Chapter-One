@@ -11,7 +11,11 @@ all_fluxes_pathways <- read.csv("5-Results/1-kriged-estimates/all_fluxes_pathway
                           sampling == "Sister31" ~ "08/22/22"
          ))
 
-all_fluxes_periods <- read.csv("5-Results/1-kriged-estimates/all_fluxes_periods.csv")%>% select(-X)
+all_fluxes_periods <- read.csv("5-Results/1-kriged-estimates/all_fluxes_periods.csv")%>% 
+  select(-X) %>% 
+  mutate(flux_mean_g_m2_hr = mean_flux_g_hr/area, 
+         flux_2.5_g_m2_hr = flux_2.5_g_hr/area, 
+         flux_97.5_g_m2_hr = flux_97.5_g_hr/area)
 ```
 
 ## Summary flux table masses and rates
@@ -21,7 +25,34 @@ all_fluxes_pathways  %>% select(site, date, pathway:flux_97.5_g_day, flux_mean_g
 
 ## Summary Table CO2-eq
 ```{r co2 eq table}
-all_fluxes_pathways %>% mutate(flux_mean_g_m2_day_co2_eq =  flux_mean_g_day_co2_eq/area,flux_2.5_g_m2_day_co2_eq= flux_2.5_g_day_co2_eq/area, flux_97.5_g_m2_day_co2_eq= flux_97.5_g_day_co2_eq/area)%>% select(site, date, pathway, gas, flux_mean_g_day_co2_eq:flux_97.5_g_m2_day_co2_eq) %>% group_by(site, date) %>% summarize(mean_total_kg_co2_eq_day = sum(flux_mean_g_day_co2_eq)*1e-3, mean_total_kg_co2_eq_m2_day = sum(flux_mean_g_m2_day_co2_eq)*1e-3)
+all_fluxes_pathways %>% 
+  mutate(flux_mean_g_m2_day_co2_eq =  flux_mean_g_day_co2_eq/area,
+         flux_2.5_g_m2_day_co2_eq= flux_2.5_g_day_co2_eq/area, 
+         flux_97.5_g_m2_day_co2_eq= flux_97.5_g_day_co2_eq/area)%>% 
+  select(site, date, pathway, gas, flux_mean_g_day_co2_eq:flux_97.5_g_m2_day_co2_eq) %>% 
+  group_by(site, date) %>% 
+  summarize(mean_total_kg_co2_eq_day = sum(flux_mean_g_day_co2_eq)*1e-3,
+            mean_total_kg_co2_eq_m2_day = sum(flux_mean_g_m2_day_co2_eq)*1e-3)
+```
+
+```{r}
+flux_rate_summary <- all_fluxes_pathways %>% 
+  mutate(flux_mean_g_m2_day_co2_eq=flux_mean_g_day_co2_eq/area) %>% 
+  select(site, date, pathway, gas, flux_mean_g_m2_day_co2_eq) %>% group_by(site,date,gas) %>% 
+  summarize(flux_mean_mg_m2_day=sum(flux_mean_g_m2_day_co2_eq)*1e3) %>% group_by(site, date) %>% summarize(sum = sum(flux_mean_mg_m2_day))
+
+flux_rate_summary
+
+120 *(16.04/12.01)
+329 * (44.01/12.01)
+
+names(all_fluxes_pathways)
+
+flux_rate_summary_2 <- all_fluxes_pathways %>% 
+  select(site, date, pathway, gas, flux_mean_g_m2_day) %>% group_by(site,date,gas) %>% 
+  summarize(flux_mean_mg_m2_day=sum(flux_mean_g_m2_day)*1e3) 
+
+flux_rate_summary_2 %>% pivot_wider(id_cols = c("site", "date"), names_from = gas, values_from = flux_mean_mg_m2_day) 
 ```
 
 
@@ -31,12 +62,34 @@ all_fluxes_pathways %>%
   summarize(co2_eq_total_mean = sum(flux_mean_g_day_co2_eq), co2_eq_total_2.5 = sum(flux_2.5_g_day_co2_eq), co2_eq_total_97.5 = sum(flux_97.5_g_day_co2_eq)) %>% 
   mutate(co2_eq_total_mean_kg = co2_eq_total_mean * 1e-3, co2_eq_total_2.5_kg = co2_eq_total_2.5 *1e-3, co2_eq_total_97.5_kg = co2_eq_total_97.5 *1e-3) %>% 
   ungroup() %>% 
-  select(site, date, co2_eq_total_mean:co2_eq_total_97.5_kg)
+  select(site, date, co2_eq_total_mean_kg:co2_eq_total_97.5_kg)
+```
+
+### Pathway
+
+```{r pathways summary fig}
+#png(filename = "4-Figures/co2-eq-summary.png", width = 8, height = 5, units = "in", res = 300)
+all_fluxes_pathways %>% 
+  mutate(flux_mean_g_m2_day_co2_eq =  flux_mean_g_day_co2_eq/area,
+         flux_2.5_g_m2_day_co2_eq= flux_2.5_g_day_co2_eq/area, 
+         flux_97.5_g_m2_day_co2_eq= flux_97.5_g_day_co2_eq/area, 
+         pathway_gas = paste(pathway, gas, sep = " "), 
+         site_date = paste(site, date, sep = " ")) %>% 
+  ggplot(aes(site_date, flux_mean_g_m2_day_co2_eq, fill = pathway_gas)) + 
+  geom_bar(position = position_dodge(), stat = "identity")+
+  geom_errorbar(aes(ymax=flux_97.5_g_m2_day_co2_eq, ymin=flux_2.5_g_m2_day_co2_eq), position = position_dodge())+
+  scale_fill_manual(values = c("#96C498", "#3D5170", "#94A7C5"))+
+  ylab(expression(CO[2]-equivalent ~ flux ~ (g~m^-2~day^-1)))+
+  theme_bw()+
+  theme(axis.title.x = element_blank(), legend.title = element_blank(), axis.text.x = element_text(angle=45, hjust=1), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
+#dev.off()
+
+
 ```
 
 ## Diel Diffusive CH4 
 Log-transformed axis
-```{r}
+```{r log diel ch4}
 # note log transformation of the y axis
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "diffusion") %>% 
@@ -67,7 +120,7 @@ all_fluxes_periods %>%
 ```
 
 Untransformed axis
-```{r}
+```{r diel ch4}
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "diffusion") %>% 
    mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
@@ -96,8 +149,43 @@ all_fluxes_periods %>%
   
 ```
 
+Untransformed rate
+```{r diel ch4 rate}
+#png(filename = "4-Figures/ch4-diffusion-periods.png", width = 9, height = 5, units = "in", res = 300)
+all_fluxes_periods %>% 
+  filter(gas == "CH4", pathway == "diffusion") %>% 
+   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
+                             period == 2 ~ "1PM", 
+                             period == 3 ~ "4PM", 
+                             period == 4 ~ "7PM", 
+                             period == 5 ~ "10PM", 
+                             period == 6 ~ "1AM", 
+                             period == 7 ~ "4AM", 
+                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
+  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
+                              sampling == "Catfish2" ~ "Catfish 9/18/22",
+                              sampling == "Deans1" ~ "Deans 8/16/22",
+                              sampling == "Deans2" ~ "Deans 8/30/22", 
+                              sampling == "Pick1" ~ "Pick 9/13/22",
+                              sampling == "Sister31" ~ "Sister 8/22/22")) %>% 
+  ggplot(aes(period, flux_mean_g_m2_hr))+
+  geom_point()+
+  geom_errorbar(aes(ymin = flux_2.5_g_m2_hr, ymax = flux_97.5_g_m2_hr))+
+  geom_line()+
+  facet_wrap(~sampling)+
+  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))+
+  theme_bw()+
+  ylab(expression(Diffusive ~ Flux ~ (g~CH[4]~m^-2~hr^-1)))+
+  theme(axis.title.x = element_blank(), 
+        axis.text = element_text(size=14, color = "black"), 
+        axis.text.x = element_text(angle = 45, hjust = 1), 
+        axis.title.y = element_text(size=16, color = "black"), 
+        strip.text = element_text(size=14, color = "black"))
+#dev.off()
+```
+
 Untransformed without Picks
-```{r}
+```{r diel ch4 no pick}
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "diffusion", site != "Pick") %>% 
    mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
@@ -129,7 +217,7 @@ all_fluxes_periods %>%
 ## Diel Diffusive CO2 
 
 Untransformed
-```{r}
+```{r diel co2}
 # note log transformation of the y axis
 all_fluxes_periods %>% 
   filter(gas == "CO2", pathway == "diffusion") %>% 
@@ -158,8 +246,76 @@ all_fluxes_periods %>%
   theme(axis.title.x = element_blank())
 ```
 
+```{r diel co2 rate}
+#png(filename = "4-Figures/co2-diffusion-periods.png", width = 9, height = 5, units = "in", res = 300)
+all_fluxes_periods %>% 
+  filter(gas == "CO2", pathway == "diffusion") %>% 
+   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
+                             period == 2 ~ "1PM", 
+                             period == 3 ~ "4PM", 
+                             period == 4 ~ "7PM", 
+                             period == 5 ~ "10PM", 
+                             period == 6 ~ "1AM", 
+                             period == 7 ~ "4AM", 
+                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
+  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
+                              sampling == "Catfish2" ~ "Catfish 9/18/22",
+                              sampling == "Deans1" ~ "Deans 8/16/22",
+                              sampling == "Deans2" ~ "Deans 8/30/22", 
+                              sampling == "Pick1" ~ "Pick 9/13/22",
+                              sampling == "Sister31" ~ "Sister 8/22/22")) %>% 
+  ggplot(aes(period, flux_mean_g_m2_hr))+
+  geom_point()+
+  geom_errorbar(aes(ymin = flux_2.5_g_m2_hr, ymax = flux_97.5_g_m2_hr))+
+  geom_line()+
+  facet_wrap(~sampling)+
+  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))+
+  theme_bw()+
+  ylab(expression(Diffusive ~ Flux ~ (g~CO[2]~m^-2~hr^-1)))+
+  theme(axis.title.x = element_blank(), 
+        axis.text = element_text(size=14, color = "black"), 
+        axis.text.x = element_text(angle = 45, hjust = 1), 
+        axis.title.y = element_text(size=16, color = "black"), 
+        strip.text = element_text(size=14, color = "black"))
+#dev.off()
+```
+
+```{r diel co2 rate no pick}
+#png(filename = "4-Figures/co2-diffusion-periods-no-pick.png", width = 9, height = 5, units = "in", res = 300)
+all_fluxes_periods %>% 
+  filter(gas == "CO2", pathway == "diffusion", site != "Pick") %>% 
+   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
+                             period == 2 ~ "1PM", 
+                             period == 3 ~ "4PM", 
+                             period == 4 ~ "7PM", 
+                             period == 5 ~ "10PM", 
+                             period == 6 ~ "1AM", 
+                             period == 7 ~ "4AM", 
+                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
+  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
+                              sampling == "Catfish2" ~ "Catfish 9/18/22",
+                              sampling == "Deans1" ~ "Deans 8/16/22",
+                              sampling == "Deans2" ~ "Deans 8/30/22", 
+                              sampling == "Pick1" ~ "Pick 9/13/22",
+                              sampling == "Sister31" ~ "Sister 8/22/22")) %>% 
+  ggplot(aes(period, flux_mean_g_m2_hr))+
+  geom_point()+
+  geom_errorbar(aes(ymin = flux_2.5_g_m2_hr, ymax = flux_97.5_g_m2_hr))+
+  geom_line()+
+  facet_wrap(~sampling)+
+  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))+
+  theme_bw()+
+  ylab(expression(Diffusive ~ Flux ~ (g~CO[2]~m^-2~hr^-1)))+
+  theme(axis.title.x = element_blank(), 
+        axis.text = element_text(size=14, color = "black"), 
+        axis.text.x = element_text(angle = 45, hjust = 1), 
+        axis.title.y = element_text(size=16, color = "black"), 
+        strip.text = element_text(size=14, color = "black"))
+#dev.off()
+```
+
 Untransformed without Picks
-```{r}
+```{r diel co2 no pick}
 # note log transformation of the y axis
 all_fluxes_periods %>% 
   filter(gas == "CO2", pathway == "diffusion", site != "Pick") %>% 
@@ -190,7 +346,7 @@ all_fluxes_periods %>%
 
 ## Diel ebullition
 Untransformed
-```{r}
+```{r diel eb}
 # note log transformation of the y axis
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "ebullition", period != "0~1", period != "8~9") %>% 
@@ -219,8 +375,44 @@ all_fluxes_periods %>%
   theme(axis.title.x = element_blank(), axis.text.x = element_text(angle =45, hjust = 1))
 ```
 
+Untransformed rate
+```{r diel eb rate}
+png(filename = "4-Figures/ch4-ebullition-periods.png", width = 9, height = 5, units = "in", res = 300)
+all_fluxes_periods %>% 
+    filter(gas == "CH4", pathway == "ebullition", period != "0~1", period != "8~9") %>% 
+   mutate(trip = case_when(
+                             period == "1~2" ~ 1, 
+                             period == "2~3" ~ 2, 
+                             period == "3~4" ~ 3, 
+                             period == "4~5" ~ 4, 
+                             period == "5~6" ~ 5, 
+                             period == "6~7" ~ 6, 
+                             period == "7~8" ~ 7)) %>% 
+  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
+                              sampling == "Catfish2" ~ "Catfish 9/18/22",
+                              sampling == "Deans1" ~ "Deans 8/16/22",
+                              sampling == "Deans2" ~ "Deans 8/30/22", 
+                              sampling == "Pick1" ~ "Pick 9/13/22",
+                              sampling == "Sister31" ~ "Sister 8/22/22")) %>% 
+  ggplot(aes(trip, flux_mean_g_m2_hr))+
+  geom_point()+
+  geom_errorbar(aes(ymin = flux_2.5_g_m2_hr, ymax = flux_97.5_g_m2_hr))+
+  geom_line()+
+  facet_wrap(~sampling)+
+  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))+
+  theme_bw()+
+  ylab(expression(Ebullitive ~ Flux ~ (g~CH[4]~m^-2~hr^-1)))+
+  theme(axis.title.x = element_blank(), 
+        axis.text = element_text(size=14, color = "black"), 
+        axis.text.x = element_text(angle = 45, hjust = 1), 
+        axis.title.y = element_text(size=16, color = "black"), 
+        strip.text = element_text(size=14, color = "black"))
+dev.off()
+```
+
+
 Untransformed without Picks
-```{r}
+```{r diel eb no pick}
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "ebullition", period != "0~1", period != "8~9", site != "Pick") %>% 
    mutate(trip = case_when(
@@ -256,4 +448,6 @@ all_fluxes_periods %>%
 #   summarize(mean_flux_sum = sum(flux_g_mean)) %>% 
 #   pivot_wider(id_cols = sampling, names_from = tod, values_from = mean_flux_sum) %>% mutate(tod_diff = day/night)
 ```
+
+
 

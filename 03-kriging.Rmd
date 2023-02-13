@@ -162,3 +162,21 @@ sum(co2.kriged.sim.sk[4,,,4]$detrended, na.rm = T)
 st_area(pick) %>% as.numeric()*mean(test_data$flux_co2_g_hr)
 ```
 
+
+```{r}
+mapshot(
+  mapview(co2.kriged.sim.sk[4,,,1], layer.name = "CO2 Flux (g m-2 hr-1)"), 
+  file = "example-gaussian-sim.png",
+  remove_controls = c("zoomControl", "homeButton",
+    "drawToolbar", "easyButton")
+)
+
+mapshot(
+  mapview(pick, col.regions = NA, legend = F, homebutton = F) + mapview(test_data, zcol = "flux_co2_g_hr", col.regions =  viridis::viridis_pal(option = "B"), layer.name = " CO2 Flux (g/m2/hr)"),
+  file = "example-gaussian-sim-pts.png",
+  remove_controls = c("zoomControl", "homeButton",
+    "drawToolbar", "easyButton")
+)
+
+```
+

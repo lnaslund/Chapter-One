@@ -161,11 +161,10 @@ tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 ```
 
 ## Deans Cloud Comparison
-```{r, echo = F}
+```{r deans cloud comp, echo = F}
 library("vembedr")
 embed_url("https://youtu.be/oMqE6EcmbUg")
 ```
-
 
 ## Catfish Diffusive 9/6/22-9/7/22 
 ```{r catfish diff ch4 9.6, echo = F}
@@ -214,7 +213,7 @@ tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
 ```
 
 ## Catfish Cloud Comparison
-```{r, echo = F}
+```{r catfish cloud comp, echo = F}
 embed_url("https://youtu.be/y2M4VBIx9a0")
 ```
 

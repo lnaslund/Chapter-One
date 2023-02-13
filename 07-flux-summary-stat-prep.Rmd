@@ -385,7 +385,12 @@ all_fluxes_periods <-
   rename("mean_flux_g_hr" = "mean_flux", "flux_2.5_g_hr" = "flux_2.5", "flux_97.5_g_hr" = "flux_97.5") %>%
   mutate(flux_g_mean = avg_time * mean_flux_g_hr,
          flux_g_2.5 = avg_time * flux_2.5_g_hr,
-         flux_g_97.5 = avg_time * flux_97.5_g_hr)
+         flux_g_97.5 = avg_time * flux_97.5_g_hr) %>% 
+  mutate(area = case_when(site == "Deans" ~ st_area(deans) %>% as.numeric(),
+                          site == "Pick" ~ st_area(pick) %>% as.numeric(),
+                          site == "Catfish" ~ st_area(catfish) %>% as.numeric(),
+                          site == "Sister3" ~ st_area(sister3) %>% as.numeric())
+         )
 
 all_fluxes_pathways <- all_fluxes_periods %>%
   mutate(area = case_when(site == "Deans" ~ st_area(deans) %>% as.numeric(),
@@ -408,5 +413,5 @@ all_fluxes_pathways %>% group_by(sampling) %>% summarize(sum_co2_eq = sum(flux_m
 
 # write.csv(all_fluxes_periods, "5-Results/1-kriged-estimates/all_fluxes_periods.csv")
 
-write.csv(all_fluxes_pathways, "5-Results/1-kriged-estimates/all_fluxes_pathways.csv")
+# write.csv(all_fluxes_pathways, "5-Results/1-kriged-estimates/all_fluxes_pathways.csv")
 ```

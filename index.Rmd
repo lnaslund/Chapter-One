@@ -85,8 +85,7 @@ mapview(deans, col.regions = "#DCE319FF", alpha.regions = 1)+
   mapview(inlet_locations, col.regions = "black", alpha.regions = 1)
 ```
 
-```{r}
-
+```{r site map, include = F}
 mapshot(
  mapview(deans, col.regions = "#2D708EFF", alpha.regions = 1, legend = FALSE, homebutton=FALSE)+
   mapview(catfish, col.regions = "#2D708EFF", alpha.regions = 1, legend = FALSE, homebutton=FALSE)+
@@ -96,7 +95,6 @@ mapshot(
  remove_controls = c("zoomControl", "layersControl", "homeButton", 
     "drawToolbar", "easyButton"),
 )
-
 ```
 
 
@@ -300,14 +298,14 @@ sister3.xts <- as.xts(par %>% filter(site == "Sister3", is.na(date_time)==FALSE)
 
 ### Deans
 Sensor casing cracked, so no available PAR data for second Deans sampling
-```{r deans par}
+```{r deans par, echo = F}
 dygraph(deans.xts) %>% 
   dyOptions(colors = "#DCE319FF") %>% 
   dyAxis("y", label = "PAR (umol/m2/s)")
 ```
 
 8/16/22
-```{r deans day par}
+```{r deans day par, echo = F}
 deans16.xts <- as.xts(par %>% filter(site == "Deans", date_time > ymd_hms("2022-08-16 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-08-17 09:50:00", tz = "America/New_York")) %>% pull(calibrated), order.by = par %>% filter(site == "Deans", date_time > ymd_hms("2022-08-16 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-08-17 09:50:00", tz = "America/New_York")) %>% pull(date_time))
 
 dygraph(deans16.xts) %>% 
@@ -316,14 +314,14 @@ dygraph(deans16.xts) %>%
 ```
 
 ### Catfish
-```{r catfish par}
+```{r catfish par, echo = F}
 dygraph(catfish.xts) %>% 
   dyOptions(colors = "#55C667FF") %>% 
   dyAxis("y", label = "PAR (umol/m2/s)")
 ```
 
 9/6/22
-```{r}
+```{r catfish day par, echo = F}
 catfish06_same.xts <-
   as.xts(
     par %>% filter(
@@ -370,17 +368,15 @@ dygraph(catfish_day.xts) %>%
   dyAxis("y", label = "PAR (umol/m2/s)")
 ```
 
-
-
 ### Pick
-```{r}
+```{r pick par, echo = F}
 dygraph(pick.xts) %>% 
   dyOptions(colors = "#440154FF") %>% 
   dyAxis("y", label = "PAR (umol/m2/s)")
 ```
 
 #9/13/22
-```{r}
+```{r pick day par, echo = F}
 pick13.xts <- as.xts(par %>% filter(site == "Pick", date_time > ymd_hms("2022-09-13 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-09-14 12:00:00", tz = "America/New_York")) %>% pull(calibrated), order.by = par %>% filter(site == "Pick", date_time > ymd_hms("2022-09-13 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-09-14 12:00:00", tz = "America/New_York")) %>% pull(date_time))
 
 dygraph(pick13.xts) %>% 
@@ -389,14 +385,14 @@ dygraph(pick13.xts) %>%
 ```
 
 ### Sister3
-```{r}
+```{r sister3 par, echo = F}
 dygraph(sister3.xts) %>% 
   dyOptions(colors = "#2D708EFF") %>% 
   dyAxis("y", label = "PAR (umol/m2/s)")
 ```
 
 #8/22/22
-```{r}
+```{r sister3 day par, echo = F}
 sister322.xts <- as.xts(par %>% filter(site == "Sister3", date_time > ymd_hms("2022-08-22 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-08-23 12:00:00", tz = "America/New_York")) %>% pull(calibrated), order.by = par %>% filter(site == "Sister3", date_time > ymd_hms("2022-08-22 06:00:00", tz = "America/New_York"), date_time < ymd_hms("2022-08-23 12:00:00", tz = "America/New_York")) %>% pull(date_time))
 
 dygraph(sister322.xts) %>% 
@@ -406,7 +402,7 @@ dygraph(sister322.xts) %>%
 
 ## Dissolved gas concentrations
 I sampled for dissolved gas 0.25 m from the surface of the impoundments, 0.1m from the bottom, in the inlet stream, and in the outlet stream. The dissolved gas samples from Catfish on 9/18/22-9/19/22 were not handled properly, thus those values are excluded from the summaries.
-```{r}
+```{r dissolved gas conc, echo = F}
 gc <- read.csv("2-Clean Data/dissolved-gas.csv")
 
 gc_summarized <- gc %>% mutate_if(is.character, 
@@ -427,12 +423,10 @@ gc_summarized %>% filter(mdy(Collection.Date)>mdy("08/15/22"), Collection.Date!=
 
 ```
 
-
-
-## Residence time calculation {#label}
+## Residence time calculation 
 I took a point estimate of discharge from the ponds while sampling, but these discharge values gave unrealistic residence times. I instead calculated discharge from a regional regression equation using average annual precipitation and watershed area (Gotvald et al. 2017). 
 
-```{r, include = F}
+```{r res time calc, include = F}
 # discharge estimates from measurements seem unrealistic. It probably makes more sense to use a regional relationship between watershed area and discharge. 
 
 # need to assign outlet point, delineate the watershed and then calculate MAP from Gotvald report regression relationship 
@@ -471,9 +465,6 @@ res_time <- data.frame(
          qa_m3s = qa_ft3s * 0.0283168, 
          res_time_s = pond_vol_m3/qa_m3s, 
          res_time_d = res_time_s *(1/86400))
-
-
-
 ```
 
 

@@ -39,6 +39,7 @@ library(gridExtra)
 library(lme4)
 library(glmmTMB)
 library(AICcmodavg)
+library(ggeffects)
 
 
 # Trap locations and pond polygons in WGS 84 / UTM zone 17N

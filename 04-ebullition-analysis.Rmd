@@ -11,8 +11,7 @@ eb_all <- bind_rows(sister3_pts_22_eb %>% mutate(Site ="Sister3"),
   mutate(Site = as.factor(Site))%>% 
   mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist))
 
-
-class(eb_all$Collection.Date)
+class(ebullition_24$ch4_eb_g)
 
 ebullition_24 <- eb_all %>% 
   mutate(ch4_eb_g = gas_vol_corrected * (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15), 
@@ -24,8 +23,9 @@ ebullition_24 <- eb_all %>%
            Sampling == "Pick1" ~ ymd("2022-09-13"),
            Sampling == "Sister31" ~ ymd("2022-08-22")
          )) %>% 
+  mutate(time_hr_na = if_else(is.na(ch4_eb_g), NA_real_, time_hr)) %>% 
   group_by(Site, Trap, Sampling, Collection.Start.Date, inlet_dist, Depth, inlet_dist_scale, Depth_scale) %>% 
-  summarize(sum_time = sum(time_hr, na.rm = T), sum_g = sum(ch4_eb_g, na.rm = T)) %>% 
+  summarize(sum_time = sum(time_hr_na, na.rm = T), sum_g = sum(ch4_eb_g, na.rm = T)) %>% 
   mutate(area = pi * 81 * 0.0001, ch4_eb_g_m2_hr_24 = sum_g * (1/area)* (1/sum_time))
 ```
 
@@ -126,8 +126,6 @@ summary(mod6)
 mod7 <- glmer(ch4_eb_g_m2_hr_24 ~ Depth + inlet_dist + (1|Sampling) , data = ebullition_24 %>% filter(ch4_eb_g_m2_hr_24 > 0), family = Gamma(link = "log"))
 summary(mod7)
 
-range(ebullition_24$ch4_eb_g_m2_hr_24)
-
 mod7.a <- glmer(ch4_eb_g_m2_hr_24 ~ inlet_dist + (1|Sampling) , data = ebullition_24 %>% filter(ch4_eb_g_m2_hr_24 > 0), family = Gamma(link = "log"))
 mod7.b <- glmer(ch4_eb_g_m2_hr_24 ~ Depth + (1|Sampling) , data = ebullition_24 %>% filter(ch4_eb_g_m2_hr_24 > 0), family = Gamma(link = "log"))
 
@@ -141,8 +139,6 @@ aictab(cand.models)
 ```
 
 ```{r plot depth gamma, echo = F}
-library(ggeffects)
-
 pred.mod7.b <- ggpredict(mod7.b, terms =c("Depth", "Sampling"), type = "random") 
 
 #png(filename = "4-Figures/eb-analysis-summary.png", width = 8, height = 5, units = "in", res = 300)

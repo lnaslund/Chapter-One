@@ -281,58 +281,58 @@ Sister 3 8/22/22
 
 Pick 9/13/22
 ```{r}
-pick1_conc <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>%
-  mutate(corr_ch4 = case_when(
-  Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497,
-  Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm,
-  Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %>%
-  filter(is.na(Data.Flag)==T) %>%
-  left_join(samplings, by = "Collection.Date") %>%
-  filter(Sampling == "Pick1") %>%
-  pull(corr_ch4)
-
-pick1_conc_vec <- sample(pick1_conc, 224, replace=T)
-
-  pick1_13_eb_kr <- pick_pts %>%
-    full_join(ebullition_kriging %>%
-                filter(Sampling == "Pick1") %>%
-                mutate(ch4_rand = pick1_conc_vec,
-                       ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %>%
-                mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = "location")
-
-pick_13_eb_results <- read.csv("5-Results/1-kriged-estimates/pick_13_eb_results.csv")
-pick_13_eb_results_summarized <- NULL
-
-for(i in 1:length(periods)){
-  temp <- pick_13_eb_results %>% filter(period == i) %>% pull(sum_flux)
-
-  temp_df <- data.frame(site = "Pick", date = "2022-09-13", period = i, flux_2.5 = as.numeric(quantile(temp, 0.025)), flux_97.5 = as.numeric(quantile(temp, 0.975)), mean_flux = mean(temp))
-
-  pick_13_eb_results_summarized <- bind_rows(pick_13_eb_results_summarized, temp_df)
-}
-
-pick_13_eb_results_summarized <- pick_13_eb_results_summarized %>% mutate(period= periods[period])%>% left_join(ebullition_kriging %>% filter(Sampling == "Pick1") %>% group_by(period) %>% summarize(avg_time = mean(time_hr, na.rm = T)), by = "period")
-
-ggplot(pick_13_eb_results_summarized, aes(period, mean_flux))+
-  geom_point()+
-  geom_errorbar(aes(ymin = flux_2.5, ymax = flux_97.5))+
-  ylab("total ebullition (g/hr)")
-
-# calculating by averaging instead of kriging
-pick1_13_eb_kr %>%
-  mutate(eb_avg = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * mean(pick1_conc) * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %>%
-  group_by(period) %>%
-  summarize(average_eb = mean(eb_avg, na.rm=T)) %>%
-  mutate(average_eb = average_eb * st_area(pick) %>% as.numeric()) %>%
-  left_join(ebullition_kriging %>%
-              filter(Sampling == "Pick1") %>%
-              group_by(period) %>%
-              summarize(avg_time = mean(time_hr, na.rm = T)), by = "period") %>%
-  mutate(flux_g = average_eb * avg_time)%>%
-  summarize(sum_flux = sum(flux_g)) %>%
-  mutate(sum_flux_g_m2_day = sum_flux/st_area(pick))
-
-write.csv(pick_13_eb_results_summarized, "5-Results/1-kriged-estimates/pick_13_eb_results_summarized.csv")
+# pick1_conc <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>%
+#   mutate(corr_ch4 = case_when(
+#   Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497,
+#   Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm,
+#   Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %>%
+#   filter(is.na(Data.Flag)==T) %>%
+#   left_join(samplings, by = "Collection.Date") %>%
+#   filter(Sampling == "Pick1") %>%
+#   pull(corr_ch4)
+# 
+# pick1_conc_vec <- sample(pick1_conc, 224, replace=T)
+# 
+#   pick1_13_eb_kr <- pick_pts %>%
+#     full_join(ebullition_kriging %>%
+#                 filter(Sampling == "Pick1") %>%
+#                 mutate(ch4_rand = pick1_conc_vec,
+#                        ch4_conc = if_else(is.na(corr_ch4), ch4_rand, corr_ch4)) %>%
+#                 mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)), by = "location")
+# 
+# pick_13_eb_results <- read.csv("5-Results/1-kriged-estimates/pick_13_eb_results.csv")
+# pick_13_eb_results_summarized <- NULL
+# 
+# for(i in 1:length(periods)){
+#   temp <- pick_13_eb_results %>% filter(period == i) %>% pull(sum_flux)
+# 
+#   temp_df <- data.frame(site = "Pick", date = "2022-09-13", period = i, flux_2.5 = as.numeric(quantile(temp, 0.025)), flux_97.5 = as.numeric(quantile(temp, 0.975)), mean_flux = mean(temp))
+# 
+#   pick_13_eb_results_summarized <- bind_rows(pick_13_eb_results_summarized, temp_df)
+# }
+# 
+# pick_13_eb_results_summarized <- pick_13_eb_results_summarized %>% mutate(period= periods[period])%>% left_join(ebullition_kriging %>% filter(Sampling == "Pick1") %>% group_by(period) %>% summarize(avg_time = mean(time_hr, na.rm = T)), by = "period")
+# 
+# ggplot(pick_13_eb_results_summarized, aes(period, mean_flux))+
+#   geom_point()+
+#   geom_errorbar(aes(ymin = flux_2.5, ymax = flux_97.5))+
+#   ylab("total ebullition (g/hr)")
+# 
+# # calculating by averaging instead of kriging
+# pick1_13_eb_kr %>%
+#   mutate(eb_avg = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * mean(pick1_conc) * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %>%
+#   group_by(period) %>%
+#   summarize(average_eb = mean(eb_avg, na.rm=T)) %>%
+#   mutate(average_eb = average_eb * st_area(pick) %>% as.numeric()) %>%
+#   left_join(ebullition_kriging %>%
+#               filter(Sampling == "Pick1") %>%
+#               group_by(period) %>%
+#               summarize(avg_time = mean(time_hr, na.rm = T)), by = "period") %>%
+#   mutate(flux_g = average_eb * avg_time)%>%
+#   summarize(sum_flux = sum(flux_g)) %>%
+#   mutate(sum_flux_g_m2_day = sum_flux/st_area(pick))
+# 
+# write.csv(pick_13_eb_results_summarized, "5-Results/1-kriged-estimates/pick_13_eb_results_summarized.csv")
 ```
 
 ```{r}

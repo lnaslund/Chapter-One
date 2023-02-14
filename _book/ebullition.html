@@ -23,7 +23,7 @@
 <meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2023-02-13" />
+<meta name="date" content="2023-02-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -76,12 +76,12 @@
 <script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
 <script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
 <link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
-<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_d2897e-1/data_stars_co2krigedsimsk41139eba0.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_ea910f-1/data_stars_co2krigedsimsk411db3789.txt"></script>
 <script src="libs/joda-0.0.1/joda.js"></script>
 <script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_7fe59a-1/data_stars_co2krigedsimsk421e5a42b.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_2e60f1-1/data_stars_co2krigedsimsk431b9a4f0.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_a7cd85-1/data_stars_co2krigedsimsk441520aef.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_87dbea-1/data_stars_co2krigedsimsk421e409dc.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_9cf8b2-1/data_stars_co2krigedsimsk4318e126b.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_97840b-1/data_stars_co2krigedsimsk441357ec8.txt"></script>
 
 
 <style type="text/css">
@@ -290,12 +290,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="sister-ebullitive-3-82222-82322" class="section level2 hasAnchor" number="3.6">
 <h2><span class="header-section-number">3.6</span> Sister Ebullitive 3 8/22/22-8/23/22<a href="ebullition.html#sister-ebullitive-3-82222-82322" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="ebullition.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sister3)<span class="sc">+</span></span>
-<span id="cb7-2"><a href="ebullition.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">&quot;white&quot;</span>)<span class="sc">+</span></span>
-<span id="cb7-3"><a href="ebullition.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sister3_pts_22_eb, <span class="at">bbox =</span> <span class="fu">st_bbox</span>(catfish) <span class="sc">%&gt;%</span> <span class="fu">st_as_sfc</span>())<span class="sc">+</span></span>
-<span id="cb7-4"><a href="ebullition.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="st">&quot;ch4_eb_g_m2_hr&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">palette =</span> <span class="st">&quot;-RdYlBu&quot;</span>, <span class="at">midpoint =</span> <span class="cn">NA</span>, <span class="at">title =</span> <span class="st">&quot;CH4 flux (g/m2/hr)&quot;</span>)<span class="sc">+</span></span>
-<span id="cb7-5"><a href="ebullition.html#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_layout</span>(<span class="at">scale =</span> <span class="fl">1.5</span>, <span class="at">legend.outside =</span> T)<span class="sc">+</span></span>
-<span id="cb7-6"><a href="ebullition.html#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_facets</span>(<span class="at">by =</span> <span class="st">&quot;trip_wr&quot;</span>, <span class="at">free.coords =</span> F, <span class="at">inside.original.bbox =</span> T)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="ebullition.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sister3)<span class="sc">+</span></span>
+<span id="cb4-2"><a href="ebullition.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">&quot;white&quot;</span>)<span class="sc">+</span></span>
+<span id="cb4-3"><a href="ebullition.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sister3_pts_22_eb, <span class="at">bbox =</span> <span class="fu">st_bbox</span>(catfish) <span class="sc">%&gt;%</span> <span class="fu">st_as_sfc</span>())<span class="sc">+</span></span>
+<span id="cb4-4"><a href="ebullition.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="st">&quot;ch4_eb_g_m2_hr&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">palette =</span> <span class="st">&quot;-RdYlBu&quot;</span>, <span class="at">midpoint =</span> <span class="cn">NA</span>, <span class="at">title =</span> <span class="st">&quot;CH4 flux (g/m2/hr)&quot;</span>)<span class="sc">+</span></span>
+<span id="cb4-5"><a href="ebullition.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_layout</span>(<span class="at">scale =</span> <span class="fl">1.5</span>, <span class="at">legend.outside =</span> T)<span class="sc">+</span></span>
+<span id="cb4-6"><a href="ebullition.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_facets</span>(<span class="at">by =</span> <span class="st">&quot;trip_wr&quot;</span>, <span class="at">free.coords =</span> F, <span class="at">inside.original.bbox =</span> T)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre><code>## Warning: Removed 99 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>

@@ -19,12 +19,12 @@ all_fluxes_periods <- read.csv("5-Results/1-kriged-estimates/all_fluxes_periods.
 ```
 
 ## Summary flux table masses and rates
-```{r summary flux pathways}
+```{r summary flux pathways, echo = F}
 all_fluxes_pathways  %>% select(site, date, pathway:flux_97.5_g_day, flux_mean_g_m2_day:flux_97.5_g_day_co2_eq)
 ```
 
 ## Summary Table CO2-eq
-```{r co2 eq table}
+```{r co2 eq table, echo = F}
 all_fluxes_pathways %>% 
   mutate(flux_mean_g_m2_day_co2_eq =  flux_mean_g_day_co2_eq/area,
          flux_2.5_g_m2_day_co2_eq= flux_2.5_g_day_co2_eq/area, 
@@ -35,24 +35,24 @@ all_fluxes_pathways %>%
             mean_total_kg_co2_eq_m2_day = sum(flux_mean_g_m2_day_co2_eq)*1e-3)
 ```
 
-```{r}
-flux_rate_summary <- all_fluxes_pathways %>% 
-  mutate(flux_mean_g_m2_day_co2_eq=flux_mean_g_day_co2_eq/area) %>% 
-  select(site, date, pathway, gas, flux_mean_g_m2_day_co2_eq) %>% group_by(site,date,gas) %>% 
-  summarize(flux_mean_mg_m2_day=sum(flux_mean_g_m2_day_co2_eq)*1e3) %>% group_by(site, date) %>% summarize(sum = sum(flux_mean_mg_m2_day))
-
-flux_rate_summary
-
-120 *(16.04/12.01)
-329 * (44.01/12.01)
-
-names(all_fluxes_pathways)
-
-flux_rate_summary_2 <- all_fluxes_pathways %>% 
-  select(site, date, pathway, gas, flux_mean_g_m2_day) %>% group_by(site,date,gas) %>% 
-  summarize(flux_mean_mg_m2_day=sum(flux_mean_g_m2_day)*1e3) 
-
-flux_rate_summary_2 %>% pivot_wider(id_cols = c("site", "date"), names_from = gas, values_from = flux_mean_mg_m2_day) 
+```{r, include = F}
+# flux_rate_summary <- all_fluxes_pathways %>% 
+#   mutate(flux_mean_g_m2_day_co2_eq=flux_mean_g_day_co2_eq/area) %>% 
+#   select(site, date, pathway, gas, flux_mean_g_m2_day_co2_eq) %>% group_by(site,date,gas) %>% 
+#   summarize(flux_mean_mg_m2_day=sum(flux_mean_g_m2_day_co2_eq)*1e3) %>% group_by(site, date) %>% summarize(sum = sum(flux_mean_mg_m2_day))
+# 
+# flux_rate_summary
+# 
+# 120 *(16.04/12.01)
+# 329 * (44.01/12.01)
+# 
+# names(all_fluxes_pathways)
+# 
+# flux_rate_summary_2 <- all_fluxes_pathways %>% 
+#   select(site, date, pathway, gas, flux_mean_g_m2_day) %>% group_by(site,date,gas) %>% 
+#   summarize(flux_mean_mg_m2_day=sum(flux_mean_g_m2_day)*1e3) 
+# 
+# flux_rate_summary_2 %>% pivot_wider(id_cols = c("site", "date"), names_from = gas, values_from = flux_mean_mg_m2_day) 
 ```
 
 
@@ -67,7 +67,7 @@ all_fluxes_pathways %>%
 
 ### Pathway
 
-```{r pathways summary fig}
+```{r pathways summary fig, echo = F}
 #png(filename = "4-Figures/co2-eq-summary.png", width = 8, height = 5, units = "in", res = 300)
 all_fluxes_pathways %>% 
   mutate(flux_mean_g_m2_day_co2_eq =  flux_mean_g_day_co2_eq/area,
@@ -89,7 +89,7 @@ all_fluxes_pathways %>%
 
 ## Diel Diffusive CH4 
 Log-transformed axis
-```{r log diel ch4}
+```{r log diel ch4, echo = F}
 # note log transformation of the y axis
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "diffusion") %>% 
@@ -120,7 +120,7 @@ all_fluxes_periods %>%
 ```
 
 Untransformed axis
-```{r diel ch4}
+```{r diel ch4, echo = F}
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "diffusion") %>% 
    mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
@@ -150,7 +150,7 @@ all_fluxes_periods %>%
 ```
 
 Untransformed rate
-```{r diel ch4 rate}
+```{r diel ch4 rate, echo = F}
 #png(filename = "4-Figures/ch4-diffusion-periods.png", width = 9, height = 5, units = "in", res = 300)
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "diffusion") %>% 
@@ -185,7 +185,7 @@ all_fluxes_periods %>%
 ```
 
 Untransformed without Picks
-```{r diel ch4 no pick}
+```{r diel ch4 no pick, echo = F}
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "diffusion", site != "Pick") %>% 
    mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
@@ -217,7 +217,7 @@ all_fluxes_periods %>%
 ## Diel Diffusive CO2 
 
 Untransformed
-```{r diel co2}
+```{r diel co2, echo = F}
 # note log transformation of the y axis
 all_fluxes_periods %>% 
   filter(gas == "CO2", pathway == "diffusion") %>% 
@@ -246,7 +246,7 @@ all_fluxes_periods %>%
   theme(axis.title.x = element_blank())
 ```
 
-```{r diel co2 rate}
+```{r diel co2 rate, echo = F}
 #png(filename = "4-Figures/co2-diffusion-periods.png", width = 9, height = 5, units = "in", res = 300)
 all_fluxes_periods %>% 
   filter(gas == "CO2", pathway == "diffusion") %>% 
@@ -280,7 +280,7 @@ all_fluxes_periods %>%
 #dev.off()
 ```
 
-```{r diel co2 rate no pick}
+```{r diel co2 rate no pick, echo = F}
 #png(filename = "4-Figures/co2-diffusion-periods-no-pick.png", width = 9, height = 5, units = "in", res = 300)
 all_fluxes_periods %>% 
   filter(gas == "CO2", pathway == "diffusion", site != "Pick") %>% 
@@ -315,7 +315,7 @@ all_fluxes_periods %>%
 ```
 
 Untransformed without Picks
-```{r diel co2 no pick}
+```{r diel co2 no pick, echo = F}
 # note log transformation of the y axis
 all_fluxes_periods %>% 
   filter(gas == "CO2", pathway == "diffusion", site != "Pick") %>% 
@@ -346,7 +346,7 @@ all_fluxes_periods %>%
 
 ## Diel ebullition
 Untransformed
-```{r diel eb}
+```{r diel eb, echo = F}
 # note log transformation of the y axis
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "ebullition", period != "0~1", period != "8~9") %>% 
@@ -376,8 +376,8 @@ all_fluxes_periods %>%
 ```
 
 Untransformed rate
-```{r diel eb rate}
-png(filename = "4-Figures/ch4-ebullition-periods.png", width = 9, height = 5, units = "in", res = 300)
+```{r diel eb rate, echo = F}
+#png(filename = "4-Figures/ch4-ebullition-periods.png", width = 9, height = 5, units = "in", res = 300)
 all_fluxes_periods %>% 
     filter(gas == "CH4", pathway == "ebullition", period != "0~1", period != "8~9") %>% 
    mutate(trip = case_when(
@@ -407,12 +407,12 @@ all_fluxes_periods %>%
         axis.text.x = element_text(angle = 45, hjust = 1), 
         axis.title.y = element_text(size=16, color = "black"), 
         strip.text = element_text(size=14, color = "black"))
-dev.off()
+#dev.off()
 ```
 
 
 Untransformed without Picks
-```{r diel eb no pick}
+```{r diel eb no pick, echo = F}
 all_fluxes_periods %>% 
   filter(gas == "CH4", pathway == "ebullition", period != "0~1", period != "8~9", site != "Pick") %>% 
    mutate(trip = case_when(

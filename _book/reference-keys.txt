@@ -16,6 +16,7 @@ catfish-2
 pick-2
 sister3
 dissolved-gas-concentrations
+wind-speed
 residence-time-calculation
 diffusive-emissions
 deans-diffusive-81622-81722

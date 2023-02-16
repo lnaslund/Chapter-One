@@ -11,8 +11,6 @@ eb_all <- bind_rows(sister3_pts_22_eb %>% mutate(Site ="Sister3"),
   mutate(Site = as.factor(Site))%>% 
   mutate(Depth_scale = scale(Depth), inlet_dist_scale = scale(inlet_dist))
 
-class(ebullition_24$ch4_eb_g)
-
 ebullition_24 <- eb_all %>% 
   mutate(ch4_eb_g = gas_vol_corrected * (1/10^6) * ch4_conc * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15), 
          Collection.Start.Date = case_when(

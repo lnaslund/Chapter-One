@@ -424,6 +424,36 @@ gc_summarized %>% filter(mdy(Collection.Date)>mdy("08/15/22"), Collection.Date!=
 
 ```
 
+## Wind Speed
+We took two 15 second averaged windspeed measurements over the course of each diffusive flux measurement. Note different x-axis scales. 
+```{r wind speed, echo = F}
+#png(filename = "4-Figures/wind-speed.png", width = 9, height = 5, units = "in", res = 300)
+ws <- read.csv("2-Clean Data/anemom_all.csv") %>% mutate(Trip == as.factor(Trip)) %>% 
+  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
+                              sampling == "Catfish2" ~ "Catfish 9/18/22",
+                              sampling == "Deans1" ~ "Deans 8/16/22",
+                              sampling == "Deans2" ~ "Deans 8/30/22", 
+                              sampling == "Pick1" ~ "Pick 9/13/22",
+                              sampling == "Sister31" ~ "Sister3 8/22/22"))
+
+
+ggplot(ws, aes(as.factor(Trip), ws_avg))+
+  geom_boxplot() + 
+  facet_wrap(~sampling, scales = "free")+
+  scale_x_discrete(breaks = c("1", "2", "3", "4", "5", "6", "7", "8"),
+    labels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))+
+  ylab("Wind Speed (m/s)") + 
+  theme_bw()+
+  theme(axis.title.x = element_blank(), 
+        axis.text = element_text(size=14, color = "black"), 
+        axis.text.x = element_text(angle = 45, hjust = 1), 
+        axis.title.y = element_text(size=16, color = "black"), 
+        strip.text = element_text(size=14, color = "black"))
+#dev.off()
+
+```
+
+
 ## Residence time calculation 
 I took a point estimate of discharge from the ponds while sampling, but these discharge values gave unrealistic residence times. I instead calculated discharge from a regional regression equation using average annual precipitation and watershed area (Gotvald et al. 2017). 
 

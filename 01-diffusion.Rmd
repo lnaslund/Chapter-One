@@ -3,7 +3,7 @@
 ```{r diffusive visualization setup, echo = F, warning = F}
 # Read in diffusive flux data and convert estimates from g/m2/day to g/m2/hr
 diffusion <- read.csv("2-Clean Data/diffusive-flux-estimates.csv") %>% 
-  mutate(start_time = ymd_hms(start_time), 
+  mutate(start_time = ymd_hms(start_time, tz = "America/New_York"), 
          flux_ch4_g_hr = flux_ch4_g/24, 
          flux_co2_g_hr = flux_co2_g/24)
 
@@ -254,3 +254,36 @@ tm_shape(sister3_pts_22, bbox = st_bbox(catfish) %>% st_as_sfc())+
 tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=2) 
 ```
+
+## Windspeed Analysis
+```{r}
+ws <- read.csv("2-Clean Data/windspeeds.csv") %>% mutate(date = ymd(date))
+diffusion_ws <- diffusion%>% mutate(date = date(start_time)) %>% 
+  left_join(ws, by = c("site", "location", "date","trip")) %>% 
+  filter(is.na(ws_mean)==F) %>% 
+  mutate(sampling = case_when(
+    date == "2022-08-16" ~ "Deans1",
+    date == "2022-08-17" ~ "Deans1",
+    date == "2022-08-30" ~ "Deans2",
+    date == "2022-08-31" ~ "Deans2",
+    date == "2022-09-06" ~ "Catfish1",
+    date == "2022-09-07" ~ "Catfish1",
+    date == "2022-09-18" ~ "Catfish2",
+    date == "2022-09-19" ~ "Catfish2",
+    date == "2022-09-13" ~ "Pick1",
+    date == "2022-09-14" ~ "Pick1",
+    date == "2022-08-22" ~ "Sister31",
+    date == "2022-08-23" ~ "Sister31"
+  ))
+
+ch4_ws <- lmer(flux_ch4_g_hr ~ ws_mean + (1|sampling), data = diffusion_ws)
+summary(ch4_ws)
+
+co2_ws <- lmer(flux_co2_g_hr ~ ws_mean + (1|sampling), data = diffusion_ws)
+summary(co2_ws)
+
+ggplotly(ggplot(diffusion_ws, aes(ws_mean, flux_co2_g_hr, color = sampling)) +geom_point()+geom_smooth(method = "lm"))
+ggplotly(ggplot(diffusion_ws, aes(ws_mean, flux_ch4_g_hr, color = sampling)) + geom_point()+geom_smooth(method = "lm"))
+```
+
+

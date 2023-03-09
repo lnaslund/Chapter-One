@@ -23,7 +23,7 @@
 <meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2023-02-16" />
+<meta name="date" content="2023-03-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,8 +52,108 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_7056da-1/data_stars_co2krigedsimsk411df7125.txt"></script>
+<script src="libs/joda-0.0.1/joda.js"></script>
+<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_a683d5-1/data_stars_co2krigedsimsk42135192b.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_721a6d-1/data_stars_co2krigedsimsk431576a38.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_1cb0da-1/data_stars_co2krigedsimsk4415b206a.txt"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -110,6 +210,7 @@
 <li class="chapter" data-level="2.6" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-cloud-comparison"><i class="fa fa-check"></i><b>2.6</b> Catfish Cloud Comparison</a></li>
 <li class="chapter" data-level="2.7" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#pick-diffusive-91322--91422"><i class="fa fa-check"></i><b>2.7</b> Pick Diffusive 9/13/22- 9/14/22</a></li>
 <li class="chapter" data-level="2.8" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#sister3-diffusive-82222-82322"><i class="fa fa-check"></i><b>2.8</b> Sister3 Diffusive 8/22/22-8/23/22</a></li>
+<li class="chapter" data-level="2.9" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#windspeed-analysis"><i class="fa fa-check"></i><b>2.9</b> Windspeed Analysis</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="ebullition.html"><a href="ebullition.html"><i class="fa fa-check"></i><b>3</b> Ebullition</a>
 <ul>
@@ -175,44 +276,25 @@
 <h1><span class="header-section-number">Chapter 9</span> Total flux estimates<a href="total-flux-estimates.html#total-flux-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="summary-flux-table-masses-and-rates" class="section level2 hasAnchor" number="9.1">
 <h2><span class="header-section-number">9.1</span> Summary flux table masses and rates<a href="total-flux-estimates.html#summary-flux-table-masses-and-rates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<pre><code>##       site     date    pathway gas flux_mean_g_day flux_2.5_g_day flux_97.5_g_day flux_mean_g_m2_day flux_2.5_g_m2_day flux_97.5_g_m2_day flux_mean_g_day_co2_eq
-## 1  Catfish 09/06/22  diffusion CH4        20.64285       13.34017        28.91009        0.011780753       0.007613153        0.016498818               516.0713
-## 2  Catfish 09/06/22  diffusion CO2      5511.99890     4798.48983      6379.03853        3.145664879       2.738469511        3.640479220              5511.9989
-## 3  Catfish 09/06/22 ebullition CH4       214.34185      119.58192       356.66288        0.122323616       0.068244686        0.203545378              5358.5463
-## 4  Catfish 09/18/22  diffusion CH4        19.62964       11.96863        30.33360        0.011202517       0.006830424        0.017311203               490.7409
-## 5  Catfish 09/18/22  diffusion CO2      4261.23547     3649.21517      4976.30544        2.431861656       2.082585319        2.839947817              4261.2355
-## 6  Catfish 09/18/22 ebullition CH4        66.34307       36.81873       115.10815        0.037861595       0.021012231        0.065691537              1658.5768
-## 7    Deans 08/16/22  diffusion CH4        50.08869       38.33435        62.25400        0.012047458       0.009220274        0.014973490              1252.2173
-## 8    Deans 08/16/22  diffusion CO2     13492.91209    11512.34428     15746.14190        3.245349242       2.768978079        3.787301759             13492.9121
-## 9    Deans 08/16/22 ebullition CH4        96.60728       27.10787       201.11958        0.023236227       0.006520052        0.048373789              2415.1820
-## 10   Deans 08/30/22  diffusion CH4        25.74449       21.15081        31.15960        0.006192131       0.005087247        0.007494587               643.6124
-## 11   Deans 08/30/22  diffusion CO2      4982.78186     4280.08148      5732.67871        1.198471259       1.029455991        1.378838341              4982.7819
-## 12   Deans 08/30/22 ebullition CH4       158.13828       78.70263       256.14321        0.038035817       0.018929755        0.061608210              3953.4569
-## 13    Pick 09/13/22  diffusion CH4      2283.48643     1917.18105      2694.18365        0.295901000       0.248434053        0.349120374             57087.1608
-## 14    Pick 09/13/22  diffusion CO2     25929.89716    20635.08105     31432.48447        3.360073609       2.673955505        4.073115326             25929.8972
-## 15    Pick 09/13/22 ebullition CH4      1770.53938     1184.97243      2503.30440        0.229431787       0.153552271        0.324385669             44263.4845
-## 16 Sister3 08/22/22  diffusion CH4        13.60304       11.60757        15.90371        0.011580510       0.009881726        0.013539108               340.0761
-## 17 Sister3 08/22/22  diffusion CO2      -114.84720     -178.33023       -51.14731       -0.097771440      -0.151815654       -0.043542606              -114.8472
-## 18 Sister3 08/22/22 ebullition CH4        81.33050       58.51445       107.44405        0.069238080       0.049814377        0.091469004              2033.2625
-##    flux_2.5_g_day_co2_eq flux_97.5_g_day_co2_eq
-## 1               333.5041              722.75232
-## 2              4798.4898             6379.03853
-## 3              2989.5479             8916.57203
-## 4               299.2157              758.33992
-## 5              3649.2152             4976.30544
-## 6               920.4683             2877.70387
-## 7               958.3587             1556.35009
-## 8             11512.3443            15746.14190
-## 9               677.6966             5027.98955
-## 10              528.7704              778.99010
-## 11             4280.0815             5732.67871
-## 12             1967.5657             6403.58014
-## 13            47929.5261            67354.59129
-## 14            20635.0811            31432.48447
-## 15            29624.3108            62582.60993
-## 16              290.1892              397.59276
-## 17             -178.3302              -51.14731
-## 18             1462.8612             2686.10121</code></pre>
+<pre><code>##       site     date    pathway gas flux_mean_g_day flux_2.5_g_day flux_97.5_g_day flux_mean_g_m2_day flux_2.5_g_m2_day flux_97.5_g_m2_day flux_mean_g_day_co2_eq flux_2.5_g_day_co2_eq flux_97.5_g_day_co2_eq
+## 1  Catfish 09/06/22  diffusion CH4        20.64285       13.34017        28.91009        0.011780753       0.007613153        0.016498818               557.3570              360.1845              780.57251
+## 2  Catfish 09/06/22  diffusion CO2      5511.99890     4798.48983      6379.03853        3.145664879       2.738469511        3.640479220              5511.9989             4798.4898             6379.03853
+## 3  Catfish 09/06/22 ebullition CH4       214.34185      119.58192       356.66288        0.122323616       0.068244686        0.203545378              5787.2300             3228.7117             9629.89779
+## 4  Catfish 09/18/22  diffusion CH4        19.62964       11.96863        30.33360        0.011202517       0.006830424        0.017311203               530.0002              323.1529              819.00711
+## 5  Catfish 09/18/22  diffusion CO2      4261.23547     3649.21517      4976.30544        2.431861656       2.082585319        2.839947817              4261.2355             3649.2152             4976.30544
+## 6  Catfish 09/18/22 ebullition CH4        66.34307       36.81873       115.10815        0.037861595       0.021012231        0.065691537              1791.2629              994.1058             3107.92018
+## 7    Deans 08/16/22  diffusion CH4        50.08869       38.33435        62.25400        0.012047458       0.009220274        0.014973490              1352.3947             1035.0274             1680.85809
+## 8    Deans 08/16/22  diffusion CO2     13492.91209    11512.34428     15746.14190        3.245349242       2.768978079        3.787301759             13492.9121            11512.3443            15746.14190
+## 9    Deans 08/16/22 ebullition CH4        96.60728       27.10787       201.11958        0.023236227       0.006520052        0.048373789              2608.3966              731.9124             5430.22871
+## 10   Deans 08/30/22  diffusion CH4        25.74449       21.15081        31.15960        0.006192131       0.005087247        0.007494587               695.1014              571.0720              841.30931
+## 11   Deans 08/30/22  diffusion CO2      4982.78186     4280.08148      5732.67871        1.198471259       1.029455991        1.378838341              4982.7819             4280.0815             5732.67871
+## 12   Deans 08/30/22 ebullition CH4       158.13828       78.70263       256.14321        0.038035817       0.018929755        0.061608210              4269.7334             2124.9710             6915.86655
+## 13    Pick 09/13/22  diffusion CH4      2283.48643     1917.18105      2694.18365        0.295901000       0.248434053        0.349120374             61654.1337            51763.8882            72742.95859
+## 14    Pick 09/13/22  diffusion CO2     25929.89716    20635.08105     31432.48447        3.360073609       2.673955505        4.073115326             25929.8972            20635.0811            31432.48447
+## 15    Pick 09/13/22 ebullition CH4      1770.53938     1184.97243      2503.30440        0.229431787       0.153552271        0.324385669             47804.5633            31994.2557            67589.21872
+## 16 Sister3 08/22/22  diffusion CH4        13.60304       11.60757        15.90371        0.011580510       0.009881726        0.013539108               367.2822              313.4043              429.40019
+## 17 Sister3 08/22/22  diffusion CO2      -114.84720     -178.33023       -51.14731       -0.097771440      -0.151815654       -0.043542606              -114.8472             -178.3302              -51.14731
+## 18 Sister3 08/22/22 ebullition CH4        81.33050       58.51445       107.44405        0.069238080       0.049814377        0.091469004              2195.9234             1579.8901             2900.98930</code></pre>
 </div>
 <div id="summary-table-co2-eq" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Summary Table CO2-eq<a href="total-flux-estimates.html#summary-table-co2-eq" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -221,12 +303,12 @@
 ## # Groups:   site [4]
 ##   site    date     mean_total_kg_co2_eq_day mean_total_kg_co2_eq_m2_day
 ##   &lt;chr&gt;   &lt;chr&gt;                       &lt;dbl&gt;                       &lt;dbl&gt;
-## 1 Catfish 09/06/22                    11.4                      0.00650
-## 2 Catfish 09/18/22                     6.41                     0.00366
-## 3 Deans   08/16/22                    17.2                      0.00413
-## 4 Deans   08/30/22                     9.58                     0.00230
-## 5 Pick    09/13/22                   127.                       0.0165 
-## 6 Sister3 08/22/22                     2.26                     0.00192</code></pre>
+## 1 Catfish 09/06/22                    11.9                      0.00677
+## 2 Catfish 09/18/22                     6.58                     0.00376
+## 3 Deans   08/16/22                    17.5                      0.00420
+## 4 Deans   08/30/22                     9.95                     0.00239
+## 5 Pick    09/13/22                   135.                       0.0175 
+## 6 Sister3 08/22/22                     2.45                     0.00208</code></pre>
 <div id="pathway" class="section level3 hasAnchor" number="9.2.1">
 <h3><span class="header-section-number">9.2.1</span> Pathway<a href="total-flux-estimates.html#pathway" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><img src="_main_files/figure-html/pathways%20summary%20fig-1.png" width="672" /></p>

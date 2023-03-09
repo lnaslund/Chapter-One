@@ -40,6 +40,9 @@ library(lme4)
 library(glmmTMB)
 library(AICcmodavg)
 library(ggeffects)
+library(lme4)
+require("lmerTest")
+library(plotly)
 
 
 # Trap locations and pond polygons in WGS 84 / UTM zone 17N

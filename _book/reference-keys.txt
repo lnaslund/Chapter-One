@@ -27,6 +27,7 @@ catfish-diffusive-91822-91922
 catfish-cloud-comparison
 pick-diffusive-91322--91422
 sister3-diffusive-82222-82322
+windspeed-analysis
 ebullition
 deans-ebullitive-81622-81722
 deans-ebullitive-83022-83122

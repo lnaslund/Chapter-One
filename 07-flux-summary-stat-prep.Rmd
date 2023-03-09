@@ -401,7 +401,7 @@ all_fluxes_pathways <- all_fluxes_periods %>%
 group_by(sampling, area, pathway,gas) %>%
   summarize(flux_mean_g_day = sum(flux_g_mean, na.rm = T), flux_2.5_g_day = sum(flux_g_2.5, na.rm = T), flux_97.5_g_day = sum(flux_g_97.5, na.rm = T)) %>%
   mutate(co2_eq_conv = case_when(gas == "CO2" ~ 1,
-                                 gas == "CH4" ~ 25)) %>%
+                                 gas == "CH4" ~ 27)) %>%
   mutate(flux_mean_g_m2_day=flux_mean_g_day/area,
          flux_2.5_g_m2_day =flux_2.5_g_day/area,
          flux_97.5_g_m2_day=flux_97.5_g_day/area,
@@ -412,6 +412,6 @@ group_by(sampling, area, pathway,gas) %>%
 all_fluxes_pathways %>% group_by(sampling) %>% summarize(sum_co2_eq = sum(flux_mean_g_day_co2_eq))
 
 # write.csv(all_fluxes_periods, "5-Results/1-kriged-estimates/all_fluxes_periods.csv")
-
+# 
 # write.csv(all_fluxes_pathways, "5-Results/1-kriged-estimates/all_fluxes_pathways.csv")
 ```

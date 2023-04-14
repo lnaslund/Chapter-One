@@ -1,10 +1,3 @@
----
-title: "12-diel-analyses"
-author: "L. Naslund"
-date: "2023-04-12"
-output: html_document
----
-
 # Analyses of patterns of diel diffusive emissions
 
 ```{r diel setup, include=FALSE}

@@ -1,11 +1,5 @@
----
-title: "12-outputs"
-author: "L. Naslund"
-date: "2023-04-06"
-output: html_document
----
-
 # Outputs
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```

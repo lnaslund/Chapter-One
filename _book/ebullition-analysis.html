@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Ebullition Analysis | 10-degassing</title>
+  <title>Chapter 5 Ebullition Analysis | Naslund Chapter 1 Analysis</title>
   <meta name="description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
   <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Ebullition Analysis | 10-degassing" />
+  <meta property="og:title" content="Chapter 5 Ebullition Analysis | Naslund Chapter 1 Analysis" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Ebullition Analysis | 10-degassing" />
+  <meta name="twitter:title" content="Chapter 5 Ebullition Analysis | Naslund Chapter 1 Analysis" />
   
   <meta name="twitter:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
   
 
-<meta name="author" content="L. Naslund" />
+<meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2023-04-04" />
+<meta name="date" content="2023-04-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,42 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_1ac59b-1/data_stars_co2krigedsimsk41114bf9c.txt"></script>
+<script src="libs/joda-0.0.1/joda.js"></script>
+<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_c56490-1/data_stars_co2krigedsimsk421e8692b.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_c07239-1/data_stars_co2krigedsimsk431729354.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_acf6e3-1/data_stars_co2krigedsimsk44192d81c.txt"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -221,25 +257,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12" data-path="alternative-sampling-scheme-simulations.html"><a href="alternative-sampling-scheme-simulations.html"><i class="fa fa-check"></i><b>12</b> Alternative sampling scheme simulations</a></li>
 <li class="chapter" data-level="13" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html"><i class="fa fa-check"></i><b>13</b> Analyses of patterns of diel diffusive emissions</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#ch4-models"><i class="fa fa-check"></i><b>13.1</b> CH4 models</a>
+<li class="chapter" data-level="13.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#diel-patterns-in-environmental-variables"><i class="fa fa-check"></i><b>13.1</b> Diel patterns in environmental variables</a>
 <ul>
-<li class="chapter" data-level="13.1.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#windspeed-with-handheld-anemometer"><i class="fa fa-check"></i><b>13.1.1</b> windspeed with handheld anemometer</a></li>
-<li class="chapter" data-level="13.1.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#light"><i class="fa fa-check"></i><b>13.1.2</b> Light</a></li>
-<li class="chapter" data-level="13.1.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#temperature-1"><i class="fa fa-check"></i><b>13.1.3</b> Temperature</a></li>
-<li class="chapter" data-level="13.1.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#dissolved-oxygen-1"><i class="fa fa-check"></i><b>13.1.4</b> Dissolved oxygen</a></li>
-<li class="chapter" data-level="13.1.5" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#multiple-predictors"><i class="fa fa-check"></i><b>13.1.5</b> Multiple predictors</a></li>
+<li class="chapter" data-level="13.1.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#weather-station-hourly-windspeed-from-aug-14---sept-19"><i class="fa fa-check"></i><b>13.1.1</b> Weather station hourly windspeed from Aug 14 - Sept 19</a></li>
+<li class="chapter" data-level="13.1.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#dissolved-oxygen-1"><i class="fa fa-check"></i><b>13.1.2</b> Dissolved oxygen</a></li>
 </ul></li>
-<li class="chapter" data-level="13.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#co2-models"><i class="fa fa-check"></i><b>13.2</b> CO2 models</a>
+<li class="chapter" data-level="13.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#ch4-models"><i class="fa fa-check"></i><b>13.2</b> CH4 models</a>
 <ul>
-<li class="chapter" data-level="13.2.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#windspeed-with-handheld-anemometer-1"><i class="fa fa-check"></i><b>13.2.1</b> windspeed with handheld anemometer</a></li>
-<li class="chapter" data-level="13.2.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#light-1"><i class="fa fa-check"></i><b>13.2.2</b> Light</a></li>
-<li class="chapter" data-level="13.2.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#temperature-2"><i class="fa fa-check"></i><b>13.2.3</b> Temperature</a></li>
+<li class="chapter" data-level="13.2.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#windspeed-with-handheld-anemometer"><i class="fa fa-check"></i><b>13.2.1</b> windspeed with handheld anemometer</a></li>
+<li class="chapter" data-level="13.2.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#light"><i class="fa fa-check"></i><b>13.2.2</b> Light</a></li>
+<li class="chapter" data-level="13.2.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#temperature-1"><i class="fa fa-check"></i><b>13.2.3</b> Temperature</a></li>
 <li class="chapter" data-level="13.2.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#dissolved-oxygen-2"><i class="fa fa-check"></i><b>13.2.4</b> Dissolved oxygen</a></li>
-<li class="chapter" data-level="13.2.5" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#multiple-predictors-1"><i class="fa fa-check"></i><b>13.2.5</b> Multiple predictors</a></li>
+<li class="chapter" data-level="13.2.5" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#multiple-predictors"><i class="fa fa-check"></i><b>13.2.5</b> Multiple predictors</a></li>
 </ul></li>
-<li class="chapter" data-level="13.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#ch4-plots"><i class="fa fa-check"></i><b>13.3</b> CH4 plots</a></li>
-<li class="chapter" data-level="13.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#co2-plots"><i class="fa fa-check"></i><b>13.4</b> CO2 plots</a></li>
+<li class="chapter" data-level="13.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#co2-models"><i class="fa fa-check"></i><b>13.3</b> CO2 models</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#windspeed-with-handheld-anemometer-1"><i class="fa fa-check"></i><b>13.3.1</b> windspeed with handheld anemometer</a></li>
+<li class="chapter" data-level="13.3.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#light-1"><i class="fa fa-check"></i><b>13.3.2</b> Light</a></li>
+<li class="chapter" data-level="13.3.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#temperature-2"><i class="fa fa-check"></i><b>13.3.3</b> Temperature</a></li>
+<li class="chapter" data-level="13.3.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#dissolved-oxygen-3"><i class="fa fa-check"></i><b>13.3.4</b> Dissolved oxygen</a></li>
+<li class="chapter" data-level="13.3.5" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#multiple-predictors-1"><i class="fa fa-check"></i><b>13.3.5</b> Multiple predictors</a></li>
 </ul></li>
+<li class="chapter" data-level="13.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#ch4-plots"><i class="fa fa-check"></i><b>13.4</b> CH4 plots</a></li>
+<li class="chapter" data-level="13.5" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#co2-plots"><i class="fa fa-check"></i><b>13.5</b> CO2 plots</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="outputs.html"><a href="outputs.html"><i class="fa fa-check"></i><b>14</b> Outputs</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -252,7 +294,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">10-degassing</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Naslund Chapter 1 Analysis</a>
           </h1>
         </div>
 
@@ -263,34 +305,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="ebullition-analysis" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Ebullition Analysis<a href="ebullition-analysis.html#ebullition-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>I want to evaluate the relationship between ebullitive flux of CH4 and depth and distance to the inlet. I hypothesized that both depth and distance to the inlet will be negatively associated with ebullitive flux. Ultimately, we have to deal with the fact that the data are zero-inflated and bounded by 0. I tried multiple models below to address these characteristics</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="ebullition-analysis.html#cb1-1" aria-hidden="true" tabindex="-1"></a>eb_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sister3_pts_22_eb <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Site =</span><span class="st">&quot;Sister3&quot;</span>), </span>
-<span id="cb1-2"><a href="ebullition-analysis.html#cb1-2" aria-hidden="true" tabindex="-1"></a>                    pick_pts_13_eb,</span>
-<span id="cb1-3"><a href="ebullition-analysis.html#cb1-3" aria-hidden="true" tabindex="-1"></a>                    catfish_pts_18_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(catfish_dist_1, catfish_dist_2)),</span>
-<span id="cb1-4"><a href="ebullition-analysis.html#cb1-4" aria-hidden="true" tabindex="-1"></a>                    catfish_pts_06_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(catfish_dist_1, catfish_dist_2)),</span>
-<span id="cb1-5"><a href="ebullition-analysis.html#cb1-5" aria-hidden="true" tabindex="-1"></a>                    deans_pts_30_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(deans_dist_1, deans_dist_2)),</span>
-<span id="cb1-6"><a href="ebullition-analysis.html#cb1-6" aria-hidden="true" tabindex="-1"></a>                    deans_pts_16_eb<span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(deans_dist_1, deans_dist_2))) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-7"><a href="ebullition-analysis.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Site =</span> <span class="fu">as.factor</span>(Site))<span class="sc">%&gt;%</span> </span>
-<span id="cb1-8"><a href="ebullition-analysis.html#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Depth_scale =</span> <span class="fu">scale</span>(Depth), <span class="at">inlet_dist_scale =</span> <span class="fu">scale</span>(inlet_dist))</span>
-<span id="cb1-9"><a href="ebullition-analysis.html#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="ebullition-analysis.html#cb1-10" aria-hidden="true" tabindex="-1"></a>ebullition_24 <span class="ot">&lt;-</span> eb_all <span class="sc">%&gt;%</span> </span>
-<span id="cb1-11"><a href="ebullition-analysis.html#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ch4_eb_g =</span> gas_vol_corrected <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">6</span>) <span class="sc">*</span> ch4_conc <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span>) <span class="sc">*</span> <span class="fl">16.04</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="fl">0.0821</span>)<span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="fl">293.15</span>), </span>
-<span id="cb1-12"><a href="ebullition-analysis.html#cb1-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">Collection.Start.Date =</span> <span class="fu">case_when</span>(</span>
-<span id="cb1-13"><a href="ebullition-analysis.html#cb1-13" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Deans1&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-08-16&quot;</span>),</span>
-<span id="cb1-14"><a href="ebullition-analysis.html#cb1-14" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Deans2&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-08-30&quot;</span>), </span>
-<span id="cb1-15"><a href="ebullition-analysis.html#cb1-15" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Catfish1&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-09-06&quot;</span>),</span>
-<span id="cb1-16"><a href="ebullition-analysis.html#cb1-16" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Catfish2&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-09-18&quot;</span>), </span>
-<span id="cb1-17"><a href="ebullition-analysis.html#cb1-17" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Pick1&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-09-13&quot;</span>),</span>
-<span id="cb1-18"><a href="ebullition-analysis.html#cb1-18" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Sister31&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-08-22&quot;</span>)</span>
-<span id="cb1-19"><a href="ebullition-analysis.html#cb1-19" aria-hidden="true" tabindex="-1"></a>         )) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-20"><a href="ebullition-analysis.html#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_hr_na =</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(ch4_eb_g), <span class="cn">NA_real_</span>, time_hr)) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-21"><a href="ebullition-analysis.html#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Site, Trap, Sampling, Collection.Start.Date, inlet_dist, Depth, inlet_dist_scale, Depth_scale) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-22"><a href="ebullition-analysis.html#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">sum_time =</span> <span class="fu">sum</span>(time_hr_na, <span class="at">na.rm =</span> T), <span class="at">sum_g =</span> <span class="fu">sum</span>(ch4_eb_g, <span class="at">na.rm =</span> T)) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-23"><a href="ebullition-analysis.html#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">area =</span> pi <span class="sc">*</span> <span class="dv">81</span> <span class="sc">*</span> <span class="fl">0.0001</span>, <span class="at">ch4_eb_g_m2_hr_24 =</span> sum_g <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>area)<span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>sum_time))</span></code></pre></div>
-<pre><code>## `summarise()` has grouped output by &#39;Site&#39;, &#39;Trap&#39;, &#39;Sampling&#39;, &#39;Collection.Start.Date&#39;, &#39;inlet_dist&#39;, &#39;Depth&#39;, &#39;inlet_dist_scale&#39;. You can override
-## using the `.groups` argument.</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="ebullition-analysis.html#cb73-1" aria-hidden="true" tabindex="-1"></a>eb_all <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sister3_pts_22_eb <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Site =</span><span class="st">&quot;Sister3&quot;</span>), </span>
+<span id="cb73-2"><a href="ebullition-analysis.html#cb73-2" aria-hidden="true" tabindex="-1"></a>                    pick_pts_13_eb,</span>
+<span id="cb73-3"><a href="ebullition-analysis.html#cb73-3" aria-hidden="true" tabindex="-1"></a>                    catfish_pts_18_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(catfish_dist_1, catfish_dist_2)),</span>
+<span id="cb73-4"><a href="ebullition-analysis.html#cb73-4" aria-hidden="true" tabindex="-1"></a>                    catfish_pts_06_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(catfish_dist_1, catfish_dist_2)),</span>
+<span id="cb73-5"><a href="ebullition-analysis.html#cb73-5" aria-hidden="true" tabindex="-1"></a>                    deans_pts_30_eb <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(deans_dist_1, deans_dist_2)),</span>
+<span id="cb73-6"><a href="ebullition-analysis.html#cb73-6" aria-hidden="true" tabindex="-1"></a>                    deans_pts_16_eb<span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(deans_dist_1, deans_dist_2))) <span class="sc">%&gt;%</span> </span>
+<span id="cb73-7"><a href="ebullition-analysis.html#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Site =</span> <span class="fu">as.factor</span>(Site))<span class="sc">%&gt;%</span> </span>
+<span id="cb73-8"><a href="ebullition-analysis.html#cb73-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Depth_scale =</span> <span class="fu">scale</span>(Depth), <span class="at">inlet_dist_scale =</span> <span class="fu">scale</span>(inlet_dist))</span>
+<span id="cb73-9"><a href="ebullition-analysis.html#cb73-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-10"><a href="ebullition-analysis.html#cb73-10" aria-hidden="true" tabindex="-1"></a>ebullition_24 <span class="ot">&lt;-</span> eb_all <span class="sc">%&gt;%</span> </span>
+<span id="cb73-11"><a href="ebullition-analysis.html#cb73-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ch4_eb_g =</span> gas_vol_corrected <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">6</span>) <span class="sc">*</span> ch4_conc <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span>) <span class="sc">*</span> <span class="fl">16.04</span> <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="fl">0.0821</span>)<span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span><span class="fl">293.15</span>), </span>
+<span id="cb73-12"><a href="ebullition-analysis.html#cb73-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">Collection.Start.Date =</span> <span class="fu">case_when</span>(</span>
+<span id="cb73-13"><a href="ebullition-analysis.html#cb73-13" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Deans1&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-08-16&quot;</span>),</span>
+<span id="cb73-14"><a href="ebullition-analysis.html#cb73-14" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Deans2&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-08-30&quot;</span>), </span>
+<span id="cb73-15"><a href="ebullition-analysis.html#cb73-15" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Catfish1&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-09-06&quot;</span>),</span>
+<span id="cb73-16"><a href="ebullition-analysis.html#cb73-16" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Catfish2&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-09-18&quot;</span>), </span>
+<span id="cb73-17"><a href="ebullition-analysis.html#cb73-17" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Pick1&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-09-13&quot;</span>),</span>
+<span id="cb73-18"><a href="ebullition-analysis.html#cb73-18" aria-hidden="true" tabindex="-1"></a>           Sampling <span class="sc">==</span> <span class="st">&quot;Sister31&quot;</span> <span class="sc">~</span> <span class="fu">ymd</span>(<span class="st">&quot;2022-08-22&quot;</span>)</span>
+<span id="cb73-19"><a href="ebullition-analysis.html#cb73-19" aria-hidden="true" tabindex="-1"></a>         )) <span class="sc">%&gt;%</span> </span>
+<span id="cb73-20"><a href="ebullition-analysis.html#cb73-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_hr_na =</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(ch4_eb_g), <span class="cn">NA_real_</span>, time_hr)) <span class="sc">%&gt;%</span> </span>
+<span id="cb73-21"><a href="ebullition-analysis.html#cb73-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Site, Trap, Sampling, Collection.Start.Date, inlet_dist, Depth, inlet_dist_scale, Depth_scale) <span class="sc">%&gt;%</span> </span>
+<span id="cb73-22"><a href="ebullition-analysis.html#cb73-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">sum_time =</span> <span class="fu">sum</span>(time_hr_na, <span class="at">na.rm =</span> T), <span class="at">sum_g =</span> <span class="fu">sum</span>(ch4_eb_g, <span class="at">na.rm =</span> T)) <span class="sc">%&gt;%</span> </span>
+<span id="cb73-23"><a href="ebullition-analysis.html#cb73-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">area =</span> pi <span class="sc">*</span> <span class="dv">81</span> <span class="sc">*</span> <span class="fl">0.0001</span>, <span class="at">ch4_eb_g_m2_hr_24 =</span> sum_g <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>area)<span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>sum_time))</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;Site&#39;, &#39;Trap&#39;, &#39;Sampling&#39;, &#39;Collection.Start.Date&#39;, &#39;inlet_dist&#39;,
+## &#39;Depth&#39;, &#39;inlet_dist_scale&#39;. You can override using the `.groups` argument.</code></pre>
 <div id="plots" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> Plots<a href="ebullition-analysis.html#plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<pre><code>## Warning in cor.test.default(eb_all$Depth, eb_all$inlet_dist, method = &quot;spearman&quot;): Cannot compute exact p-value with ties</code></pre>
+<pre><code>## Warning in cor.test.default(eb_all$Depth, eb_all$inlet_dist, method = &quot;spearman&quot;): Cannot compute exact
+## p-value with ties</code></pre>
 <pre><code>## 
 ##  Spearman&#39;s rank correlation rho
 ## 
@@ -797,12 +840,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="by-transect" class="section level2 hasAnchor" number="5.14">
 <h2><span class="header-section-number">5.14</span> By transect<a href="ebullition-analysis.html#by-transect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="ebullition-analysis.html#cb33-1" aria-hidden="true" tabindex="-1"></a>mod8 <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr_24 <span class="sc">~</span> Transect <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Sampling), <span class="at">data =</span> ebullition_24 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Transect =</span> <span class="fu">str_sub</span>(Trap, <span class="dv">2</span>, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>()) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr_24 <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
-<span id="cb33-2"><a href="ebullition-analysis.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod8)</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="ebullition-analysis.html#cb105-1" aria-hidden="true" tabindex="-1"></a>mod8 <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr_24 <span class="sc">~</span> Transect <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Sampling), <span class="at">data =</span> ebullition_24 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Transect =</span> <span class="fu">str_sub</span>(Trap, <span class="dv">2</span>, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>()) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr_24 <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
+<span id="cb105-2"><a href="ebullition-analysis.html#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod8)</span></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
 ##  Family: Gamma  ( log )
 ## Formula: ch4_eb_g_m2_hr_24 ~ Transect + (1 | Sampling)
-##    Data: ebullition_24 %&gt;% mutate(Transect = str_sub(Trap, 2, 2) %&gt;% as.numeric()) %&gt;%      filter(ch4_eb_g_m2_hr_24 &gt; 0)
+##    Data: ebullition_24 %&gt;% mutate(Transect = str_sub(Trap, 2, 2) %&gt;% as.numeric()) %&gt;%  
+##     filter(ch4_eb_g_m2_hr_24 &gt; 0)
 ## 
 ##      AIC      BIC   logLik deviance df.resid 
 ##  -1402.0  -1390.1    705.0  -1410.0      139 
@@ -827,7 +871,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Correlation of Fixed Effects:
 ##          (Intr)
 ## Transect -0.408</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="ebullition-analysis.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_nakagawa</span>(mod8)</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="ebullition-analysis.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_nakagawa</span>(mod8)</span></code></pre></div>
 <pre><code>## # R2 for Mixed Models
 ## 
 ##   Conditional R2: 0.464

@@ -2,8 +2,8 @@
 
 ```{r eb est set up}
 # load gas volumes and match traps with measured concentrations
-# ebullition_kriging <- gas_vols %>% 
-#   left_join(conc_match %>% select(Trap, Collection.Date, period, corr_ch4), by = c("Trap", "Collection.Date", "period")) %>% 
+# ebullition_kriging <- gas_vols %>%
+#   left_join(conc_match %>% select(Trap, Collection.Date, period, corr_ch4), by = c("Trap", "Collection.Date", "period")) %>%
 # mutate(row_id = row_number()) %>% filter(!(row_id)%in% c(1201,1202, 1602,1603))
 ```
 

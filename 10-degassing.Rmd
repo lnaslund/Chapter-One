@@ -1,0 +1,19 @@
+---
+title: "10-degassing"
+author: "L. Naslund"
+date: "2023-04-04"
+output: html_document
+---
+# Degassing analysis
+
+```{r degassing calculation}
+pick_conc <- 98.66104183 -0.36507263
+pick_q_0913 <- 4/c(270, 214, 245)
+
+degas_ch4 <-pick_conc * mean(pick_q_0913) * 86400 * 1e-6 *16.04 *(1/as.numeric(st_area(pick)))
+degas_co2_eq <- degas_ch4 *27
+
+degas_ch4
+degas_co2_eq
+```
+

@@ -1,7 +1,6 @@
 # Flux summary stats prep 
 
 Deans 8/16/22
-Will need to rerun this
 ```{r}
 # deans1_conc <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>%
 #   mutate(corr_ch4 = case_when(
@@ -33,7 +32,7 @@ Will need to rerun this
 #   deans_16_eb_results_summarized <- bind_rows(deans_16_eb_results_summarized, temp_df)
 # }
 # 
-# deans_16_eb_results_summarized <- deans_16_eb_results_summarized %>% mutate(period= periods[period])%>% left_join(ebullition_kriging %>% filter(Sampling == "Deans1") %>% group_by(period) %>% summarize(avg_time = mean(time_hr, na.rm = T)), by = "period")
+  # deans_16_eb_results_summarized <- deans_16_eb_results_summarized %>% mutate(period= periods[period])%>% left_join(ebullition_kriging %>% filter(Sampling == "Deans1") %>% group_by(period) %>% summarize(avg_time = mean(time_hr, na.rm = T)), by = "period")
 # 
 # ggplot(deans_16_eb_results_summarized, aes(period, mean_flux))+
 #   geom_point()+
@@ -335,26 +334,107 @@ Pick 9/13/22
 # write.csv(pick_13_eb_results_summarized, "5-Results/1-kriged-estimates/pick_13_eb_results_summarized.csv")
 ```
 
-```{r}
-deans_16_ch4_diff <- read.csv("5-Results/1-kriged-estimates/deans_16_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), avg_time = 3, sampling = "Deans1")
-deans_16_co2_diff <- read.csv("5-Results/1-kriged-estimates/deans_16_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), avg_time = 3, sampling = "Deans1")
-deans_30_ch4_diff <- read.csv("5-Results/1-kriged-estimates/deans_30_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), avg_time = 3, sampling = "Deans2")
-deans_30_co2_diff <- read.csv("5-Results/1-kriged-estimates/deans_30_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), avg_time = 3, sampling = "Deans2")
-catfish_06_ch4_diff <- read.csv("5-Results/1-kriged-estimates/catfish_06_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), avg_time = 3, sampling = "Catfish1")
-catfish_06_co2_diff <- read.csv("5-Results/1-kriged-estimates/catfish_06_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), avg_time = 3, sampling = "Catfish1")
-catfish_18_ch4_diff <- read.csv("5-Results/1-kriged-estimates/catfish_18_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), avg_time = 3, sampling = "Catfish2")
-catfish_18_co2_diff <- read.csv("5-Results/1-kriged-estimates/catfish_18_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), avg_time = 3, sampling = "Catfish2")
-sister3_22_ch4_diff <- read.csv("5-Results/1-kriged-estimates/sister3_22_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), avg_time = 3, sampling = "Sister31")
-sister3_22_co2_diff <- read.csv("5-Results/1-kriged-estimates/sister3_22_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), avg_time = 3, sampling = "Sister31")
-pick_13_ch4_diff <- read.csv("5-Results/1-kriged-estimates/pick_13_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), avg_time = 3, sampling = "Pick1")
-pick_13_co2_diff <- read.csv("5-Results/1-kriged-estimates/pick_13_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), avg_time = 3, sampling = "Pick1")
+```{r read df for summ, include = F}
+deans_16_time <- deans_pts_16 %>% 
+  add_row(location = "D4D", trip = 6) %>% 
+  st_drop_geometry() %>% 
+  group_by(location) %>% 
+  mutate(time_elapsed = (if_else(trip != 8, 
+                            lead(start_time, 1) - start_time, 
+                            (lag(start_time, 7) + days(1)) - start_time)) %>% as.numeric()) %>% 
+  ungroup() %>% 
+  group_by(trip) %>% 
+  summarize(avg_time = mean(time_elapsed, na.rm = T)) %>%
+  mutate(period = as.character(trip)) %>% 
+  select(-trip)
+
+deans_16_ch4_diff <- read.csv("5-Results/1-kriged-estimates/deans_16_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), sampling = "Deans1") %>% left_join(deans_16_time, by = "period")
+deans_16_co2_diff <- read.csv("5-Results/1-kriged-estimates/deans_16_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), sampling = "Deans1") %>% left_join(deans_16_time, by = "period")
+
+deans_30_time <- deans_pts_30 %>% 
+  st_drop_geometry() %>% 
+  group_by(location) %>% 
+  mutate(time_elapsed = (if_else(trip != 8, 
+                            lead(start_time, 1) - start_time, 
+                            (lag(start_time, 7) + days(1)) - start_time)) %>% as.numeric()) %>% 
+  ungroup() %>% 
+  group_by(trip) %>% 
+  summarize(avg_time = mean(time_elapsed, na.rm = T)) %>%
+  mutate(period = as.character(trip)) %>% 
+  select(-trip)
+
+deans_30_ch4_diff <- read.csv("5-Results/1-kriged-estimates/deans_30_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), sampling = "Deans2") %>% left_join(deans_30_time, by = "period")
+deans_30_co2_diff <- read.csv("5-Results/1-kriged-estimates/deans_30_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), sampling = "Deans2") %>% left_join(deans_30_time, by = "period")
+
+catfish_06_time <- catfish_pts_06 %>% 
+  st_drop_geometry() %>% 
+  group_by(location) %>% 
+  mutate(time_elapsed = (if_else(trip != 8, 
+                            lead(start_time, 1) - start_time, 
+                            (lag(start_time, 7) + days(1)) - start_time)) %>% as.numeric()) %>% 
+  ungroup() %>% 
+  group_by(trip) %>% 
+  summarize(avg_time = mean(time_elapsed, na.rm = T)) %>%
+  mutate(period = as.character(trip)) %>% 
+  select(-trip)
+
+catfish_06_ch4_diff <- read.csv("5-Results/1-kriged-estimates/catfish_06_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), sampling = "Catfish1") %>% left_join(catfish_06_time, by = "period")
+catfish_06_co2_diff <- read.csv("5-Results/1-kriged-estimates/catfish_06_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), sampling = "Catfish1") %>% left_join(catfish_06_time, by = "period")
+
+catfish_18_time <- catfish_pts_18 %>% 
+  st_drop_geometry() %>% 
+  group_by(location) %>% 
+  mutate(time_elapsed = (if_else(trip != 8, 
+                            lead(start_time, 1) - start_time, 
+                            (lag(start_time, 7) + days(1)) - start_time)) %>% as.numeric()) %>% 
+  ungroup() %>% 
+  group_by(trip) %>% 
+  summarize(avg_time = mean(time_elapsed, na.rm = T)) %>%
+  mutate(period = as.character(trip)) %>% 
+  select(-trip)
+
+catfish_18_ch4_diff <- read.csv("5-Results/1-kriged-estimates/catfish_18_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), sampling = "Catfish2") %>% left_join(catfish_06_time, by = "period")
+catfish_18_co2_diff <- read.csv("5-Results/1-kriged-estimates/catfish_18_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), sampling = "Catfish2") %>% left_join(catfish_06_time, by = "period")
+
+sister3_22_time <- sister3_pts_22 %>% 
+  st_drop_geometry() %>% 
+  group_by(location) %>% 
+  mutate(time_elapsed = (if_else(trip != 8, 
+                            lead(start_time, 1) - start_time, 
+                            (lag(start_time, 7) + days(1)) - start_time)) %>% as.numeric()) %>% 
+  ungroup() %>% 
+  group_by(trip) %>% 
+  summarize(avg_time = mean(time_elapsed, na.rm = T)) %>%
+  mutate(period = as.character(trip)) %>% 
+  select(-trip)
+
+sister3_22_ch4_diff <- read.csv("5-Results/1-kriged-estimates/sister3_22_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), sampling = "Sister31") %>% left_join(sister3_22_time, by = "period")
+sister3_22_co2_diff <- read.csv("5-Results/1-kriged-estimates/sister3_22_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), sampling = "Sister31") %>% left_join(sister3_22_time, by = "period")
+
+pick_13_time <- pick_pts_13 %>% 
+  st_drop_geometry() %>% 
+  group_by(location) %>% 
+  mutate(time_elapsed = (if_else(trip != 8, 
+                            lead(start_time, 1) - start_time, 
+                            (lag(start_time, 7) + days(1)) - start_time)) %>% as.numeric()) %>% 
+  ungroup() %>% 
+  group_by(trip) %>% 
+  summarize(avg_time = mean(time_elapsed, na.rm = T)) %>%
+  mutate(period = as.character(trip)) %>% 
+  select(-trip)
+
+pick_13_ch4_diff <- read.csv("5-Results/1-kriged-estimates/pick_13_ch4_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CH4", period = as.character(period), sampling = "Pick1") %>% left_join(pick_13_time, by = "period")
+pick_13_co2_diff <- read.csv("5-Results/1-kriged-estimates/pick_13_co2_results_summarized.csv") %>% mutate(pathway = "diffusion", gas = "CO2", period = as.character(period), sampling = "Pick1") %>% left_join(pick_13_time, by = "period")
+
 deans_16_eb_results_summarized <- read.csv("5-Results/1-kriged-estimates/deans_16_eb_results_summarized.csv")
 deans_30_eb_results_summarized <- read.csv("5-Results/1-kriged-estimates/deans_30_eb_results_summarized.csv")
 catfish_06_eb_results_summarized <- read.csv("5-Results/1-kriged-estimates/catfish_06_eb_results_summarized.csv")
 catfish_18_eb_results_summarized <- read.csv("5-Results/1-kriged-estimates/catfish_18_eb_results_summarized.csv")
 sister3_22_eb_results_summarized <- read.csv("5-Results/1-kriged-estimates/sister3_22_eb_results_summarized.csv")
 pick_13_eb_results_summarized <- read.csv("5-Results/1-kriged-estimates/pick_13_eb_results_summarized.csv") 
+```
 
+```{r calculate flux summs, echo = F}
 all_fluxes_periods <-
   bind_rows(
     deans_16_eb_results_summarized %>%
@@ -393,11 +473,6 @@ all_fluxes_periods <-
          )
 
 all_fluxes_pathways <- all_fluxes_periods %>%
-  mutate(area = case_when(site == "Deans" ~ st_area(deans) %>% as.numeric(),
-                          site == "Pick" ~ st_area(pick) %>% as.numeric(),
-                          site == "Catfish" ~ st_area(catfish) %>% as.numeric(),
-                          site == "Sister3" ~ st_area(sister3) %>% as.numeric())
-         ) %>%
 group_by(sampling, area, pathway,gas) %>%
   summarize(flux_mean_g_day = sum(flux_g_mean, na.rm = T), flux_2.5_g_day = sum(flux_g_2.5, na.rm = T), flux_97.5_g_day = sum(flux_g_97.5, na.rm = T)) %>%
   mutate(co2_eq_conv = case_when(gas == "CO2" ~ 1,

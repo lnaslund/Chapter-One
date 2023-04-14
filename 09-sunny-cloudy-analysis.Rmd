@@ -1,0 +1,90 @@
+---
+title: "09-sunny-cloudy-analysis"
+author: "L. Naslund"
+date: "2023-03-14"
+output: html_document
+---
+# Sunny Cloudy Analysis
+
+```{r sun cloud setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+suncloud <- read.csv("2-Clean Data/diffusive-flux-estimates.csv") %>% 
+  mutate(start_time = ymd_hms(start_time, tz = "America/New_York"), 
+         flux_ch4_g_hr = flux_ch4_g/24, 
+         flux_co2_g_hr = flux_co2_g/24) %>% 
+  mutate(date = date(start_time)) %>% 
+  filter(site == "Pick", is.na(date)== FALSE, date != ymd("2022-07-06"))%>% 
+  select(-trip) %>% 
+  rename("trap.number" ="location") %>% 
+  mutate(trip= case_when(
+    (start_time >= ymd_hms("2022-06-20 10:54:00", tz = "America/New_York") & start_time <= ymd_hms("2022-06-20 13:03:32", tz = "America/New_York")) ~ 1,
+    (start_time >= ymd_hms("2022-06-20 14:43:49", tz = "America/New_York") & start_time <= ymd_hms("2022-06-20 16:55:17", tz = "America/New_York")) ~ 2,
+    (start_time >= ymd_hms("2022-06-20 18:42:26", tz = "America/New_York") & start_time <= ymd_hms("2022-06-20 19:00:56", tz = "America/New_York")) ~ 3,
+    (start_time >= ymd_hms("2022-06-20 19:52:47", tz = "America/New_York") & start_time <= ymd_hms("2022-06-20 21:48:15", tz = "America/New_York")) ~ 4,
+    (start_time >= ymd_hms("2022-06-21 00:50:30", tz = "America/New_York") & start_time <= ymd_hms("2022-06-21 02:18:47", tz = "America/New_York")) ~ 5,
+    (start_time >= ymd_hms("2022-06-21 05:22:54", tz = "America/New_York") & start_time <= ymd_hms("2022-06-21 07:16:04", tz = "America/New_York")) ~ 6,
+    (start_time >= ymd_hms("2022-07-12 10:15:13", tz = "America/New_York") & start_time <= ymd_hms("2022-07-12 11:52:28", tz = "America/New_York")) ~ 1,
+    (start_time >= ymd_hms("2022-07-12 12:56:57", tz = "America/New_York") & start_time <= ymd_hms("2022-07-12 14:05:15", tz = "America/New_York")) ~ 2,
+    (start_time >= ymd_hms("2022-07-12 15:29:58", tz = "America/New_York") & start_time <= ymd_hms("2022-07-12 16:37:07", tz = "America/New_York")) ~ 3,
+    (start_time >= ymd_hms("2022-07-12 18:20:45", tz = "America/New_York") & start_time <= ymd_hms("2022-07-12 19:35:59", tz = "America/New_York")) ~ 4,
+    (start_time >= ymd_hms("2022-07-12 21:24:31", tz = "America/New_York") & start_time <= ymd_hms("2022-07-12 22:21:17", tz = "America/New_York")) ~ 5,
+    (start_time >= ymd_hms("2022-07-13 01:22:17", tz = "America/New_York") & start_time <= ymd_hms("2022-07-13 02:28:51", tz = "America/New_York")) ~ 6,
+    (start_time >= ymd_hms("2022-07-13 05:16:08", tz = "America/New_York") & start_time <= ymd_hms("2022-07-13 06:36:34", tz = "America/New_York")) ~ 7,
+    (start_time >= ymd_hms("2022-07-13 08:28:02", tz = "America/New_York") & start_time <= ymd_hms("2022-07-13 09:24:36", tz = "America/New_York")) ~ 8))
+
+
+wolffia <- read.csv("2-Clean Data/wolffia.csv") %>% 
+  rename("site" ="Location") %>% 
+  mutate(start_time = mdy_hms(paste(date, diffusive.start, sep = " "), tz = "America/New_York")) %>% 
+  filter(is.na(start_time)==FALSE) %>% 
+  select(-start_time) %>% 
+  mutate(date = mdy(date))
+
+suncloud <- suncloud %>% 
+  full_join(wolffia, by = c("date", "trap.number", "trip")) %>% 
+  mutate(time = as_hms(start_time)) %>% 
+  mutate(sampling = case_when(
+    (date == ymd("2022-06-21") | date == ymd("2022-06-20")) ~ "Sunny\n6/20 - 6/21",
+    (date == ymd("2022-07-12") | date == ymd("2022-07-13")) ~ "Cloudy\n7/12 - 7/13",
+  ) %>% as.factor()) %>% 
+  mutate(time.num = as.numeric(time), time.num.sq = time.num^2) 
+
+ggplotly(ggplot(suncloud, aes(time.num, flux_ch4_g_hr, color = sampling)) + geom_point())
+ggplotly(ggplot(suncloud, aes(time.num, flux_co2_g_hr, color = sampling, shape = wolffia)) + geom_point())
+
+
+suncloud.mod.ch4 <- lm(flux_ch4_g_hr ~ time.num + wolffia + sampling, data = suncloud)
+summary(suncloud.mod.ch4)
+
+suncloud.mod.ch4.b <- lm(flux_ch4_g_hr ~ wolffia , data = suncloud)
+summary(suncloud.mod.ch4.b)
+
+suncloud.mod.co2 <- lm(flux_co2_g_hr ~ time.num + time.num.sq + wolffia + sampling, data = suncloud)
+summary(suncloud.mod.co2)
+
+
+sc_ch4 <- ggplot(suncloud, aes(time %>% as.POSIXct(), flux_ch4_g_hr)) + 
+  geom_point(aes(color = sampling,shape = wolffia), size =3, stroke = 1)+
+  scale_shape_manual(values = c(21, 24), labels = c(expression(No~italic(Wolffia)), expression(italic(Wolffia))))+
+  scale_color_manual(values = c("#595864", "#DCAE27"))+
+  theme_bw()+
+  ylab(expression(Diffusive ~ CH[4]~ flux ~ (g~m^-2~hr^-1)))+
+  theme(legend.text.align = 0, legend.title = element_blank(), axis.text = element_text(size = 16, color = "black"), axis.title = element_text(size = 18, color = "black"), legend.text = element_text(size = 16), axis.title.x = element_blank())+
+  scale_x_datetime(date_labels = "%H:%M")
+
+sc_co2 <- ggplot(suncloud, aes(time %>% as.POSIXct(), flux_co2_g_hr)) + 
+  geom_point(aes(color = sampling,shape = wolffia), size =3, stroke = 1)+
+  scale_shape_manual(values = c(21, 24), labels = c(expression(No~italic(Wolffia)), expression(italic(Wolffia))))+
+  scale_color_manual(values = c("#595864", "#DCAE27"))+
+  theme_bw()+
+  ylab(expression(Diffusive ~ CO[2]~ flux ~ (g~m^-2~hr^-1)))+
+  theme(legend.text.align = 0, legend.title = element_blank(), axis.text = element_text(size = 16, color = "black"), axis.title = element_text(size = 18, color = "black"), legend.text = element_text(size = 16), axis.title.x = element_blank())+
+  scale_x_datetime(date_labels = "%H:%M")
+
+sc_legend <- get_legend(sc_co2)
+
+png(filename = "4-Figures/sunny-cloudy.png", width = 12, height = 5, units = "in", res = 300)
+plot_grid(sc_ch4 + theme(legend.position = "none"), sc_co2+ theme(legend.position = "none"), sc_legend, rel_widths = c(0.425,0.425, 0.15), nrow = 1)
+dev.off()
+```

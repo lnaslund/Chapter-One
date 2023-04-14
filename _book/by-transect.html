@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 By transect | 12-outputs</title>
+  <meta name="description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 By transect | 12-outputs" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 By transect | 12-outputs" />
+  
+  <meta name="twitter:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
+  
+
+<meta name="author" content="L. Naslund" />
+
+
+<meta name="date" content="2023-04-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ebullition-analysis.html"/>
+<link rel="next" href="diffusion-estimates.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_acf3e1-1/data_stars_co2krigedsimsk41135fc2d.txt"></script>
+<script src="libs/joda-0.0.1/joda.js"></script>
+<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_9a2db1-1/data_stars_co2krigedsimsk421435ade.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_5640f8-1/data_stars_co2krigedsimsk431a916b5.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_6dfa49-1/data_stars_co2krigedsimsk4415d1b80.txt"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Naslund Chapter 1 Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Sampling scheme</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#dissolved-oxygen"><i class="fa fa-check"></i><b>1.1</b> Dissolved oxygen</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#deans"><i class="fa fa-check"></i><b>1.1.1</b> Deans</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#catfish"><i class="fa fa-check"></i><b>1.1.2</b> Catfish</a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#sister-3"><i class="fa fa-check"></i><b>1.1.3</b> Sister 3</a></li>
+<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#pick"><i class="fa fa-check"></i><b>1.1.4</b> Pick</a></li>
+<li class="chapter" data-level="1.1.5" data-path="index.html"><a href="index.html#all-impoundments-top-do"><i class="fa fa-check"></i><b>1.1.5</b> All impoundments top DO</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#temperature"><i class="fa fa-check"></i><b>1.2</b> Temperature</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#deans-1"><i class="fa fa-check"></i><b>1.2.1</b> Deans</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#catfish-1"><i class="fa fa-check"></i><b>1.2.2</b> Catfish</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#sister-3-1"><i class="fa fa-check"></i><b>1.2.3</b> Sister 3</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#pick-1"><i class="fa fa-check"></i><b>1.2.4</b> Pick</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#par"><i class="fa fa-check"></i><b>1.3</b> PAR</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#deans-2"><i class="fa fa-check"></i><b>1.3.1</b> Deans</a></li>
+<li class="chapter" data-level="1.3.2" data-path="index.html"><a href="index.html#catfish-2"><i class="fa fa-check"></i><b>1.3.2</b> Catfish</a></li>
+<li class="chapter" data-level="1.3.3" data-path="index.html"><a href="index.html#pick-2"><i class="fa fa-check"></i><b>1.3.3</b> Pick</a></li>
+<li class="chapter" data-level="1.3.4" data-path="index.html"><a href="index.html#sister3"><i class="fa fa-check"></i><b>1.3.4</b> Sister3</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#dissolved-gas-concentrations"><i class="fa fa-check"></i><b>1.4</b> Dissolved gas concentrations</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#wind-speed"><i class="fa fa-check"></i><b>1.5</b> Wind Speed</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#residence-time-calculation"><i class="fa fa-check"></i><b>1.6</b> Residence time calculation</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html"><i class="fa fa-check"></i><b>2</b> Diffusive emissions</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-diffusive-81622-81722"><i class="fa fa-check"></i><b>2.1</b> Deans Diffusive 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="2.2" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-diffusive-83022-83122"><i class="fa fa-check"></i><b>2.2</b> Deans Diffusive 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="2.3" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#deans-cloud-comparison"><i class="fa fa-check"></i><b>2.3</b> Deans Cloud Comparison</a></li>
+<li class="chapter" data-level="2.4" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-diffusive-9622-9722"><i class="fa fa-check"></i><b>2.4</b> Catfish Diffusive 9/6/22-9/7/22</a></li>
+<li class="chapter" data-level="2.5" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-diffusive-91822-91922"><i class="fa fa-check"></i><b>2.5</b> Catfish Diffusive 9/18/22-9/19/22</a></li>
+<li class="chapter" data-level="2.6" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-cloud-comparison"><i class="fa fa-check"></i><b>2.6</b> Catfish Cloud Comparison</a></li>
+<li class="chapter" data-level="2.7" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#pick-diffusive-91322--91422"><i class="fa fa-check"></i><b>2.7</b> Pick Diffusive 9/13/22- 9/14/22</a></li>
+<li class="chapter" data-level="2.8" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#sister3-diffusive-82222-82322"><i class="fa fa-check"></i><b>2.8</b> Sister3 Diffusive 8/22/22-8/23/22</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ebullition.html"><a href="ebullition.html"><i class="fa fa-check"></i><b>3</b> Ebullition</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="ebullition.html"><a href="ebullition.html#deans-ebullitive-81622-81722"><i class="fa fa-check"></i><b>3.1</b> Deans Ebullitive 8/16/22-8/17/22</a></li>
+<li class="chapter" data-level="3.2" data-path="ebullition.html"><a href="ebullition.html#deans-ebullitive-83022-83122"><i class="fa fa-check"></i><b>3.2</b> Deans Ebullitive 8/30/22-8/31/22</a></li>
+<li class="chapter" data-level="3.3" data-path="ebullition.html"><a href="ebullition.html#catfish-ebullitive-90622-90722"><i class="fa fa-check"></i><b>3.3</b> Catfish Ebullitive 9/06/22-9/07/22</a></li>
+<li class="chapter" data-level="3.4" data-path="ebullition.html"><a href="ebullition.html#catfish-ebullitive-91822-91922"><i class="fa fa-check"></i><b>3.4</b> Catfish Ebullitive 9/18/22-9/19/22</a></li>
+<li class="chapter" data-level="3.5" data-path="ebullition.html"><a href="ebullition.html#pick-ebullitive-91322-91422"><i class="fa fa-check"></i><b>3.5</b> Pick Ebullitive 9/13/22-9/14/22</a></li>
+<li class="chapter" data-level="3.6" data-path="ebullition.html"><a href="ebullition.html#sister-ebullitive-3-82222-82322"><i class="fa fa-check"></i><b>3.6</b> Sister Ebullitive 3 8/22/22-8/23/22</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="simple-kriging-just-in-space.html"><a href="simple-kriging-just-in-space.html"><i class="fa fa-check"></i><b>4</b> Simple kriging just in space</a></li>
+<li class="chapter" data-level="5" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html"><i class="fa fa-check"></i><b>5</b> Ebullition Analysis</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#plots"><i class="fa fa-check"></i><b>5.1</b> Plots</a></li>
+<li class="chapter" data-level="5.2" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod1-non-zero-data-fixed-effects-only"><i class="fa fa-check"></i><b>5.2</b> Mod1: Non-zero data, fixed effects only</a></li>
+<li class="chapter" data-level="5.3" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2-non-zero-data-mixed-model"><i class="fa fa-check"></i><b>5.3</b> Mod2: Non zero data, mixed model</a></li>
+<li class="chapter" data-level="5.4" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2.a-non-zero-data-mixed-model-without-picks"><i class="fa fa-check"></i><b>5.4</b> Mod2.a: Non zero data, mixed model without Picks</a></li>
+<li class="chapter" data-level="5.5" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod2.b-non-zero-data-mixed-model-only-picks"><i class="fa fa-check"></i><b>5.5</b> Mod2.b: Non zero data, mixed model only Picks</a></li>
+<li class="chapter" data-level="5.6" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod3-logistic-regression-fixed-effects-only"><i class="fa fa-check"></i><b>5.6</b> Mod3: Logistic regression, fixed effects only</a></li>
+<li class="chapter" data-level="5.7" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4-logistic-regression-mixed-model"><i class="fa fa-check"></i><b>5.7</b> Mod4: Logistic regression, mixed model</a></li>
+<li class="chapter" data-level="5.8" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4.a-logistic-regression-mixed-model-without-picks"><i class="fa fa-check"></i><b>5.8</b> Mod4.a: Logistic regression, mixed model without Picks</a></li>
+<li class="chapter" data-level="5.9" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod4.b-logistic-regression-mixed-model-only-picks"><i class="fa fa-check"></i><b>5.9</b> Mod4.b: Logistic regression, mixed model only Picks</a></li>
+<li class="chapter" data-level="5.10" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod5-hurdle-model-predictors-generate-structural-zeros"><i class="fa fa-check"></i><b>5.10</b> Mod5: Hurdle model, predictors generate structural zeros</a></li>
+<li class="chapter" data-level="5.11" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#model-selection-with-mod5-predictors"><i class="fa fa-check"></i><b>5.11</b> Model selection with Mod5 predictors</a></li>
+<li class="chapter" data-level="5.12" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod6-hurdle-model-equal-probability-of-structural-zeros"><i class="fa fa-check"></i><b>5.12</b> Mod6: Hurdle model, equal probability of structural zeros</a></li>
+<li class="chapter" data-level="5.13" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod7-not-broken-up-by-time-no-longer-zero-inflated-sampling-random-effect"><i class="fa fa-check"></i><b>5.13</b> Mod7: Not broken up by time, no longer zero-inflated, sampling random effect</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="by-transect.html"><a href="by-transect.html"><i class="fa fa-check"></i><b>6</b> By transect</a></li>
+<li class="chapter" data-level="7" data-path="diffusion-estimates.html"><a href="diffusion-estimates.html"><i class="fa fa-check"></i><b>7</b> Diffusion estimates</a></li>
+<li class="chapter" data-level="8" data-path="ebullition-estimates.html"><a href="ebullition-estimates.html"><i class="fa fa-check"></i><b>8</b> Ebullition estimates</a></li>
+<li class="chapter" data-level="9" data-path="flux-summary-stats-prep.html"><a href="flux-summary-stats-prep.html"><i class="fa fa-check"></i><b>9</b> Flux summary stats prep</a></li>
+<li class="chapter" data-level="10" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html"><i class="fa fa-check"></i><b>10</b> Total flux estimates</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#summary-flux-table-masses-and-rates"><i class="fa fa-check"></i><b>10.1</b> Summary flux table masses and rates</a></li>
+<li class="chapter" data-level="10.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#summary-table-co2-eq"><i class="fa fa-check"></i><b>10.2</b> Summary Table CO2-eq</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#pathway"><i class="fa fa-check"></i><b>10.2.1</b> Pathway</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-ch4"><i class="fa fa-check"></i><b>10.3</b> Diel Diffusive CH4</a></li>
+<li class="chapter" data-level="10.4" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-co2"><i class="fa fa-check"></i><b>10.4</b> Diel Diffusive CO2</a></li>
+<li class="chapter" data-level="10.5" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-ebullition"><i class="fa fa-check"></i><b>10.5</b> Diel ebullition</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="sunny-cloudy-analysis.html"><a href="sunny-cloudy-analysis.html"><i class="fa fa-check"></i><b>11</b> Sunny Cloudy Analysis</a></li>
+<li class="chapter" data-level="12" data-path="degassing-analysis.html"><a href="degassing-analysis.html"><i class="fa fa-check"></i><b>12</b> Degassing analysis</a></li>
+<li class="chapter" data-level="13" data-path="alternative-sampling-scheme-simulations.html"><a href="alternative-sampling-scheme-simulations.html"><i class="fa fa-check"></i><b>13</b> Alternative sampling scheme simulations</a></li>
+<li class="chapter" data-level="14" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html"><i class="fa fa-check"></i><b>14</b> Analyses of patterns of diel diffusive emissions</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#ch4-models"><i class="fa fa-check"></i><b>14.1</b> CH4 models</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#windspeed-with-handheld-anemometer"><i class="fa fa-check"></i><b>14.1.1</b> windspeed with handheld anemometer</a></li>
+<li class="chapter" data-level="14.1.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#light"><i class="fa fa-check"></i><b>14.1.2</b> Light</a></li>
+<li class="chapter" data-level="14.1.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#temperature-1"><i class="fa fa-check"></i><b>14.1.3</b> Temperature</a></li>
+<li class="chapter" data-level="14.1.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#dissolved-oxygen-1"><i class="fa fa-check"></i><b>14.1.4</b> Dissolved oxygen</a></li>
+<li class="chapter" data-level="14.1.5" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#multiple-predictors"><i class="fa fa-check"></i><b>14.1.5</b> Multiple predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#co2-models"><i class="fa fa-check"></i><b>14.2</b> CO2 models</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#windspeed-with-handheld-anemometer-1"><i class="fa fa-check"></i><b>14.2.1</b> windspeed with handheld anemometer</a></li>
+<li class="chapter" data-level="14.2.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#light-1"><i class="fa fa-check"></i><b>14.2.2</b> Light</a></li>
+<li class="chapter" data-level="14.2.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#temperature-2"><i class="fa fa-check"></i><b>14.2.3</b> Temperature</a></li>
+<li class="chapter" data-level="14.2.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#dissolved-oxygen-2"><i class="fa fa-check"></i><b>14.2.4</b> Dissolved oxygen</a></li>
+<li class="chapter" data-level="14.2.5" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#multiple-predictors-1"><i class="fa fa-check"></i><b>14.2.5</b> Multiple predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#ch4-plots"><i class="fa fa-check"></i><b>14.3</b> CH4 plots</a></li>
+<li class="chapter" data-level="14.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#co2-plots"><i class="fa fa-check"></i><b>14.4</b> CO2 plots</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">12-outputs</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="by-transect" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> By transect<a href="by-transect.html#by-transect" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="by-transect.html#cb101-1" aria-hidden="true" tabindex="-1"></a>mod8 <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr_24 <span class="sc">~</span> Transect <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Sampling), <span class="at">data =</span> ebullition_24 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Transect =</span> <span class="fu">str_sub</span>(Trap, <span class="dv">2</span>, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>()) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr_24 <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
+<span id="cb101-2"><a href="by-transect.html#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod8)</span></code></pre></div>
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
+##  Family: Gamma  ( log )
+## Formula: ch4_eb_g_m2_hr_24 ~ Transect + (1 | Sampling)
+##    Data: ebullition_24 %&gt;% mutate(Transect = str_sub(Trap, 2, 2) %&gt;% as.numeric()) %&gt;%      filter(ch4_eb_g_m2_hr_24 &gt; 0)
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##  -1402.0  -1390.1    705.0  -1410.0      139 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -0.7665 -0.5281 -0.2446  0.2079  8.8986 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  Sampling (Intercept) 1.101    1.049   
+##  Residual             1.585    1.259   
+## Number of obs: 143, groups:  Sampling, 6
+## 
+## Fixed effects:
+##             Estimate Std. Error t value Pr(&gt;|z|)    
+## (Intercept) -7.12885    0.38159 -18.682  &lt; 2e-16 ***
+## Transect     0.36462    0.05145   7.087 1.37e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##          (Intr)
+## Transect -0.408</code></pre>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="by-transect.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_nakagawa</span>(mod8)</span></code></pre></div>
+<pre><code>## # R2 for Mixed Models
+## 
+##   Conditional R2: 0.464
+##      Marginal R2: 0.091</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (`geom_point()`).</code></pre>
+<p><img src="_main_files/figure-html/plot%20depth%20gamma-1.png" width="672" /><img src="_main_files/figure-html/plot%20depth%20gamma-2.png" width="672" /><img src="_main_files/figure-html/plot%20depth%20gamma-3.png" width="672" /></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ebullition-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="diffusion-estimates.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-ebullition-analysis.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

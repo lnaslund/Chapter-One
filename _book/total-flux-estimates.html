@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 9 Total flux estimates | Naslund Chapter 1 Analysis</title>
+  <title>Chapter 10 Total flux estimates | 12-outputs</title>
   <meta name="description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
-  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 9 Total flux estimates | Naslund Chapter 1 Analysis" />
+  <meta property="og:title" content="Chapter 10 Total flux estimates | 12-outputs" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 Total flux estimates | Naslund Chapter 1 Analysis" />
+  <meta name="twitter:title" content="Chapter 10 Total flux estimates | 12-outputs" />
   
   <meta name="twitter:description" content="This is the documentation of an analysis of spatial and temporal variability of greenhouse gas emissions from small reservoirs" />
   
 
-<meta name="author" content="Laura Naslund" />
+<meta name="author" content="L. Naslund" />
 
 
-<meta name="date" content="2023-03-09" />
+<meta name="date" content="2023-04-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="flux-summary-stats-prep.html"/>
-
+<link rel="next" href="sunny-cloudy-analysis.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -52,16 +52,16 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
 <link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
 <script src="libs/HomeButton-0.0.1/home-button.js"></script>
 <script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
@@ -76,18 +76,18 @@
 <script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
 <script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
 <link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
-<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_acf3e1-1/data_stars_co2krigedsimsk41135fc2d.txt"></script>
+<script src="libs/joda-0.0.1/joda.js"></script>
+<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_9a2db1-1/data_stars_co2krigedsimsk421435ade.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_5640f8-1/data_stars_co2krigedsimsk431a916b5.txt"></script>
+<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_6dfa49-1/data_stars_co2krigedsimsk4415d1b80.txt"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_7056da-1/data_stars_co2krigedsimsk411df7125.txt"></script>
-<script src="libs/joda-0.0.1/joda.js"></script>
-<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_a683d5-1/data_stars_co2krigedsimsk42135192b.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_721a6d-1/data_stars_co2krigedsimsk431576a38.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_1cb0da-1/data_stars_co2krigedsimsk4415b206a.txt"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -210,7 +210,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.6" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#catfish-cloud-comparison"><i class="fa fa-check"></i><b>2.6</b> Catfish Cloud Comparison</a></li>
 <li class="chapter" data-level="2.7" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#pick-diffusive-91322--91422"><i class="fa fa-check"></i><b>2.7</b> Pick Diffusive 9/13/22- 9/14/22</a></li>
 <li class="chapter" data-level="2.8" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#sister3-diffusive-82222-82322"><i class="fa fa-check"></i><b>2.8</b> Sister3 Diffusive 8/22/22-8/23/22</a></li>
-<li class="chapter" data-level="2.9" data-path="diffusive-emissions.html"><a href="diffusive-emissions.html#windspeed-analysis"><i class="fa fa-check"></i><b>2.9</b> Windspeed Analysis</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="ebullition.html"><a href="ebullition.html"><i class="fa fa-check"></i><b>3</b> Ebullition</a>
 <ul>
@@ -238,19 +237,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.12" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod6-hurdle-model-equal-probability-of-structural-zeros"><i class="fa fa-check"></i><b>5.12</b> Mod6: Hurdle model, equal probability of structural zeros</a></li>
 <li class="chapter" data-level="5.13" data-path="ebullition-analysis.html"><a href="ebullition-analysis.html#mod7-not-broken-up-by-time-no-longer-zero-inflated-sampling-random-effect"><i class="fa fa-check"></i><b>5.13</b> Mod7: Not broken up by time, no longer zero-inflated, sampling random effect</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="diffusion-estimates.html"><a href="diffusion-estimates.html"><i class="fa fa-check"></i><b>6</b> Diffusion estimates</a></li>
-<li class="chapter" data-level="7" data-path="ebullition-estimates.html"><a href="ebullition-estimates.html"><i class="fa fa-check"></i><b>7</b> Ebullition estimates</a></li>
-<li class="chapter" data-level="8" data-path="flux-summary-stats-prep.html"><a href="flux-summary-stats-prep.html"><i class="fa fa-check"></i><b>8</b> Flux summary stats prep</a></li>
-<li class="chapter" data-level="9" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html"><i class="fa fa-check"></i><b>9</b> Total flux estimates</a>
+<li class="chapter" data-level="6" data-path="by-transect.html"><a href="by-transect.html"><i class="fa fa-check"></i><b>6</b> By transect</a></li>
+<li class="chapter" data-level="7" data-path="diffusion-estimates.html"><a href="diffusion-estimates.html"><i class="fa fa-check"></i><b>7</b> Diffusion estimates</a></li>
+<li class="chapter" data-level="8" data-path="ebullition-estimates.html"><a href="ebullition-estimates.html"><i class="fa fa-check"></i><b>8</b> Ebullition estimates</a></li>
+<li class="chapter" data-level="9" data-path="flux-summary-stats-prep.html"><a href="flux-summary-stats-prep.html"><i class="fa fa-check"></i><b>9</b> Flux summary stats prep</a></li>
+<li class="chapter" data-level="10" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html"><i class="fa fa-check"></i><b>10</b> Total flux estimates</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#summary-flux-table-masses-and-rates"><i class="fa fa-check"></i><b>9.1</b> Summary flux table masses and rates</a></li>
-<li class="chapter" data-level="9.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#summary-table-co2-eq"><i class="fa fa-check"></i><b>9.2</b> Summary Table CO2-eq</a>
+<li class="chapter" data-level="10.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#summary-flux-table-masses-and-rates"><i class="fa fa-check"></i><b>10.1</b> Summary flux table masses and rates</a></li>
+<li class="chapter" data-level="10.2" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#summary-table-co2-eq"><i class="fa fa-check"></i><b>10.2</b> Summary Table CO2-eq</a>
 <ul>
-<li class="chapter" data-level="9.2.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#pathway"><i class="fa fa-check"></i><b>9.2.1</b> Pathway</a></li>
+<li class="chapter" data-level="10.2.1" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#pathway"><i class="fa fa-check"></i><b>10.2.1</b> Pathway</a></li>
 </ul></li>
-<li class="chapter" data-level="9.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-ch4"><i class="fa fa-check"></i><b>9.3</b> Diel Diffusive CH4</a></li>
-<li class="chapter" data-level="9.4" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-co2"><i class="fa fa-check"></i><b>9.4</b> Diel Diffusive CO2</a></li>
-<li class="chapter" data-level="9.5" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-ebullition"><i class="fa fa-check"></i><b>9.5</b> Diel ebullition</a></li>
+<li class="chapter" data-level="10.3" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-ch4"><i class="fa fa-check"></i><b>10.3</b> Diel Diffusive CH4</a></li>
+<li class="chapter" data-level="10.4" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-diffusive-co2"><i class="fa fa-check"></i><b>10.4</b> Diel Diffusive CO2</a></li>
+<li class="chapter" data-level="10.5" data-path="total-flux-estimates.html"><a href="total-flux-estimates.html#diel-ebullition"><i class="fa fa-check"></i><b>10.5</b> Diel ebullition</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="sunny-cloudy-analysis.html"><a href="sunny-cloudy-analysis.html"><i class="fa fa-check"></i><b>11</b> Sunny Cloudy Analysis</a></li>
+<li class="chapter" data-level="12" data-path="degassing-analysis.html"><a href="degassing-analysis.html"><i class="fa fa-check"></i><b>12</b> Degassing analysis</a></li>
+<li class="chapter" data-level="13" data-path="alternative-sampling-scheme-simulations.html"><a href="alternative-sampling-scheme-simulations.html"><i class="fa fa-check"></i><b>13</b> Alternative sampling scheme simulations</a></li>
+<li class="chapter" data-level="14" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html"><i class="fa fa-check"></i><b>14</b> Analyses of patterns of diel diffusive emissions</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#ch4-models"><i class="fa fa-check"></i><b>14.1</b> CH4 models</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#windspeed-with-handheld-anemometer"><i class="fa fa-check"></i><b>14.1.1</b> windspeed with handheld anemometer</a></li>
+<li class="chapter" data-level="14.1.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#light"><i class="fa fa-check"></i><b>14.1.2</b> Light</a></li>
+<li class="chapter" data-level="14.1.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#temperature-1"><i class="fa fa-check"></i><b>14.1.3</b> Temperature</a></li>
+<li class="chapter" data-level="14.1.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#dissolved-oxygen-1"><i class="fa fa-check"></i><b>14.1.4</b> Dissolved oxygen</a></li>
+<li class="chapter" data-level="14.1.5" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#multiple-predictors"><i class="fa fa-check"></i><b>14.1.5</b> Multiple predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#co2-models"><i class="fa fa-check"></i><b>14.2</b> CO2 models</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#windspeed-with-handheld-anemometer-1"><i class="fa fa-check"></i><b>14.2.1</b> windspeed with handheld anemometer</a></li>
+<li class="chapter" data-level="14.2.2" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#light-1"><i class="fa fa-check"></i><b>14.2.2</b> Light</a></li>
+<li class="chapter" data-level="14.2.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#temperature-2"><i class="fa fa-check"></i><b>14.2.3</b> Temperature</a></li>
+<li class="chapter" data-level="14.2.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#dissolved-oxygen-2"><i class="fa fa-check"></i><b>14.2.4</b> Dissolved oxygen</a></li>
+<li class="chapter" data-level="14.2.5" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#multiple-predictors-1"><i class="fa fa-check"></i><b>14.2.5</b> Multiple predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#ch4-plots"><i class="fa fa-check"></i><b>14.3</b> CH4 plots</a></li>
+<li class="chapter" data-level="14.4" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#co2-plots"><i class="fa fa-check"></i><b>14.4</b> CO2 plots</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -264,7 +288,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Naslund Chapter 1 Analysis</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">12-outputs</a>
           </h1>
         </div>
 
@@ -272,78 +296,126 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="total-flux-estimates" class="section level1 hasAnchor" number="9">
-<h1><span class="header-section-number">Chapter 9</span> Total flux estimates<a href="total-flux-estimates.html#total-flux-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="summary-flux-table-masses-and-rates" class="section level2 hasAnchor" number="9.1">
-<h2><span class="header-section-number">9.1</span> Summary flux table masses and rates<a href="total-flux-estimates.html#summary-flux-table-masses-and-rates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<pre><code>##       site     date    pathway gas flux_mean_g_day flux_2.5_g_day flux_97.5_g_day flux_mean_g_m2_day flux_2.5_g_m2_day flux_97.5_g_m2_day flux_mean_g_day_co2_eq flux_2.5_g_day_co2_eq flux_97.5_g_day_co2_eq
-## 1  Catfish 09/06/22  diffusion CH4        20.64285       13.34017        28.91009        0.011780753       0.007613153        0.016498818               557.3570              360.1845              780.57251
-## 2  Catfish 09/06/22  diffusion CO2      5511.99890     4798.48983      6379.03853        3.145664879       2.738469511        3.640479220              5511.9989             4798.4898             6379.03853
-## 3  Catfish 09/06/22 ebullition CH4       214.34185      119.58192       356.66288        0.122323616       0.068244686        0.203545378              5787.2300             3228.7117             9629.89779
-## 4  Catfish 09/18/22  diffusion CH4        19.62964       11.96863        30.33360        0.011202517       0.006830424        0.017311203               530.0002              323.1529              819.00711
-## 5  Catfish 09/18/22  diffusion CO2      4261.23547     3649.21517      4976.30544        2.431861656       2.082585319        2.839947817              4261.2355             3649.2152             4976.30544
-## 6  Catfish 09/18/22 ebullition CH4        66.34307       36.81873       115.10815        0.037861595       0.021012231        0.065691537              1791.2629              994.1058             3107.92018
-## 7    Deans 08/16/22  diffusion CH4        50.08869       38.33435        62.25400        0.012047458       0.009220274        0.014973490              1352.3947             1035.0274             1680.85809
-## 8    Deans 08/16/22  diffusion CO2     13492.91209    11512.34428     15746.14190        3.245349242       2.768978079        3.787301759             13492.9121            11512.3443            15746.14190
-## 9    Deans 08/16/22 ebullition CH4        96.60728       27.10787       201.11958        0.023236227       0.006520052        0.048373789              2608.3966              731.9124             5430.22871
-## 10   Deans 08/30/22  diffusion CH4        25.74449       21.15081        31.15960        0.006192131       0.005087247        0.007494587               695.1014              571.0720              841.30931
-## 11   Deans 08/30/22  diffusion CO2      4982.78186     4280.08148      5732.67871        1.198471259       1.029455991        1.378838341              4982.7819             4280.0815             5732.67871
-## 12   Deans 08/30/22 ebullition CH4       158.13828       78.70263       256.14321        0.038035817       0.018929755        0.061608210              4269.7334             2124.9710             6915.86655
-## 13    Pick 09/13/22  diffusion CH4      2283.48643     1917.18105      2694.18365        0.295901000       0.248434053        0.349120374             61654.1337            51763.8882            72742.95859
-## 14    Pick 09/13/22  diffusion CO2     25929.89716    20635.08105     31432.48447        3.360073609       2.673955505        4.073115326             25929.8972            20635.0811            31432.48447
-## 15    Pick 09/13/22 ebullition CH4      1770.53938     1184.97243      2503.30440        0.229431787       0.153552271        0.324385669             47804.5633            31994.2557            67589.21872
-## 16 Sister3 08/22/22  diffusion CH4        13.60304       11.60757        15.90371        0.011580510       0.009881726        0.013539108               367.2822              313.4043              429.40019
-## 17 Sister3 08/22/22  diffusion CO2      -114.84720     -178.33023       -51.14731       -0.097771440      -0.151815654       -0.043542606              -114.8472             -178.3302              -51.14731
-## 18 Sister3 08/22/22 ebullition CH4        81.33050       58.51445       107.44405        0.069238080       0.049814377        0.091469004              2195.9234             1579.8901             2900.98930</code></pre>
+<div id="total-flux-estimates" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Total flux estimates<a href="total-flux-estimates.html#total-flux-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="summary-flux-table-masses-and-rates" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Summary flux table masses and rates<a href="total-flux-estimates.html#summary-flux-table-masses-and-rates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>##       site     date    pathway gas flux_mean_g_m2_day flux_2.5_g_m2_day flux_97.5_g_m2_day flux_mean_g_day_co2_eq flux_2.5_g_day_co2_eq
+## 1  Catfish 09/06/22  diffusion CH4        0.011693273       0.007541918        0.016375039              553.21830              356.8143
+## 2  Catfish 09/06/22  diffusion CO2        3.136155443       2.731721856        3.625338182             5495.33597             4786.6662
+## 3  Catfish 09/06/22 ebullition CH4        0.122323616       0.068244686        0.203545378             5787.23001             3228.7117
+## 4  Catfish 09/18/22  diffusion CH4        0.011220649       0.006845575        0.017339649              530.85806              323.8697
+## 5  Catfish 09/18/22  diffusion CO2        2.424722663       2.076588119        2.831110621             4248.72616             3638.7066
+## 6  Catfish 09/18/22 ebullition CH4        0.037861595       0.021012231        0.065691537             1791.26294              994.1058
+## 7    Deans 08/16/22  diffusion CH4        0.012068835       0.009006769        0.015117749             1354.79434             1011.0603
+## 8    Deans 08/16/22  diffusion CO2        3.219980439       2.756971958        3.750607506            13387.43837            11462.4275
+## 9    Deans 08/16/22 ebullition CH4        0.023236227       0.006520052        0.048373789             2608.39660              731.9124
+## 10   Deans 08/30/22  diffusion CH4        0.006365426       0.005215432        0.007714407              714.55472              585.4614
+## 11   Deans 08/30/22  diffusion CO2        1.189342033       1.023019529        1.365895730             4944.82606             4253.3211
+## 12   Deans 08/30/22 ebullition CH4        0.038035817       0.018929755        0.061608210             4269.73344             2124.9710
+## 13    Pick 09/13/22  diffusion CH4        0.294927413       0.247766512        0.347791996            61451.27653            51624.7989
+## 14    Pick 09/13/22  diffusion CO2        3.621730097       2.941075197        4.333192201            27949.11656            22696.4603
+## 15    Pick 09/13/22 ebullition CH4        0.229431787       0.153552271        0.324385669            47804.56328            31994.2557
+## 16 Sister3 08/22/22  diffusion CH4        0.011444090       0.009795347        0.013339306              362.95554              310.6648
+## 17 Sister3 08/22/22  diffusion CO2       -0.074443000      -0.126191223       -0.022126998              -87.44446             -148.2305
+## 18 Sister3 08/22/22 ebullition CH4        0.069238080       0.049814377        0.091469004             2195.92345             1579.8901
+##    flux_97.5_g_day_co2_eq
+## 1               774.71645
+## 2              6352.50761
+## 3              9629.89779
+## 4               820.35295
+## 5              4960.82044
+## 6              3107.92018
+## 7              1697.05197
+## 8             15593.58133
+## 9              5430.22871
+## 10              865.98535
+## 11             5678.86832
+## 12             6915.86655
+## 13            72466.17698
+## 14            33439.51390
+## 15            67589.21872
+## 16              423.06335
+## 17              -25.99147
+## 18             2900.98930</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##   site    date     diffusion_CO2 diffusion_CH4 ebullition_CH4
+##   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
+## 1 Catfish 09/06/22        3.14          0.0117         0.122 
+## 2 Catfish 09/18/22        2.42          0.0112         0.0379
+## 3 Deans   08/16/22        3.22          0.0121         0.0232
+## 4 Deans   08/30/22        1.19          0.0064         0.038 
+## 5 Pick    09/13/22        3.62          0.295          0.229 
+## 6 Sister3 08/22/22       -0.0744        0.0114         0.0692</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##   site    date     diffusion_CO2 diffusion_CH4 ebullition_CH4
+##   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
+## 1 Catfish 09/06/22         2.73         0.0075         0.0682
+## 2 Catfish 09/18/22         2.08         0.0068         0.021 
+## 3 Deans   08/16/22         2.76         0.009          0.0065
+## 4 Deans   08/30/22         1.02         0.0052         0.0189
+## 5 Pick    09/13/22         2.94         0.248          0.154 
+## 6 Sister3 08/22/22        -0.126        0.0098         0.0498</code></pre>
+<pre><code>## # A tibble: 6 × 5
+##   site    date     diffusion_CO2 diffusion_CH4 ebullition_CH4
+##   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
+## 1 Catfish 09/06/22        3.63          0.0164         0.204 
+## 2 Catfish 09/18/22        2.83          0.0173         0.0657
+## 3 Deans   08/16/22        3.75          0.0151         0.0484
+## 4 Deans   08/30/22        1.37          0.0077         0.0616
+## 5 Pick    09/13/22        4.33          0.348          0.324 
+## 6 Sister3 08/22/22       -0.0221        0.0133         0.0915</code></pre>
 </div>
-<div id="summary-table-co2-eq" class="section level2 hasAnchor" number="9.2">
-<h2><span class="header-section-number">9.2</span> Summary Table CO2-eq<a href="total-flux-estimates.html#summary-table-co2-eq" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<pre><code>## `summarise()` has grouped output by &#39;site&#39;. You can override using the `.groups` argument.</code></pre>
-<pre><code>## # A tibble: 6 × 4
-## # Groups:   site [4]
-##   site    date     mean_total_kg_co2_eq_day mean_total_kg_co2_eq_m2_day
-##   &lt;chr&gt;   &lt;chr&gt;                       &lt;dbl&gt;                       &lt;dbl&gt;
-## 1 Catfish 09/06/22                    11.9                      0.00677
-## 2 Catfish 09/18/22                     6.58                     0.00376
-## 3 Deans   08/16/22                    17.5                      0.00420
-## 4 Deans   08/30/22                     9.95                     0.00239
-## 5 Pick    09/13/22                   135.                       0.0175 
-## 6 Sister3 08/22/22                     2.45                     0.00208</code></pre>
-<div id="pathway" class="section level3 hasAnchor" number="9.2.1">
-<h3><span class="header-section-number">9.2.1</span> Pathway<a href="total-flux-estimates.html#pathway" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><img src="_main_files/figure-html/pathways%20summary%20fig-1.png" width="672" /></p>
+<div id="summary-table-co2-eq" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Summary Table CO2-eq<a href="total-flux-estimates.html#summary-table-co2-eq" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>## # A tibble: 6 × 9
+##   site    date     diffusion_CH4 diffusion_CO2 ebullition_CH4 total prop_co2 prop_ch4_diff prop_ch4_eb
+##   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
+## 1 Catfish 09/06/22         0.316        3.14            3.30   6.75    46.4           4.67        48.9
+## 2 Catfish 09/18/22         0.303        2.42            1.02   3.75    64.7           8.08        27.3
+## 3 Deans   08/16/22         0.326        3.22            0.627  4.17    77.2           7.81        15.0
+## 4 Deans   08/30/22         0.172        1.19            1.03   2.39    49.8           7.20        43.0
+## 5 Pick    09/13/22         7.96         3.62            6.19  17.8     20.4          44.8         34.8
+## 6 Sister3 08/22/22         0.309       -0.0744          1.87   2.10    -3.54         14.7         88.9</code></pre>
+<div id="pathway" class="section level3 hasAnchor" number="10.2.1">
+<h3><span class="header-section-number">10.2.1</span> Pathway<a href="total-flux-estimates.html#pathway" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><img src="_main_files/figure-html/pathways%20summary%20fig-1.png" width="672" /><img src="_main_files/figure-html/pathways%20summary%20fig-2.png" width="672" /></p>
+<pre><code>## null device 
+##           1</code></pre>
 </div>
 </div>
-<div id="diel-diffusive-ch4" class="section level2 hasAnchor" number="9.3">
-<h2><span class="header-section-number">9.3</span> Diel Diffusive CH4<a href="total-flux-estimates.html#diel-diffusive-ch4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="diel-diffusive-ch4" class="section level2 hasAnchor" number="10.3">
+<h2><span class="header-section-number">10.3</span> Diel Diffusive CH4<a href="total-flux-estimates.html#diel-diffusive-ch4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Log-transformed axis</p>
 <pre><code>## Warning in self$trans$transform(x): NaNs produced</code></pre>
 <pre><code>## Warning: Transformation introduced infinite values in continuous y-axis</code></pre>
 <p><img src="_main_files/figure-html/log%20diel%20ch4-1.png" width="672" /></p>
 <p>Untransformed axis
 <img src="_main_files/figure-html/diel%20ch4-1.png" width="672" /></p>
-<p>Untransformed rate
-<img src="_main_files/figure-html/diel%20ch4%20rate-1.png" width="672" /></p>
+<p>Untransformed rate</p>
 <p>Untransformed without Picks
 <img src="_main_files/figure-html/diel%20ch4%20no%20pick-1.png" width="672" /></p>
 </div>
-<div id="diel-diffusive-co2" class="section level2 hasAnchor" number="9.4">
-<h2><span class="header-section-number">9.4</span> Diel Diffusive CO2<a href="total-flux-estimates.html#diel-diffusive-co2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="diel-diffusive-co2" class="section level2 hasAnchor" number="10.4">
+<h2><span class="header-section-number">10.4</span> Diel Diffusive CO2<a href="total-flux-estimates.html#diel-diffusive-co2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Untransformed
 <img src="_main_files/figure-html/diel%20co2-1.png" width="672" /></p>
-<p><img src="_main_files/figure-html/diel%20co2%20rate-1.png" width="672" /></p>
 <p><img src="_main_files/figure-html/diel%20co2%20rate%20no%20pick-1.png" width="672" /></p>
 <p>Untransformed without Picks
 <img src="_main_files/figure-html/diel%20co2%20no%20pick-1.png" width="672" /></p>
 </div>
-<div id="diel-ebullition" class="section level2 hasAnchor" number="9.5">
-<h2><span class="header-section-number">9.5</span> Diel ebullition<a href="total-flux-estimates.html#diel-ebullition" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="diel-ebullition" class="section level2 hasAnchor" number="10.5">
+<h2><span class="header-section-number">10.5</span> Diel ebullition<a href="total-flux-estimates.html#diel-ebullition" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Untransformed
 <img src="_main_files/figure-html/diel%20eb-1.png" width="672" /></p>
-<p>Untransformed rate
-<img src="_main_files/figure-html/diel%20eb%20rate-1.png" width="672" /></p>
+<p>Untransformed rate</p>
 <p>Untransformed without Picks
 <img src="_main_files/figure-html/diel%20eb%20no%20pick-1.png" width="672" /></p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="total-flux-estimates.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">&quot;4-Figures/periods.png&quot;</span>, <span class="at">width =</span> <span class="fl">7.5</span>, <span class="at">height =</span> <span class="fl">11.5</span>, <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
+<span id="cb146-2"><a href="total-flux-estimates.html#cb146-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(co2_diel, ch4_diel, eb_diel, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">labels =</span> <span class="st">&quot;AUTO&quot;</span>, <span class="at">label_size =</span> <span class="dv">18</span>, <span class="at">vjust =</span> <span class="fl">1.3</span>)</span>
+<span id="cb146-3"><a href="total-flux-estimates.html#cb146-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
+<pre><code>## png 
+##   2</code></pre>
 
 </div>
 </div>
@@ -352,8 +424,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="flux-summary-stats-prep.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="flux-summary-stats-prep.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sunny-cloudy-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

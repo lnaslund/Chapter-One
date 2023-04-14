@@ -18,29 +18,29 @@ temps <- read.csv("../1-Raw Data/dissolved-gas/EquilibrationTemps_2022.csv") %>%
 ```{r}
 data_20221011 <- read.csv("../1-Raw Data/dissolved-gas/GC_Data_20221011_equil.csv") %>% 
   left_join(temps %>% select(Vial, Temp), by = "Vial") %>% 
-  mutate(Barometric_P = 0.93, 
-         Headspace_equil_P = 0.93, 
-         Headspace_vol = 0.02, 
-         Liquid_vol = 0.04, 
+  mutate(Barometric_P = 0.93, # in atm
+         Headspace_equil_P = 0.93, # in atm
+         Headspace_vol = 0.02, # in L
+         Liquid_vol = 0.04, # in L
          Final_Headspace_Mixing_CH4_ppm = CH4.conc.ppm, 
          Final_Headspace_Mixing_CO2_ppm = CO2.conc.ppm, 
          Source_Gas_Mixing_CH4_ppm = 0, 
          Source_Gas_Mixing_CO2_ppm = 1, 
-         Headspace_Equil_Temp_K = Temp + 273.15, 
+         Headspace_Equil_Temp_K = Temp + 273.15, # in K
          Bunsen_Sol_CH4 = (2.7182818^(-67.1962+(99.1624*(100/Headspace_Equil_Temp_K))+(27.9015*log(Headspace_Equil_Temp_K/100)))), 
-         Bunsen_Sol_CO2 = (2.7182818^(-58.0931+(90.5069*(100/Headspace_Equil_Temp_K))+(22.294*log(Headspace_Equil_Temp_K/100))))*((0.0821*273.15)+((-1636.75+(12.0408*273.15)-(3.27957*0.01*273.15*273.15)+(3.16528*0.00001*273.15*273.15*273.15))/1000)), 
+         Bunsen_Sol_CO2 = (2.7182818^(-58.0931+(90.5069*(100/Headspace_Equil_Temp_K))+(22.294*log(Headspace_Equil_Temp_K/100))))*((0.0821*273.15)+((-1636.75+(12.0408*273.15)-(3.27957*0.01*273.15*273.15)+(3.16528*0.00001*273.15*273.15*273.15))/1000)), # L/L-atm
          
-         Source_Gas_CH4_umol = (Source_Gas_Mixing_CH4_ppm * Barometric_P) /(0.0821*Headspace_Equil_Temp_K), 
-         Source_Gas_CO2_umol = (Source_Gas_Mixing_CO2_ppm * Barometric_P) /(0.0821*Headspace_Equil_Temp_K), 
-         Final_Headspace_CH4_umol =  (Final_Headspace_Mixing_CH4_ppm * Headspace_equil_P)/(0.0821*Headspace_Equil_Temp_K), 
-         Final_Headspace_CO2_umol =  (Final_Headspace_Mixing_CO2_ppm * Headspace_equil_P)/(0.0821*Headspace_Equil_Temp_K), 
+         Source_Gas_CH4_umol = (Source_Gas_Mixing_CH4_ppm * Barometric_P) /(0.0821*Headspace_Equil_Temp_K), # in umol/L
+         Source_Gas_CO2_umol = (Source_Gas_Mixing_CO2_ppm * Barometric_P) /(0.0821*Headspace_Equil_Temp_K), # in umol/L
+         Final_Headspace_CH4_umol =  (Final_Headspace_Mixing_CH4_ppm * Headspace_equil_P)/(0.0821*Headspace_Equil_Temp_K), # in umol/L
+         Final_Headspace_CO2_umol =  (Final_Headspace_Mixing_CO2_ppm * Headspace_equil_P)/(0.0821*Headspace_Equil_Temp_K), # in umol/L
 
-         Final_Liq_CH4_umol =  (Final_Headspace_Mixing_CH4_ppm* Bunsen_Sol_CH4 * Headspace_equil_P)/(0.0821*Headspace_Equil_Temp_K), 
-         Final_Liq_CO2_umol =  (Final_Headspace_Mixing_CO2_ppm* Bunsen_Sol_CO2 * Headspace_equil_P)/(0.0821*Headspace_Equil_Temp_K), 
-         Total_Gas_CH4_umol = (Final_Liq_CH4_umol * Liquid_vol) + (Final_Headspace_CH4_umol*Headspace_vol), 
-         Total_Gas_CO2_umol = (Final_Liq_CO2_umol * Liquid_vol) + (Final_Headspace_CO2_umol*Headspace_vol), 
-         Original_Liq_CH4_umol = (Total_Gas_CH4_umol-(Source_Gas_CH4_umol*Headspace_vol))/Liquid_vol, 
-         Original_Liq_CO2_umol = (Total_Gas_CO2_umol-(Source_Gas_CO2_umol*Headspace_vol))/Liquid_vol)
+         Final_Liq_CH4_umol =  (Final_Headspace_Mixing_CH4_ppm* Bunsen_Sol_CH4 * Headspace_equil_P)/(0.0821*Headspace_Equil_Temp_K), # in umol/L
+         Final_Liq_CO2_umol =  (Final_Headspace_Mixing_CO2_ppm* Bunsen_Sol_CO2 * Headspace_equil_P)/(0.0821*Headspace_Equil_Temp_K), # in umol/L
+         Total_Gas_CH4_umol = (Final_Liq_CH4_umol * Liquid_vol) + (Final_Headspace_CH4_umol*Headspace_vol), # in umol
+         Total_Gas_CO2_umol = (Final_Liq_CO2_umol * Liquid_vol) + (Final_Headspace_CO2_umol*Headspace_vol), # in umol
+         Original_Liq_CH4_umol = (Total_Gas_CH4_umol-(Source_Gas_CH4_umol*Headspace_vol))/Liquid_vol, # in umol/L
+         Original_Liq_CO2_umol = (Total_Gas_CO2_umol-(Source_Gas_CO2_umol*Headspace_vol))/Liquid_vol) # in umol/L
 
 write.csv(data_20221011 %>% filter(is.na(Original_Liq_CH4_umol)==F), "GC_Data_20221011_dissolved.csv", row.names = F)
 ```

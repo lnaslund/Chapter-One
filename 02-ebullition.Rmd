@@ -230,3 +230,8 @@ tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 ggplot(ebullition, aes(ch4_eb_g_m2_hr))+geom_histogram(bins = 10)+ theme_bw()+xlab("CH4 Ebullition (g/m2/hr)")
 ```
 
+```{r}
+to_remove <- c("conc", "conc_match", "deans_16_eb", "deans_30_eb", "pick_13_eb", "sister3_22_eb", "catfish_06_eb", "catfish_18_eb")
+rm(list = to_remove)
+```
+

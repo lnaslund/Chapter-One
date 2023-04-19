@@ -37,7 +37,10 @@ plot(ecdf(test_data$resid_norm_co2_g_hr))
 hist(test_data$resid_co2_g_hr)
 hist(test_data$resid_norm_co2_g_hr)
 
-mapview(test_data, zcol = "resid_norm_co2_g_hr")
+tm_shape(pick)+
+  tm_polygons(col = "white")+
+tm_shape(test_data)+
+  tm_dots("resid_norm_co2_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "Normalized CO2 residual (g/m2/hr)")
 ```
 
 ```{r variograms}
@@ -128,9 +131,9 @@ co2.kriged.sk$detrended <- co2.kriged.sk$trend + co2.kriged.sk$backtransformed
 # Sequential Gaussian simulation with isotropic variogram using simple kriging (but ordinary kriging also run)
 
 # Ortiz 2020 https://qspace.library.queensu.ca/bitstream/handle/1974/28538/2020-01-Ortiz-Simulation.pdf?sequence=2 indicates that you shouldn't use ordinary kriging in sequential gaussian simulation. The krige function I think allows you to use ordinary kriging and it looks like it might be trying to estimate beta within the function. 
-co2.kriged.sim = krige(resid_norm_co2_g_hr~1, test_data, grid, model = var.norm.th.iso,maxdist = Inf,nmin = 0,omax=Inf, indicators=FALSE, nsim=4, nmax=100) # will take a second to run
+# co2.kriged.sim = krige(resid_norm_co2_g_hr~1, test_data, grid, model = var.norm.th.iso,maxdist = Inf,nmin = 0,omax=Inf, indicators=FALSE, nsim=2, nmax=100) # will take a second to run
 
-co2.kriged.sim.sk = krige(resid_norm_co2_g_hr~1, test_data, grid, model = var.norm.th.iso,maxdist = Inf,nmin = 0,omax=Inf, indicators=FALSE, nsim=4, nmax=100, beta = 0) # will take a second to run # mean should be zero after gaussian transformation # I don't know if beta is required here
+co2.kriged.sim.sk = krige(resid_norm_co2_g_hr~1, test_data, grid, model = var.norm.th.iso,maxdist = Inf,nmin = 0,omax=Inf, indicators=FALSE, nsim=2, nmax=100, beta = 0) # will take a second to run # mean should be zero after gaussian transformation # I don't know if beta is required here
 
 co2.kriged.sim.sk$backtransform <- st_apply(co2.kriged.sim.sk[1], 1:3, backtr)
 str(co2.kriged.sim.sk)
@@ -138,45 +141,42 @@ str(co2.kriged.sim.sk)
 plot(co2.kriged.sim.sk[1])
 plot(co2.kriged.sim.sk[2])
 
-
 co2.kriged.sim.sk$trend <- predict(co2.kriged.sim.sk[2], lm_trend)
 
 co2.kriged.sim.sk$detrended <- co2.kriged.sim.sk[2] + co2.kriged.sim.sk[3]
 
 plot(co2.kriged.sim.sk[4])
-
-mapview(co2.kriged.sim.sk[4,,,1])
-mapview(co2.kriged.sim.sk[4,,,2])
-mapview(co2.kriged.sim.sk[4,,,3])
-mapview(co2.kriged.sim.sk[4,,,4])
 ```
 
 ```{r}
 # total CO2 flux estimate (in grams) from simulations
 sum(co2.kriged.sim.sk[4,,,1]$detrended, na.rm = T)
 sum(co2.kriged.sim.sk[4,,,2]$detrended, na.rm = T)
-sum(co2.kriged.sim.sk[4,,,3]$detrended, na.rm = T)
-sum(co2.kriged.sim.sk[4,,,4]$detrended, na.rm = T)
 
 # total CO2 flux estimate using only the mean of measured data values
 st_area(pick) %>% as.numeric()*mean(test_data$flux_co2_g_hr)
 ```
 
 
-```{r}
-mapshot(
-  mapview(co2.kriged.sim.sk[4,,,1], layer.name = "CO2 Flux (g m-2 hr-1)"), 
-  file = "example-gaussian-sim.png",
-  remove_controls = c("zoomControl", "homeButton",
-    "drawToolbar", "easyButton")
-)
+```{r mapshot of kriging example, include = F}
+# mapshot(
+#   mapview(co2.kriged.sim.sk[4,,,1], layer.name = "CO2 Flux (g m-2 hr-1)"), 
+#   file = "example-gaussian-sim.png",
+#   remove_controls = c("zoomControl", "homeButton",
+#     "drawToolbar", "easyButton")
+# )
+# 
+# mapshot(
+#   mapview(pick, col.regions = NA, legend = F, homebutton = F) + mapview(test_data, zcol = "flux_co2_g_hr", col.regions =  viridis::viridis_pal(option = "B"), layer.name = " CO2 Flux (g/m2/hr)"),
+#   file = "example-gaussian-sim-pts.png",
+#   remove_controls = c("zoomControl", "homeButton",
+#     "drawToolbar", "easyButton")
+# )
 
-mapshot(
-  mapview(pick, col.regions = NA, legend = F, homebutton = F) + mapview(test_data, zcol = "flux_co2_g_hr", col.regions =  viridis::viridis_pal(option = "B"), layer.name = " CO2 Flux (g/m2/hr)"),
-  file = "example-gaussian-sim-pts.png",
-  remove_controls = c("zoomControl", "homeButton",
-    "drawToolbar", "easyButton")
-)
+```
 
+```{r kriging obj rm, include = F}
+to_remove <- c("pick_13", "pick_pts_13", "above.max.lm", "below.min.lm", "co2.kriged", "co2.kriged.sim.sk", "co2.kriged.sk", "lm_trend", "nscore.tab", "test_data", "var.norm.045", "var.norm.135", "var.norm.iso", "var.norm.th.ani", "var.norm.th.iso", "vm.norm.sim", "vm.norm.sim.an.135", "vm.norm.sim.an.45", "co2.kriged.sim", "grid")
+rm(list = to_remove)
 ```
 

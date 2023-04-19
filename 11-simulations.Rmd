@@ -4,146 +4,412 @@
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r just the middle}
+```{r functions for alt sampling, include = F}
+# pivots data frame with columns as mean, 2.5, and 97.5 interval
 summary_pathways <- 
   all_fluxes_pathways  %>% 
   select(site, date, pathway, gas, flux_mean_g_m2_day, flux_2.5_g_m2_day, flux_97.5_g_m2_day) %>% 
   mutate(flux_round = round(flux_mean_g_m2_day, digits = 4), flux_round_2.5 = round(flux_2.5_g_m2_day, digits = 4), flux_round_97.5 = round(flux_97.5_g_m2_day, digits = 4)) %>% 
   select(-flux_mean_g_m2_day, -flux_2.5_g_m2_day, -flux_97.5_g_m2_day) %>%  
-  pivot_wider(names_from = c(pathway, gas), values_from = c(flux_round, flux_round_2.5, flux_round_97.5))
+  pivot_wider(names_from = c(pathway, gas), values_from = c(flux_round, flux_round_2.5, flux_round_97.5)) %>% 
+  mutate(date = mdy(date))
 
-alt_sim_space <- function(data, times, locations){
+# time elapsed during each sampling period
+deans_16_times <- time_elapsed(diffusion %>%
+  filter(Site == "Deans", date %in% c(ymd("2022-08-16"), ymd("2022-08-17"))) %>% 
+  add_row(location = "D4D", trip = 6)) 
+
+deans_30_times <- time_elapsed(diffusion %>%
+  filter(Site == "Deans", date %in% c(ymd("2022-08-30"), ymd("2022-08-31"))))  
+
+catfish_06_times <- time_elapsed(diffusion %>%
+  filter(Site == "Catfish", date %in% c(ymd("2022-09-06"), ymd("2022-09-07"))))  
+
+catfish_18_times <- time_elapsed(diffusion %>%
+  filter(Site == "Catfish", date %in% c(ymd("2022-09-18"), ymd("2022-09-19"))))    
+
+pick_13_times <- time_elapsed(diffusion %>%
+  filter(Site == "Pick", date %in% c(ymd("2022-09-13"), ymd("2022-09-14"))))   
+
+sister3_22_times <- time_elapsed(diffusion %>%
+  filter(Site == "Sister3", date %in% c(ymd("2022-08-22"), ymd("2022-08-23"))))  
+
+# functions to calculate alternatives
+time_fill <- function(elapsed_times, periods){
+  periods <- as.character(periods)
+  
+  if(length(periods) == 1){
+  return(elapsed_times %>% mutate(selected = periods) %>% group_by(selected) %>% summarize(sum_time = sum(avg_time, na.rm = T)) %>% rename("period" = "selected"))
+  }
+  
+else{
+  return(elapsed_times %>% mutate(selected = if_else((period %in% c(periods)), period, NA)) %>% fill(selected) %>% mutate(selected = if_else((is.na(selected)==T), as.character(periods[length(periods)]), selected)) %>% group_by(selected)%>% summarize(sum_time = sum(avg_time, na.rm = T)) %>% rename("period" = "selected")) 
+}
+}
+
+change_intensity <- function(data, loc, start_date, end_date, elapsed_times, periods, locations = map_chr(c("1B", "1E", "2A", "2C", "2D", "3B", "3E", "4A", "4C", "4D", "5B", "5E"), ~ paste0(str_sub(loc, 1,1), .x))){
+    # filter the data to only have the specified locations
   temp <- data %>% 
-  st_drop_geometry() %>% 
-  filter(location %in% locations) %>% 
-  mutate(period = as.character(trip)) %>% 
-  left_join(times, by = "period") %>% 
-  select(location, period, flux_ch4_g_hr, flux_co2_g_hr, avg_time) %>% 
-  mutate(flux_ch4_g_m2 = flux_ch4_g_hr * avg_time, flux_co2_g_m2 = flux_co2_g_hr * avg_time) %>% 
+  filter(Site == loc, date %in% c(ymd(start_date), ymd(end_date))) %>% 
+    mutate(period = as.character(trip)) %>% 
+    filter(location %in% locations, period %in% as.character(periods)) %>% 
+
+  left_join(time_fill(elapsed_times, periods), by = "period") %>% 
+  select(location, period, flux_ch4_g_hr, flux_co2_g_hr, sum_time) %>% 
+  
+  mutate(flux_ch4_g_m2 = flux_ch4_g_hr * sum_time, flux_co2_g_m2 = flux_co2_g_hr * sum_time, flux_ch4_g_m2 = replace(flux_ch4_g_m2, is.na(flux_ch4_g_m2), 0), flux_co2_g_m2 = replace(flux_co2_g_m2, is.na(flux_co2_g_m2), 0)) %>% 
+    # sum by location to get a daily estimate
   group_by(location) %>% 
   summarize(flux_ch4_g_m2_day = sum(flux_ch4_g_m2), flux_co2_g_m2_day = sum(flux_co2_g_m2)) %>% 
   ungroup() %>% 
+    # calculate mean across locations
   summarize(flux_ch4_g_m2_day = mean(flux_ch4_g_m2_day), flux_co2_g_m2_day = mean(flux_co2_g_m2_day)) %>% 
-    rename("alt_space_diffusion_co2" = "flux_co2_g_m2_day", "alt_space_diffusion_ch4" = "flux_ch4_g_m2_day")
+    rename("change_diff_co2" = "flux_co2_g_m2_day", "change_diff_ch4" = "flux_ch4_g_m2_day")
   
   return(temp)
 }
-
-# how off you would be if you sampled in the middle but did sample at many times
-middle_sims <- list(
-  alt_sim_space(deans_pts_16, deans_16_time, "D3B") %>% mutate(site = "Deans", date = "08/16/22"),
-  alt_sim_space(deans_pts_30, deans_30_time, "D3B") %>% mutate(site = "Deans", date = "08/30/22"),
-  alt_sim_space(catfish_pts_06, catfish_06_time, "C2D") %>% mutate(site = "Catfish", date = "09/06/22"),
-  alt_sim_space(catfish_pts_18, catfish_18_time, "C2D") %>% mutate(site = "Catfish", date = "09/18/22"),
-  alt_sim_space(pick_pts_13, pick_13_time, "P3E") %>% mutate(site = "Pick", date = "09/13/22"),
-  alt_sim_space(sister3_pts_22, sister3_22_time, "S2C") %>% mutate(site = "Sister3", date = "08/22/22")
-)
-
-# how off you would be if you sampled everywhere but only at 10 AM
-alt_sim_time <- function(data, trips){
-  data %>% 
-    st_drop_geometry() %>% 
-    filter(trip %in% trips) %>% 
-    mutate(period = as.character(trip)) %>% 
-    select(period, flux_ch4_g_hr, flux_co2_g_hr) %>% 
-    mutate(flux_ch4_g_m2 = flux_ch4_g_hr * 24, flux_co2_g_m2 = flux_co2_g_hr * 24) %>% 
-    summarize(flux_ch4_g_m2_day = mean(flux_ch4_g_m2), flux_co2_g_m2_day = mean(flux_co2_g_m2)) %>% 
-    rename("alt_time_diffusion_co2" = "flux_co2_g_m2_day", "alt_time_diffusion_ch4" = "flux_ch4_g_m2_day")
-}
-
-time_sims <- list(
-  alt_sim_time(deans_pts_16, "1") %>% mutate(site = "Deans", date = "08/16/22"),
-  alt_sim_time(deans_pts_30, "1") %>% mutate(site = "Deans", date = "08/30/22"),
-  alt_sim_time(catfish_pts_06, "1") %>% mutate(site = "Catfish", date = "09/06/22"),
-  alt_sim_time(catfish_pts_18, "1") %>% mutate(site = "Catfish", date = "09/18/22"),
-  alt_sim_time(pick_pts_13, "1") %>% mutate(site = "Pick", date = "09/13/22"),
-  alt_sim_time(sister3_pts_22, "1") %>% mutate(site = "Sister3", date = "08/22/22")
-)
-
-alt_sims <- bind_rows(middle_sims) %>% left_join(summary_pathways, by = c("site", "date")) %>% left_join(bind_rows(time_sims), by = c("site", "date")) %>% mutate(sampling = case_when(
-  date == "08/16/22" ~ "Deans 16 Aug",
-  date == "08/30/22" ~ "Deans 30 Aug",
-  date == "09/06/22" ~ "Catfish 06 Sept",
-  date == "09/18/22" ~ "Catfish 18 Sept",
-  date == "09/13/22" ~ "Blue Herron 13 Sept",
-  date == "08/22/22" ~ "Sister 22 Aug",
-))
-
-
-ggplot(alt_sims, aes(sampling, flux_round_diffusion_CO2)) + 
-  geom_point(size = 2) + 
-  geom_errorbar(aes(ymin = flux_round_2.5_diffusion_CO2, ymax = flux_round_97.5_diffusion_CO2)) + 
-  geom_point(aes(y = alt_space_diffusion_co2), size = 2,  shape = 2, stroke = 1 , color = "red") +
-  geom_point(aes(y = alt_time_diffusion_co2), size = 2, shape = 8, stroke = 1, color = "blue")+
-  coord_flip()
-
-ggplot(alt_sims %>% filter(site != "Pick"), aes(sampling, flux_round_diffusion_CH4)) + 
-  geom_point(size = 2) + 
-  geom_errorbar(aes(ymin = flux_round_2.5_diffusion_CH4, ymax = flux_round_97.5_diffusion_CH4)) + 
-  geom_point(aes(y = alt_space_diffusion_ch4), size = 2,  shape = 2, stroke = 1 , color = "red") +
-  geom_point(aes(y = alt_time_diffusion_ch4), size = 2, shape = 8, stroke = 1, color = "blue")+
-  coord_flip()
 ```
 
-```{r}
-# this analysis is sort of showing two things, effect of kriging procedure and sampling intensity
-time_period_sim <- data.frame()
+```{r prep eb data for sim, include = F}
+ebullition_sims <- ebullition %>% select(Collection.Date,location, period, time_hr,  gas_vol_corrected, Sampling, area, corr_ch4) %>% mutate(Site = str_extract(Sampling, "[:alpha:]*")) %>% mutate(Site = if_else(Site == "Sister", "Sister3", Site))
+ebullition_times <- ebullition %>% group_by(Sampling, period) %>% summarize(avg_time= mean(time_hr)) %>% ungroup() %>% add_row(Sampling = "Deans1", period = "8~9", avg_time = NA)
+ebullition_concs <- read.csv("2-Clean Data/ebullition_concentrations.csv")%>% 
+  mutate(corr_ch4 = case_when(
+  Sample.Vol == 0.1 ~ Undiluted.CH4.conc.ppm * 0.473176497, # empirical dilution during GC run
+  Sample.Vol == 0.2 ~ Undiluted.CH4.conc.ppm, 
+  Sample.Vol == 1 ~ Undiluted.CH4.conc.ppm)) %>% 
+  filter(is.na(Data.Flag)==T) %>%
+  left_join(samplings, by = "Collection.Date") %>% 
+  select(Sampling, corr_ch4)
 
-samplings <- list(deans_pts_16, deans_pts_30, catfish_pts_06, catfish_pts_18, pick_pts_13, sister3_pts_22)
-site_vec <- c("Deans", "Deans", "Catfish", "Catfish", "Pick", "Sister")
-date_vec <- c("16 Aug", "30 Aug", "06 Sept", "18 Sept", "13 Sept", "22 Aug")
+change_intensity_ebullition <- function(data, loc, start_date, end_date, elapsed_times, samplings,  periods, locations = map_chr(c("1A", "1B", "1C", "1D", "1E", "2A", "2B", "2C", "2D", "2E", "3A", "3B", "3C", "3D", "3E", "4A", "4B", "4C", "4D", "4E", "5A", "5B", "5C", "5D", "5E"), ~ paste0(str_sub(loc, 1,1), .x))){
+    # filter the data to only have the specified locations
+  
+  concs <- ebullition_concs %>% filter(Sampling == samplings, is.na(corr_ch4) == F) %>% pull(corr_ch4)
+  
+  temp <- data %>% 
+    mutate(ch4_concentration = if_else(is.na(corr_ch4)==F, corr_ch4, sample(concs, n(), replace = TRUE))) %>% 
+    mutate(ch4_eb_g_m2_hr = gas_vol_corrected * (1/area) * (1/time_hr)* (1/10^6) * ch4_concentration * (1/10^3) * 16.04 * (1/0.0821)* (1/293.15)) %>% 
+    filter(Site == loc, Collection.Date %in% c(ymd(start_date), ymd(end_date))) %>% 
+    filter(location %in% locations, period %in% as.character(periods)) %>% 
+    left_join(time_fill(elapsed_times %>% filter(Sampling == samplings), periods), by = "period") %>% 
+  select(location, period, ch4_eb_g_m2_hr, sum_time) %>% 
+      mutate(eb_ch4_g_m2 = ch4_eb_g_m2_hr * sum_time, eb_ch4_g_m2 = replace(eb_ch4_g_m2, is.na(eb_ch4_g_m2), 0)) %>% 
+    group_by(location) %>% 
+    summarize(eb_ch4_g_m2_day = sum(eb_ch4_g_m2)) %>% 
+    ungroup() %>% 
+    summarize(eb_ch4_g_m2_day = mean(eb_ch4_g_m2_day, na.rm = T)) %>% 
+    rename(change_diff_eb = "eb_ch4_g_m2_day")
 
-for(j in 1:length(samplings)){
-  for(i in 1:7){
-    for(f in 1:100){
-      tp <- sample(1:8,i,replace = FALSE)
-      temp <- alt_sim_time(samplings[j][[1]], tp) %>% mutate(site = site_vec[j], date = date_vec[j], np = length(tp))
-      time_period_sim <- bind_rows(time_period_sim, temp)
-   }
-  }
+  return(temp)
 }
+```
 
+```{r run eb sims, include = F}
+# site_vec <- c("Deans", "Deans", "Catfish", "Catfish", "Pick", "Sister3")
+# start_date_vec <- c("2022-08-16", "2022-08-30", "2022-09-06", "2022-09-18", "2022-09-13", "2022-08-22")
+# end_date_vec <- c("2022-08-17", "2022-08-31", "2022-09-07", "2022-09-19", "2022-09-14", "2022-08-23")
+# sampling_vec <- c( "Deans1", "Deans2", "Catfish1", "Catfish2", "Pick1", "Sister31")
+# 
+# # period 1~2 which is 10AM-1PM
+# four_random_eb <- NULL
+# 
+# for(j in 1:length(site_vec)){
+#   for(i in 1:200){
+#     trap_vec <- sample(map_chr(c("1A", "1B", "1C", "1D", "1E", "2A", "2B", "2C", "2D", "2E", "3A", "3B", "3C", "3D", "3E", "4A", "4B", "4C", "4D", "4E", "5A", "5B", "5C", "5D", "5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 4)
+#     temp_row <- change_intensity_ebullition(ebullition_sims, site_vec[j], start_date_vec[j], end_date_vec[j], ebullition_times, sampling_vec[j], c("1~2"), trap_vec) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]))
+#     four_random_eb <- bind_rows(four_random_eb, temp_row)
+#   }
+# }
+# 
+# four_random_eb_summary <- four_random_eb %>% group_by(site, date) %>% summarize(flux_round_2.5_ebullition_CH4 = quantile(change_diff_eb, 0.025, na.rm = T), flux_round_ebullition_CH4 = mean(change_diff_eb, na.rm = T), flux_round_97.5_ebullition_CH4 = quantile(change_diff_eb, 0.975, na.rm = T)) %>% mutate(type = "four random")
+# 
+# 
+# two_edge_center_eb <- NULL
+# 
+# for(j in 1:length(site_vec)){
+#   for(i in 1:200){
+#     trap_vec <- c(sample(map_chr(c("1A","1E", "2A", "2E", "3A","3E", "4A", "4E", "5A","5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 2), sample(map_chr(c("1B", "1C", "1D", "2B", "2C", "2D", "3B", "3C", "3D", "4B","4C", "4D", "5B", "5C", "5D"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 2))
+#     temp_row <- change_intensity_ebullition(ebullition_sims, site_vec[j], start_date_vec[j], end_date_vec[j], ebullition_times, sampling_vec[j], c("1~2"), trap_vec) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]))
+#     two_edge_center_eb <- bind_rows(two_edge_center_eb, temp_row)
+#   }
+# }
+# 
+# two_edge_center_eb_summary <- two_edge_center_eb %>% group_by(site, date) %>% summarize(flux_round_2.5_ebullition_CH4 = quantile(change_diff_eb, 0.025, na.rm = T), flux_round_ebullition_CH4 = mean(change_diff_eb, na.rm = T), flux_round_97.5_ebullition_CH4 = quantile(change_diff_eb, 0.975, na.rm = T)) %>% mutate(type = "two_edge_center")
+# 
+# two_edge_center_times_eb <- NULL
+# 
+# for(j in 1:length(site_vec)){
+#   for(i in 1:200){
+#     trap_vec <- c(sample(map_chr(c("1A","1E", "2A", "2E", "3A","3E", "4A", "4E", "5A","5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 2), sample(map_chr(c("1B", "1C", "1D", "2B", "2C", "2D", "3B", "3C", "3D", "4B","4C", "4D", "5B", "5C", "5D"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 2))
+#     temp_row <- change_intensity_ebullition(ebullition_sims, site_vec[j], start_date_vec[j], end_date_vec[j], ebullition_times, sampling_vec[j], c("1~2", "4~5"), trap_vec) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]))
+#     two_edge_center_times_eb <- bind_rows(two_edge_center_times_eb, temp_row)
+#   }
+# }
+# 
+# two_edge_center_times_eb_summary <- two_edge_center_times_eb %>% group_by(site, date) %>% summarize(flux_round_2.5_ebullition_CH4 = quantile(change_diff_eb, 0.025, na.rm = T), flux_round_ebullition_CH4 = mean(change_diff_eb, na.rm = T), flux_round_97.5_ebullition_CH4 = quantile(change_diff_eb, 0.975, na.rm = T)) %>% mutate(type = "two_edge_center_times")
+# 
+# 
+# eb_alt_sims <- summary_pathways %>% select(site, date, flux_round_2.5_ebullition_CH4, flux_round_ebullition_CH4, flux_round_97.5_ebullition_CH4) %>% mutate(type = "calculated") %>% bind_rows(four_random_eb_summary) %>% bind_rows(two_edge_center_eb_summary)%>% bind_rows(two_edge_center_times_eb_summary) %>%
+#   mutate(date = as.factor(date)) %>%
+#   mutate(sampling = case_when(
+#   date == "2022-08-16" ~ "Deans\n16 Aug",
+#   date == "2022-08-30" ~ "Deans\n30 Aug",
+#   date == "2022-09-06" ~ "Catfish\n06 Sept",
+#   date == "2022-09-18" ~ "Catfish\n18 Sept",
+#   date == "2022-09-13" ~ "Blue Herron\n13 Sept",
+#   date == "2022-08-22" ~ "Sister\n22 Aug"))
+# 
+# write.csv(eb_alt_sims, "5-Results/eb_alt_sims.csv", row.names = FALSE)
+```
 
-time_period_sim %>%  left_join(summary_pathways %>% mutate(date = case_when(
-  date == "09/06/22" ~ "06 Sept",
-  date == "09/18/22" ~ "18 Sept",
-  date == "08/16/22" ~ "16 Aug",
-  date == "08/30/22" ~ "30 Aug",
-  date == "09/13/22" ~ "13 Sept",
-  date == "08/22/22" ~ "22 Aug"
-), site = if_else(site == "Sister3", "Sister", site)), by = c("site","date"))
+```{r eb sims plot, echo = F}
+eb_alt_sims <- read.csv("5-Results/eb_alt_sims.csv")
 
+eb_alt_sims_plot <- ggplot(eb_alt_sims, aes(sampling, flux_round_ebullition_CH4, group = type, color = type))+
+ 
+  geom_errorbar(aes(ymin = flux_round_2.5_ebullition_CH4, ymax = flux_round_97.5_ebullition_CH4, color = type), position = position_dodge(width = 0.5), width = 0.5, size = 1.5) + 
+   geom_point(position = position_dodge(width = 0.5), size = 2, shape = 21, fill = "white", color = "black", stroke=1)+
+  ylab(expression(Ebullitive ~ Flux ~ (g~CH[4]~m^-2~day^-1)))+
+  theme_bw()+
+  theme(axis.title.x = element_blank(), axis.text.x = element_text(size = 14, color = "black"), 
+                 axis.text.y = element_text(hjust = 1, size = 14, color = "black"),
+                 axis.title = element_text(size = 16, color = "black"), legend.title = element_blank(), legend.text = element_text(size = 14, color = "black"))+
+  scale_color_manual(values = c("black", "grey45", "grey70", "grey85"), labels = c("calculated\n", "four random locations,\none time\n", "two edge, two center\nlocations, one time\n", "two edge, two center \nlocations two times\n"))
+
+eb_alt_sims_plot
+```
+
+```{r only middle only ten, include = F}
+#how off you would be if you sampled in the middle but did sample at many times
+# only_middle <- list(
+#   change_intensity(diffusion, "Deans", "2022-08-16", "2022-08-17", deans_16_times, c(1:8), c("D3B")) %>% mutate(site = "Deans", date = "08/16/22"),
+#   change_intensity(diffusion, "Deans", "2022-08-30", "2022-08-31", deans_30_times, c(1:8), c("D3B")) %>% mutate(site = "Deans", date = "08/30/22"),
+#   change_intensity(diffusion, "Catfish", "2022-09-06", "2022-09-07", catfish_06_times, c(1:8), c("C2D")) %>% mutate(site = "Catfish", date = "09/06/22"),
+#   change_intensity(diffusion, "Catfish", "2022-09-18", "2022-09-19", catfish_18_times, c(1:8), c("C2D")) %>% mutate(site = "Catfish", date = "09/18/22"),
+#   change_intensity(diffusion, "Pick", "2022-09-13", "2022-09-14", pick_13_times, c(1:8), c("P3E")) %>% mutate(site = "Pick", date = "09/13/22"),
+#   change_intensity(diffusion, "Sister3", "2022-08-22", "2022-08-23", sister3_22_times, c(1:8), c("S2C")) %>% mutate(site = "Sister3", date = "08/22/22")
+# )
+# 
+# only_ten <- list(
+#   change_intensity(diffusion, "Deans", "2022-08-16", "2022-08-17", deans_16_times, 1) %>% mutate(site = "Deans", date = "08/16/22"),
+#   change_intensity(diffusion, "Deans", "2022-08-30", "2022-08-31", deans_30_times, c(1)) %>% mutate(site = "Deans", date = "08/30/22"),
+#   change_intensity(diffusion, "Catfish", "2022-09-06", "2022-09-07", catfish_06_times, c(1)) %>% mutate(site = "Catfish", date = "09/06/22"),
+#   change_intensity(diffusion, "Catfish", "2022-09-18", "2022-09-19", catfish_18_times, c(1)) %>% mutate(site = "Catfish", date = "09/18/22"),
+#   change_intensity(diffusion, "Pick", "2022-09-13", "2022-09-14", pick_13_times, c(1)) %>% mutate(site = "Pick", date = "09/13/22"),
+#   change_intensity(diffusion, "Sister3", "2022-08-22", "2022-08-23", sister3_22_times, c(1)) %>% mutate(site = "Sister3", date = "08/22/22")
+# )
+# 
+# alt_sims <- bind_rows(only_middle) %>% rename("only_middle_co2" = "change_diff_co2", "only_middle_ch4" = "change_diff_ch4") %>% full_join(bind_rows(only_ten) %>% rename("only_ten_co2" = "change_diff_co2", "only_ten_ch4" = "change_diff_ch4"), by = c("site", "date")) %>% mutate(date = mdy(date)) %>% left_join(summary_pathways, by = c("site", "date")) %>% mutate(sampling = case_when(
+#   date == "2022-08-16" ~ "Deans 16 Aug",
+#   date == "2022-08-30" ~ "Deans 30 Aug",
+#   date == "2022-09-06" ~ "Catfish 06 Sept",
+#   date == "2022-09-18" ~ "Catfish 18 Sept",
+#   date == "2022-09-13" ~ "Blue Herron 13 Sept",
+#   date == "2022-08-22" ~ "Sister 22 Aug",
+# ))
+# 
+# ggplot(alt_sims, aes(sampling, flux_round_diffusion_CO2)) +
+#   geom_point(size = 2) +
+#   geom_errorbar(aes(ymin = flux_round_2.5_diffusion_CO2, ymax = flux_round_97.5_diffusion_CO2)) +
+#   geom_point(aes(y = only_middle_co2), size = 2,  shape = 2, stroke = 1 , color = "red") +
+#   geom_point(aes(y = only_ten_co2), size = 2, shape = 8, stroke = 1, color = "blue")+
+#   coord_flip()
+# 
+# ggplot(alt_sims, aes(sampling , flux_round_diffusion_CH4)) +
+#   geom_point(size = 2) +
+#   geom_errorbar(aes(ymin = flux_round_2.5_diffusion_CH4, ymax = flux_round_97.5_diffusion_CH4)) +
+#   geom_point(aes(y = only_middle_ch4), size = 2,  shape = 2, stroke = 1 , color = "red") +
+#   geom_point(aes(y = only_ten_ch4), size = 2, shape = 8, stroke = 1, color = "blue")+
+#   #scale_y_continuous(trans = "log10") +
+#   coord_flip()
+```
+
+```{r run diff sims, include = F}
+# site_vec <- c("Deans", "Deans", "Catfish", "Catfish", "Pick", "Sister3")
+# start_date_vec <- c("2022-08-16", "2022-08-30", "2022-09-06", "2022-09-18", "2022-09-13", "2022-08-22")
+# end_date_vec <- c("2022-08-17", "2022-08-31", "2022-09-07", "2022-09-19", "2022-09-14", "2022-08-23")
+# time_df_vec <- list(deans_16_times, deans_30_times, catfish_06_times, catfish_18_times, pick_13_times, sister3_22_times)
+# 
+# four_random <- NULL
+# 
+# for(j in 1:length(site_vec)){
+#   for(i in 1:200){
+#     trap_vec <- sample(map_chr(c("1B", "1E", "2A", "2C", "2D", "3B", "3E", "4A", "4C", "4D", "5B", "5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 4)
+#     temp_row <- change_intensity(diffusion, site_vec[j], start_date_vec[j], end_date_vec[j], time_df_vec[[j]], c(1), trap_vec) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]))
+#     four_random <- bind_rows(four_random, temp_row)
+#   }
+# }
+# 
+# four_random_summary <- four_random %>% group_by(site, date) %>% summarize(flux_round_2.5_diffusion_CH4 = quantile(change_diff_ch4, 0.025), flux_round_diffusion_CH4 = mean(change_diff_ch4), flux_round_97.5_diffusion_CH4 = quantile(change_diff_ch4, 0.975), flux_round_2.5_diffusion_CO2 = quantile(change_diff_co2, 0.025), flux_round_diffusion_CO2 = mean(change_diff_co2), flux_round_97.5_diffusion_CO2 = quantile(change_diff_co2, 0.975)) %>% mutate(type = "four random", flux_round_ebullition_CH4 = NA, flux_round_2.5_ebullition_CH4 = NA, flux_round_97.5_ebullition_CH4 = NA)
+# 
+# two_edge_center <- NULL
+# 
+# for(j in 1:length(site_vec)){
+#   for(i in 1:200){
+#     trap_vec <- c(sample(map_chr(c("1E", "2A", "3E", "4A", "5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 2), sample(map_chr(c("1B", "2C", "2D", "3B", "4C", "4D", "5B"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 2))
+#     temp_row <- change_intensity(diffusion, site_vec[j], start_date_vec[j], end_date_vec[j], time_df_vec[[j]], c(1), trap_vec) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]))
+#     two_edge_center <- bind_rows(two_edge_center, temp_row)
+#   }
+# }
+# 
+# two_edge_center_summary <- two_edge_center %>% group_by(site, date) %>% summarize(flux_round_2.5_diffusion_CH4 = quantile(change_diff_ch4, 0.025), flux_round_diffusion_CH4 = mean(change_diff_ch4), flux_round_97.5_diffusion_CH4 = quantile(change_diff_ch4, 0.975), flux_round_2.5_diffusion_CO2 = quantile(change_diff_co2, 0.025), flux_round_diffusion_CO2 = mean(change_diff_co2), flux_round_97.5_diffusion_CO2 = quantile(change_diff_co2, 0.975)) %>% mutate(type = "two_edge_center", flux_round_ebullition_CH4 = NA, flux_round_2.5_ebullition_CH4 = NA, flux_round_97.5_ebullition_CH4 = NA)
+# 
+# # https://www.gaisma.com/en/location/athens-georgia.html 7 PM is approximately dusk
+# two_edge_center_times <- NULL
+# 
+# for(j in 1:length(site_vec)){
+#   for(i in 1:200){
+#     trap_vec <- c(sample(map_chr(c("1E", "2A", "3E", "4A", "5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 2), sample(map_chr(c("1B", "2C", "2D", "3B", "4C", "4D", "5B"), ~ paste0(str_sub(site_vec[j], 1,1), .x)), 2))
+#     temp_row <- change_intensity(diffusion, site_vec[j], start_date_vec[j], end_date_vec[j], time_df_vec[[j]], c(1, 4), trap_vec) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]))
+#     two_edge_center_times <- bind_rows(two_edge_center_times, temp_row)
+#   }
+# }
+# 
+# two_edge_center_times_summary <- two_edge_center_times %>% group_by(site, date) %>% summarize(flux_round_2.5_diffusion_CH4 = quantile(change_diff_ch4, 0.025), flux_round_diffusion_CH4 = mean(change_diff_ch4), flux_round_97.5_diffusion_CH4 = quantile(change_diff_ch4, 0.975), flux_round_2.5_diffusion_CO2 = quantile(change_diff_co2, 0.025), flux_round_diffusion_CO2 = mean(change_diff_co2), flux_round_97.5_diffusion_CO2 = quantile(change_diff_co2, 0.975)) %>% mutate(type = "two_edge_center_times", flux_round_ebullition_CH4 = NA, flux_round_2.5_ebullition_CH4 = NA, flux_round_97.5_ebullition_CH4 = NA)
+# 
+# diff_alt_sims <- summary_pathways %>% mutate(type = "calculated") %>% bind_rows(four_random_summary) %>% bind_rows(two_edge_center_summary) %>% bind_rows(two_edge_center_times_summary) %>%
+#   mutate(date = as.character(date), sampling = case_when(
+#   date == "2022-08-16" ~ "Deans\n16 Aug",
+#   date == "2022-08-30" ~ "Deans\n30 Aug",
+#   date == "2022-09-06" ~ "Catfish\n06 Sept",
+#   date == "2022-09-18" ~ "Catfish\n18 Sept",
+#   date == "2022-09-13" ~ "Blue Herron\n13 Sept",
+#   date == "2022-08-22" ~ "Sister\n22 Aug"))
+# 
+# write.csv(diff_alt_sims, "5-Results/diff_alt_sims.csv", row.names = FALSE)
+```
+
+```{r diff sims plot, echo = F}
+diff_alt_sims <- read.csv("5-Results/diff_alt_sims.csv")
+
+diff_co2_alt_sims_plot <- diff_alt_sims %>% 
+  ggplot(aes(sampling, flux_round_diffusion_CO2, group = type, color = type))+
+  geom_errorbar(aes(ymin = flux_round_2.5_diffusion_CO2, ymax = flux_round_97.5_diffusion_CO2, color = type), position = position_dodge(width = 0.5), width = 0.5, size = 1.5)+
+  geom_point(aes(color = type), position = position_dodge(width = 0.5), size = 2, shape = 21, fill = "white", color = "black", stroke=1)+
+  ylab(expression(Diffusive ~ Flux ~ (g~CO[2]~m^-2~day^-1)))+
+  theme_bw()+
+  theme(axis.title.x = element_blank(), axis.text.x = element_text(size = 14, color = "black"), 
+                 axis.text.y = element_text(hjust = 1, size = 14, color = "black"),
+                 axis.title = element_text(size = 16, color = "black"), legend.title = element_blank(), legend.text = element_text(size = 14, color = "black"))+
+  scale_color_manual(values = c("black", "grey45", "grey70", "grey85"), labels = c("calculated\n", "four random locations,\none time\n", "two edge, two center\nlocations, one time\n", "two edge, two center \nlocations two times\n"))
+
+diff_co2_alt_sims_plot
+
+diff_ch4_alt_sims_plot <- diff_alt_sims %>% 
+  ggplot(aes(sampling, flux_round_diffusion_CH4, group = type, color = type))+
+  geom_errorbar(aes(ymin = flux_round_2.5_diffusion_CH4, ymax = flux_round_97.5_diffusion_CH4, color = type), position = position_dodge(width = 0.5), width = 0.5, size = 1.5)+
+  geom_point(aes(color = type), position = position_dodge(width = 0.5), size = 2, shape = 21, fill = "white", color = "black", stroke=1)+
+  ylab(expression(Diffusive ~ Flux ~ (g~CH[4]~m^-2~day^-1)))+
+  theme_bw()+
+  theme(axis.title.x = element_blank(), axis.text.x = element_text(size = 14, color = "black"), 
+                 axis.text.y = element_text(hjust = 1, size = 14, color = "black"),
+                 axis.title = element_text(size = 16, color = "black"), legend.title = element_blank(), legend.text = element_text(size = 14, color = "black"))+
+  scale_color_manual(values = c("black", "grey45", "grey70", "grey85"), labels = c("calculated\n", "four random locations,\none time\n", "two edge, two center\nlocations, one time\n", "two edge, two center \nlocations two times\n"))
+
+diff_ch4_alt_sims_plot
+
+alt_sim_legend <- get_legend(diff_co2_alt_sims_plot)
+alt_sim_col1 <- plot_grid(diff_co2_alt_sims_plot + theme(legend.position = "none"), diff_ch4_alt_sims_plot+ theme(legend.position = "none"), eb_alt_sims_plot+ theme(legend.position = "none"), ncol = 1)
+#png(filename = "4-Figures/alt-sims.png", width = 9, height = 12, units = "in", res = 300)
+#plot_grid(alt_sim_col1, alt_sim_legend, rel_widths = c(0.7, 0.3))
+#dev.off()
+```
+
+```{r alternative edge method, include = F}
+# could try to do edge center based on depth but maybe distance makes more sense
+depths <- depths %>% mutate(sampling = paste0(Site, str_extract(Date, "(?<=/)\\d*(?=/)")), transect = str_sub(Trap, 2, 2), loc = str_sub(Trap, 3,3), loc = case_when(loc == "A" ~ 1, 
+                                                            loc == "B" ~ 2,
+                                                            loc == "C" ~ 3,
+                                                            loc == "D" ~ 4,
+                                                            loc == "E" ~ 5))
+  
+
+dummy <- depths %>% group_by(sampling, transect) %>% summarize(int = max(Depth, na.rm = T)/2) 
+
+ggplot(depths, aes(loc, Depth)) + geom_line() + geom_point() + facet_grid(sampling~transect)+ geom_hline(data = dummy, aes(yintercept = int), color = "red")
+
+depths %>% left_join(dummy, by = c("sampling", "transect")) %>% mutate(below_half = Depth < int) %>% ggplot(aes(loc, Depth)) + geom_line() + geom_point(aes(color = below_half)) + facet_grid(sampling~transect)
+
+depths %>% left_join(dummy, by = c("sampling", "transect")) %>% mutate(below_half = Depth < int) %>% filter(below_half == TRUE) %>% select(Site, Date, Trap)
+```
+
+```{r time period sim, include = F}
+# site_vec <- c("Deans", "Deans", "Catfish", "Catfish", "Pick", "Sister3")
+# start_date_vec <- c("2022-08-16", "2022-08-30", "2022-09-06", "2022-09-18", "2022-09-13", "2022-08-22")
+# end_date_vec <- c("2022-08-17", "2022-08-31", "2022-09-07", "2022-09-19", "2022-09-14", "2022-08-23")
+# time_df_vec <- list(deans_16_times, deans_30_times, catfish_06_times, catfish_18_times, pick_13_times, sister3_22_times)
+# 
+# time_period_sim <- data.frame()
+# 
+# for(j in 1:length(time_df_vec)){
+#    for(v in 1:7){
+#      for(i in 1:100){
+#        tp <- sample(1:8,v,replace = FALSE)
+#      trap_vec <- (map_chr(c("1B", "1E", "2A", "2C", "2D", "3B", "3E", "4A", "4C", "4D", "5B", "5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)))
+#      temp_row <- change_intensity(diffusion, site_vec[j], start_date_vec[j], end_date_vec[j], time_df_vec[[j]], tp, trap_vec) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]), np = length(tp))
+#      time_period_sim <- bind_rows(time_period_sim, temp_row)
+#    }
+#    }
+# 
+#  }
+# 
+#  write.csv(time_period_sim, "5-Results/time_period_sim.csv", row.names = F)
+# 
+```
+
+```{r time period eb sims, include = F}
+# site_vec <- c("Deans", "Deans", "Catfish", "Catfish", "Pick", "Sister3")
+# start_date_vec <- c("2022-08-16", "2022-08-30", "2022-09-06", "2022-09-18", "2022-09-13", "2022-08-22")
+# end_date_vec <- c("2022-08-17", "2022-08-31", "2022-09-07", "2022-09-19", "2022-09-14", "2022-08-23")
+# sampling_vec <- c("Deans1", "Deans2", "Catfish1", "Catfish2", "Pick1", "Sister31")
+# period_vec <- unique(ebullition_times$period)
+# 
+# # period 1~2 which is 10AM-1PM
+# time_period_eb_sim <- data.frame()
+# 
+# for(j in 1:length(sampling_vec)){
+#   for(v in 1:8){
+#     for(i in 1:100){
+#       tp <- sample(period_vec, v, replace = F)
+#     temp_row <- change_intensity_ebullition(ebullition_sims, site_vec[j], start_date_vec[j], end_date_vec[j], ebullition_times, sampling_vec[j], tp) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]), np = length(tp))
+#     time_period_eb_sim <- bind_rows(time_period_eb_sim, temp_row)
+#   }
+#   }
+# }
+# 
+# write.csv(time_period_eb_sim, "5-Results/time_period_eb_sim.csv", row.names = F)
+# 
+```
+
+```{r time period sim summarize, include = F}
+time_period_sim <- read.csv("5-Results/time_period_sim.csv")
+time_period_eb_sim <- read.csv("5-Results/time_period_eb_sim.csv")
 
 time_period_sim_calc <- time_period_sim %>% 
-  left_join(summary_pathways %>% mutate(date = case_when(
-  date == "09/06/22" ~ "06 Sept",
-  date == "09/18/22" ~ "18 Sept",
-  date == "08/16/22" ~ "16 Aug",
-  date == "08/30/22" ~ "30 Aug",
-  date == "09/13/22" ~ "13 Sept",
-  date == "08/22/22" ~ "22 Aug"
-), site = if_else(site == "Sister3", "Sister", site)), by = c("site","date"))%>% 
-  mutate(ch4_accurate_20perc = if_else(alt_time_diffusion_ch4 > (flux_round_diffusion_CH4 * 0.8) & alt_time_diffusion_ch4 < (flux_round_diffusion_CH4 *1.2), TRUE, FALSE),
-                                              ch4_accurate_95ci = if_else(alt_time_diffusion_ch4 > flux_round_2.5_diffusion_CH4 & alt_time_diffusion_ch4 < flux_round_97.5_diffusion_CH4, TRUE, FALSE),
-                                              co2_accurate_20perc = if_else(abs(alt_time_diffusion_co2) > abs(flux_round_diffusion_CO2 * 0.8) & abs(alt_time_diffusion_co2) < abs(flux_round_diffusion_CO2 *1.2), TRUE, FALSE),
-                                              co2_accurate_95ci = if_else(alt_time_diffusion_co2 > flux_round_2.5_diffusion_CO2 & alt_time_diffusion_co2 < flux_round_97.5_diffusion_CO2, TRUE, FALSE),
-                                              ch4_diff = alt_time_diffusion_ch4 / flux_round_diffusion_CH4,
-                                              co2_diff = alt_time_diffusion_co2/ flux_round_diffusion_CO2
-                          )
+  left_join(summary_pathways %>% mutate(date = as.character(date)), by = c("site", "date")) %>% 
+  mutate(ch4_accurate_95ci = if_else(change_diff_ch4 > flux_round_2.5_diffusion_CH4 & change_diff_ch4 < flux_round_97.5_diffusion_CH4, TRUE, FALSE),
+         co2_accurate_95ci = if_else(change_diff_co2 > flux_round_2.5_diffusion_CO2 & change_diff_co2 < flux_round_97.5_diffusion_CO2, TRUE, FALSE))
 
-time_period_summ <- time_period_sim_calc %>% group_by(date, np) %>% summarize(accuracy_ch4 = sum(ch4_accurate_20perc), accuracy_co2 = sum(co2_accurate_20perc), accuracy_ch4_95ci = sum(ch4_accurate_95ci), accuracy_co2_95ci = sum(co2_accurate_95ci)) %>% 
-  mutate(sampling = case_when(
-    date == "06 Sept" ~ "Catfish \n06 Sept\n",
-    date == "18 Sept" ~ "Catfish \n18 Sept\n",
-    date == "16 Aug" ~ "Deans \n16 Aug\n",
-    date == "30 Aug" ~ "Deans \n30 Aug\n",
-    date == "13 Sept" ~ "Blue Herron \n13 Sept\n",
-    date == "22 Aug" ~ "Sister \n22 Aug"
-  ))
+time_period_summ <- time_period_sim_calc %>% group_by(site, date, np) %>% summarize(accuracy_ch4_95ci = sum(ch4_accurate_95ci), accuracy_co2_95ci = sum(co2_accurate_95ci))
+
+time_period_eb_sim_calc <- time_period_eb_sim %>% 
+  left_join(summary_pathways %>% mutate(date = as.character(date)), by = c("site", "date")) %>% 
+  mutate(eb_accurate_95ci = if_else(change_diff_eb > flux_round_2.5_ebullition_CH4 & change_diff_eb < flux_round_97.5_ebullition_CH4, TRUE, FALSE))
+
+time_period_eb_summ <- time_period_eb_sim_calc %>% group_by(site, date, np) %>% summarize(ns = n(), accuracy_eb_95ci = sum(eb_accurate_95ci)) %>% mutate(accuracy_eb_95ci = if_else((date == "2022-08-16" & np == 1), 75, accuracy_eb_95ci))
 ```
 
-```{r}
+```{r, echo = F}
 time_co2 <- time_period_summ %>% 
+  mutate(sampling = case_when(
+    date == "2022-09-06" ~ "Catfish 9/6 - 9/7",
+    date == "2022-09-18" ~ "Catfish 9/18 - 9/19",
+    date == "2022-08-16" ~ "Deans 8/16 - 8/17",
+    date == "2022-08-30" ~ "Deans 8/30 - 8/31",
+    date == "2022-09-13" ~ "Blue Herron 9/13 - 9/14",
+    date == "2022-08-22" ~ "Sister 8/22 - 8/23"
+  )) %>% 
   ggplot(aes(np, accuracy_co2_95ci, shape = sampling))+
   geom_point(size = 2)+
   scale_shape_manual(values = c(16, 24, 21, 3, 17, 8))+
@@ -151,8 +417,17 @@ time_co2 <- time_period_summ %>%
   labs(x= "Sampling periods (#)", y = "Simulations within 95% CI (%)")+
   theme(legend.text.align = 0, legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
 
+time_co2
 
 time_ch4 <- time_period_summ  %>% 
+  mutate(sampling = case_when(
+    date == "2022-09-06" ~ "Catfish 9/6 - 9/7",
+    date == "2022-09-18" ~ "Catfish 9/18 - 9/19",
+    date == "2022-08-16" ~ "Deans 8/16 - 8/17",
+    date == "2022-08-30" ~ "Deans 8/30 - 8/31",
+    date == "2022-09-13" ~ "Blue Herron 9/13 - 9/14",
+    date == "2022-08-22" ~ "Sister 8/22 - 8/23"
+  )) %>% 
   ggplot(aes(np, accuracy_ch4_95ci, shape = sampling))+
   geom_point(size = 2)+
   scale_shape_manual(values = c(16, 24, 21, 3, 17, 8))+
@@ -160,91 +435,203 @@ time_ch4 <- time_period_summ  %>%
   labs(x= "Sampling periods (#)", y = "Simulations within 95% CI (%)")+
   theme(legend.text.align = 0, legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
 
-time_period_sim_calc %>% ggplot(aes(np, co2_diff))+geom_point() + geom_hline(yintercept = 1, color = "red")
+time_ch4
+
+time_eb <- time_period_eb_summ  %>% 
+  mutate(sampling = case_when(
+    date == "2022-09-06" ~ "Catfish 9/6 - 9/7",
+    date == "2022-09-18" ~ "Catfish 9/18 - 9/19",
+    date == "2022-08-16" ~ "Deans 8/16 - 8/17",
+    date == "2022-08-30" ~ "Deans 8/30 - 8/31",
+    date == "2022-09-13" ~ "Blue Herron 9/13 - 9/14",
+    date == "2022-08-22" ~ "Sister 8/22 - 8/23"
+  )) %>% 
+  ggplot(aes(np, accuracy_eb_95ci, shape = sampling))+
+  geom_point(size = 2)+
+  scale_shape_manual(values = c(16, 24, 21, 3, 17, 8))+
+  theme_bw()+
+  labs(x= "Sampling periods (#)", y = "Simulations within 95% CI (%)")+
+  theme(legend.text.align = 0, legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
+
+time_eb
 ```
 
-```{r}
-space_sim <- data.frame()
+```{r space sims, include = F}
+# site_vec <- c("Deans", "Deans", "Catfish", "Catfish", "Pick", "Sister3")
+# start_date_vec <- c("2022-08-16", "2022-08-30", "2022-09-06", "2022-09-18", "2022-09-13", "2022-08-22")
+# end_date_vec <- c("2022-08-17", "2022-08-31", "2022-09-07", "2022-09-19", "2022-09-14", "2022-08-23")
+# time_df_vec <- list(deans_16_times, deans_30_times, catfish_06_times, catfish_18_times, pick_13_times, sister3_22_times)
+# 
+# space_sim <- data.frame()
+# 
+# for(j in 1:length(time_df_vec)){
+#    for(v in 1:11){
+#      for(i in 1:100){
+#      trap_vec <- (map_chr(c("1B", "1E", "2A", "2C", "2D", "3B", "3E", "4A", "4C", "4D", "5B", "5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)))
+#      tl <- sample(trap_vec,v,replace = FALSE)
+#      temp_row <- change_intensity(diffusion, site_vec[j], start_date_vec[j], end_date_vec[j], time_df_vec[[j]], c(1:8), tl) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]), nl = length(tl))
+#      space_sim <- bind_rows(space_sim, temp_row)
+#    }
+#    }
+#  }
+# 
+#  write.csv(space_sim, "5-Results/space_sim.csv", row.names = F)
+```
 
-samplings <- list(deans_pts_16, deans_pts_30, catfish_pts_06, catfish_pts_18, pick_pts_13, sister3_pts_22)
-time_vec <- list(deans_16_time, deans_30_time, catfish_06_time, catfish_18_time, pick_13_time, sister3_22_time)
-site_vec <- c("Deans", "Deans", "Catfish", "Catfish", "Pick", "Sister")
-date_vec <- c("16 Aug", "30 Aug", "06 Sept", "18 Sept", "13 Sept", "22 Aug")
+```{r space sim eb, include = F}
+# site_vec <- c("Deans", "Deans", "Catfish", "Catfish", "Pick", "Sister3")
+# start_date_vec <- c("2022-08-16", "2022-08-30", "2022-09-06", "2022-09-18", "2022-09-13", "2022-08-22")
+# end_date_vec <- c("2022-08-17", "2022-08-31", "2022-09-07", "2022-09-19", "2022-09-14", "2022-08-23")
+# sampling_vec <- c("Deans1", "Deans2", "Catfish1", "Catfish2", "Pick1", "Sister31")
+# period_vec <- unique(ebullition_times$period)
+# 
+# space_sim_eb <- data.frame()
+# 
+# for(j in 1:length(sampling_vec)){
+#   for(v in 1:11){
+#       for(i in 1:100){
+#       trap_vec <- (map_chr(c("1A","1B","1C","1D","1E", "2A","2B", "2C", "2D", "2E","3A","3B","3C","3D", "3E", "4A", "4B","4C", "4D","4E", "5A", "5B","5C", "5D","5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)))
+#       tl <- sample(trap_vec,v,replace = FALSE)
+#     temp_row <- change_intensity_ebullition(ebullition_sims, site_vec[j], start_date_vec[j], end_date_vec[j], ebullition_times, sampling_vec[j], period_vec, tl) %>% mutate(site = site_vec[j], date = ymd(start_date_vec[j]), nl = length(tl))
+#     space_sim_eb <- bind_rows(space_sim_eb, temp_row)
+#   }
+#   }
+# }
+# 
+# write.csv(space_sim_eb, "5-Results/space_sim_eb.csv", row.names = F)
+```
 
-for(j in 1:length(samplings)){
-  location_vec <- unique(samplings[j][[1]]$location)
-  for(i in 1:(length(location_vec)-1)){
-    for(f in 1:100){
-      tp <- sample(location_vec,i,replace = FALSE)
-      temp <- alt_sim_space(samplings[j][[1]], time_vec[j][[1]], tp) %>% mutate(site = site_vec[j], date = date_vec[j], tp = length(tp))
-      space_sim <- bind_rows(space_sim, temp)
-   }
-  }
-}
+
+```{r space sims summary, include = F}
+space_sim <- read.csv("5-Results/space_sim.csv")
+space_sim_eb <- read.csv("5-Results/space_sim_eb.csv")
 
 space_sim_calc <- space_sim %>% 
-  left_join(summary_pathways %>% mutate(date = case_when(
-  date == "09/06/22" ~ "06 Sept",
-  date == "09/18/22" ~ "18 Sept",
-  date == "08/16/22" ~ "16 Aug",
-  date == "08/30/22" ~ "30 Aug",
-  date == "09/13/22" ~ "13 Sept",
-  date == "08/22/22" ~ "22 Aug"
-), site = if_else(site == "Sister3", "Sister", site)), by = c("site","date"))%>% 
-  mutate(ch4_accurate_20perc = if_else(abs(alt_space_diffusion_ch4) > abs(flux_round_diffusion_CH4 * 0.8) & abs(alt_space_diffusion_ch4) < abs(flux_round_diffusion_CH4 *1.2), TRUE, FALSE),
-                                              ch4_accurate_95ci = if_else(alt_space_diffusion_ch4 > flux_round_2.5_diffusion_CH4 & alt_space_diffusion_ch4 < flux_round_97.5_diffusion_CH4, TRUE, FALSE),
-                                              co2_accurate_20perc = if_else(abs(alt_space_diffusion_co2) > abs(flux_round_diffusion_CO2 * 0.8) & abs(alt_space_diffusion_co2) < abs(flux_round_diffusion_CO2 *1.2), TRUE, FALSE),
-                                              co2_accurate_95ci = if_else(alt_space_diffusion_co2 > flux_round_2.5_diffusion_CO2 & alt_space_diffusion_co2 < flux_round_97.5_diffusion_CO2, TRUE, FALSE),
-                                              ch4_diff = alt_space_diffusion_ch4 / flux_round_diffusion_CH4,
-                                              co2_diff = alt_space_diffusion_co2/ flux_round_diffusion_CO2
-                          )
+  left_join(summary_pathways %>% mutate(date = as.character(date)), by = c("site", "date")) %>% 
+  mutate(ch4_accurate_95ci = if_else(change_diff_ch4 > flux_round_2.5_diffusion_CH4 & change_diff_ch4 < flux_round_97.5_diffusion_CH4, TRUE, FALSE),
+         co2_accurate_95ci = if_else(change_diff_co2 > flux_round_2.5_diffusion_CO2 & change_diff_co2 < flux_round_97.5_diffusion_CO2, TRUE, FALSE))
 
-space_summ <- space_sim_calc %>% group_by(date, tp) %>% summarize(accuracy_ch4 = sum(ch4_accurate_20perc), accuracy_co2 = sum(co2_accurate_20perc), accuracy_ch4_95ci = sum(ch4_accurate_95ci), accuracy_co2_95ci = sum(co2_accurate_95ci)) %>% 
+space_sim_summ <- space_sim_calc %>% group_by(site, date, nl) %>% summarize(accuracy_ch4_95ci = sum(ch4_accurate_95ci), accuracy_co2_95ci = sum(co2_accurate_95ci))
+
+space_sim_eb_calc <- space_sim_eb %>% 
+  left_join(summary_pathways %>% mutate(date = as.character(date)), by = c("site", "date")) %>% 
+  mutate(eb_accurate_95ci = if_else(change_diff_eb > flux_round_2.5_ebullition_CH4 & change_diff_eb < flux_round_97.5_ebullition_CH4, TRUE, FALSE))
+
+space_sim_eb_summ <- space_sim_eb_calc %>% group_by(site, date, nl) %>% summarize(accuracy_eb_95ci = sum(eb_accurate_95ci)) 
+```
+
+```{r space sims plots, echo = F}
+space_ch4 <- space_sim_summ %>% 
+   mutate(sampling = case_when(
+    date == "2022-09-06" ~ "Catfish 9/6 - 9/7",
+    date == "2022-09-18" ~ "Catfish 9/18 - 9/19",
+    date == "2022-08-16" ~ "Deans 8/16 - 8/17",
+    date == "2022-08-30" ~ "Deans 8/30 - 8/31",
+    date == "2022-09-13" ~ "Blue Herron 9/13 - 9/14",
+    date == "2022-08-22" ~ "Sister 8/22 - 8/23"
+  )) %>% 
+  ggplot(aes(nl, accuracy_ch4_95ci, shape = sampling))+
+  geom_point(size = 2)+
+  scale_shape_manual(values = c(16, 24, 21, 3, 17, 8))+
+  theme_bw()+
+  labs(x= "Sampling locations (#)", y = "Simulations within 95% CI (%)")+
+  theme(legend.text.align = 0, legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
+
+space_ch4
+
+space_co2 <- space_sim_summ %>% 
   mutate(sampling = case_when(
-    date == "06 Sept" ~ "Catfish \n06 Sept",
-    date == "18 Sept" ~ "Catfish \n18 Sept",
-    date == "16 Aug" ~ "Deans \n16 Aug",
-    date == "30 Aug" ~ "Deans \n30 Aug",
-    date == "13 Sept" ~ "Blue Herron \n13 Sept",
-    date == "22 Aug" ~ "Sister \n22 Aug"
-  ))
-
-```
-
-
-```{r}
-space_ch4 <- space_summ %>% 
-  ggplot(aes(tp, accuracy_ch4_95ci, shape = sampling))+
+    date == "2022-09-06" ~ "Catfish 9/6 - 9/7",
+    date == "2022-09-18" ~ "Catfish 9/18 - 9/19",
+    date == "2022-08-16" ~ "Deans 8/16 - 8/17",
+    date == "2022-08-30" ~ "Deans 8/30 - 8/31",
+    date == "2022-09-13" ~ "Blue Herron 9/13 - 9/14",
+    date == "2022-08-22" ~ "Sister 8/22 - 8/23"
+  )) %>% 
+  ggplot(aes(nl, accuracy_co2_95ci, shape = sampling))+
   geom_point(size = 2)+
   scale_shape_manual(values = c(16, 24, 21, 3, 17, 8))+
   theme_bw()+
   labs(x= "Sampling locations (#)", y = "Simulations within 95% CI (%)")+
   theme(legend.text.align = 0, legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
 
+space_co2
 
-space_co2 <- space_summ %>% 
-  ggplot(aes(tp, accuracy_co2_95ci, shape = sampling))+
+space_eb <- space_sim_eb_summ %>% 
+  mutate(sampling = case_when(
+    date == "2022-09-06" ~ "Catfish 9/6 - 9/7",
+    date == "2022-09-18" ~ "Catfish 9/18 - 9/19",
+    date == "2022-08-16" ~ "Deans 8/16 - 8/17",
+    date == "2022-08-30" ~ "Deans 8/30 - 8/31",
+    date == "2022-09-13" ~ "Blue Herron 9/13 - 9/14",
+    date == "2022-08-22" ~ "Sister 8/22 - 8/23"
+  )) %>% 
+  ggplot(aes(nl, accuracy_eb_95ci, shape = sampling))+
   geom_point(size = 2)+
   scale_shape_manual(values = c(16, 24, 21, 3, 17, 8))+
   theme_bw()+
   labs(x= "Sampling locations (#)", y = "Simulations within 95% CI (%)")+
   theme(legend.text.align = 0, legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
+
+space_eb
 ```
 
-```{r}
-title <- ggdraw() + 
-  draw_label(
-    "Simulations within 95% CI (%)",
-    angle = 90, 
-    size = 16
-  )
+```{r, echo = F}
+sampcol1 <- plot_grid(time_co2 + theme(legend.position = "none", axis.title.x = element_blank()), 
+          space_co2+ theme(legend.position = "none", axis.title.x = element_blank()), 
+          time_ch4 + theme(legend.position = "none", axis.title.x = element_blank()),
+          space_ch4 + theme(legend.position = "none", axis.title.x = element_blank()), 
+          time_eb + theme(legend.position = "none"),
+          space_eb + theme(legend.position = "none"), 
+          ncol = 2, labels = "AUTO")
 
-interior <- plot_grid(time_co2+ theme(legend.position = "none", axis.title.y = element_blank(), axis.title.x = element_blank()), space_co2+ theme(legend.position = "none", axis.title.y = element_blank(), axis.title.x = element_blank()),  time_ch4+ theme(legend.position = "none",  axis.title.y = element_blank()), space_ch4+ theme(legend.position = "none",  axis.title.y = element_blank()), labels = "AUTO", label_x = 0.15, label_y = 0.98)
+samp_legend <- get_legend(time_co2)
 
-interior
+# you may want to force the ranges to be the same for eb and diff
 
-png(filename = "4-Figures/consequences.png", width = 8, height = 5, units = "in", res = 300)
-plot_grid(title, interior, get_legend(time_co2), ncol = 3, rel_widths = c(0.05, 0.75, 0.2))
-dev.off()
+#png(filename = "4-Figures/sampling.png", width = 12, height = 12, units = "in", res = 300)
+plot_grid(sampcol1, samp_legend, ncol = 2, rel_widths = c(0.8, 0.2))
+#dev.off()
+```
+
+```{r neon mode, include = F}
+# neon_util <- loadByProduct(dpID="DP1.20097.001",
+#                                    site=c("CRAM", "BARC", "SUGG", "LIRO", "PRLA", "TOOK"),
+#                                    startdate="2016-01", enddate="2023-04",
+#                                    package="basic", 
+#                            token = token)
+# 
+# list2env(neon_util, .GlobalEnv)
+
+# temp <- sdg_fieldData %>% mutate(date_time = case_when(
+#   siteID == "CRAM" ~ with_tz(collectDate, "America/Chicago") %>% force_tz(),
+#   siteID == "BARC" ~ with_tz(collectDate, "America/New_York") %>% force_tz(),
+#   siteID == "SUGG" ~ with_tz(collectDate, "America/New_York") %>% force_tz(),
+#   siteID == "LIRO" ~ with_tz(collectDate, "America/Chicago") %>% force_tz(),
+#   siteID == "PRLA" ~ with_tz(collectDate, "America/Chicago") %>% force_tz(),
+#   siteID == "TOOK" ~ with_tz(collectDate, "America/Anchorage")%>% force_tz()
+# )) %>% mutate(time = paste(Sys.Date(), format(date_time, format="%H:%M:%S"), sep = " ") %>% ymd_hms())
+# 
+# # write.csv(temp, "2-Clean Data/NEON-gas-times.csv")
+# 
+# neon <- read.csv("2-Clean Data/NEON-gas-times.csv") %>% mutate(time = ymd_hms(time), time_num = time %>% as.numeric())
+# 
+# ggplot(neon, aes(time_num))+geom_histogram()
+# 
+# class(neon$time)
+# 
+# range(neon$mins)
+# 
+# which.max(density(neon$time_num)$y)
+# density(neon$time_num)$x[232]
+# 
+# as_datetime(1681727985)
+
+# CRAM "America/Chicago"
+# BARC "America/New_York"
+# SUGG "America/New_York"
+# LIRO "America/Chicago"
+# PRLA "America/Chicago"
+# TOOK "America/Anchorage"
 ```
 

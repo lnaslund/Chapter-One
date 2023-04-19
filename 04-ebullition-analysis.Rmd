@@ -1,7 +1,7 @@
 # Ebullition Analysis
 
 I want to evaluate the relationship between ebullitive flux of CH4 and depth and distance to the inlet. I hypothesized that both depth and distance to the inlet will be negatively associated with ebullitive flux. Ultimately, we have to deal with the fact that the data are zero-inflated and bounded by 0. I tried multiple models below to address these characteristics
-```{r eb analysis set up}
+```{r eb analysis set up, warning=FALSE}
 eb_all <- bind_rows(sister3_pts_22_eb %>% mutate(Site ="Sister3"), 
                     pick_pts_13_eb,
                     catfish_pts_18_eb %>% dplyr::select(-c(catfish_dist_1, catfish_dist_2)),
@@ -147,85 +147,50 @@ cand.models <- list("mod7"= mod7,
 mod8 <- glmer(ch4_eb_g_m2_hr_24 ~ Transect + (1|Sampling), data = ebullition_24 %>% mutate(Transect = str_sub(Trap, 2, 2) %>% as.numeric()) %>% filter(ch4_eb_g_m2_hr_24 > 0), family = Gamma(link = "log"))
 summary(mod8)
 r2_nakagawa(mod8)
-
-
 ```
 
 
 ```{r plot depth gamma, echo = F}
-pred.mod7.b <- ggpredict(mod7.b, terms =c("Depth", "Sampling"), type = "random") 
-#
-# "#2F4A4A","#588B9B", "#A9707F","#D1A6B2", "#CEB59B", "#C7C7C7"
+sampling.labs <- c("Catfish\n9/6 - 9/7", "Catfish\n9/18 - 9/19", "Deans\n8/16 - 8/17", "Deans\n8/30 - 8/31", "Blue Herron\n9/13 - 9/14", "Sister\n8/22 - 8/23")
+names(sampling.labs) <- c("Catfish1", "Catfish2", "Deans1", "Deans2", "Pick1", "Sister31")
 
-#png(filename = "4-Figures/eb-analysis-summary.png", width = 8, height = 5, units = "in", res = 300)
-ggplot(pred.mod7.b) +
-  geom_ribbon(aes(fill = group, x = x, ymin = conf.low, ymax = conf.high), alpha = 0.2)+
- 
+pred.mod7.b <- ggpredict(mod7.b, terms =c("Depth", "Sampling"), type = "random") 
+
+depth_fig <- ggplot(pred.mod7.b) +
+  geom_ribbon(aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.2)+
   geom_point(data=ebullition_24, 
-             aes(x=Depth, y = ch4_eb_g_m2_hr_24, color=Sampling),
+             aes(x=Depth, y = ch4_eb_g_m2_hr_24),
              size = 2.5, shape = 1, stroke = 1)+
-   geom_line(aes(x=x, y=predicted, color = group))+
-  scale_color_manual(values = c("#DCE319FF","#CD984B","#55C667FF", "#143C1B", "#440154FF", "#2D708EFF"),
-                     labels = c("Catfish 09/06/22", "Catfish 09/18/22", "Deans 08/16/22", "Deans 08/30/22", "Pick 09/13/22", "Sister 08/22/22"))+
-  scale_fill_manual(values = c("#DCE319FF","#CD984B","#55C667FF", "#143C1B", "#440154FF", "#2D708EFF"),
-                     labels = c("Catfish 09/06/22", "Catfish 09/18/22", "Deans 08/16/22", "Deans 08/30/22", "Pick 09/13/22", "Sister 08/22/22"))+
+   geom_line(aes(x=x, y=predicted), lwd = 2, color = "#94A7C5")+
   ylab(expression(CH[4]~ flux ~ (g~m^-2~hr^-1)))+
   xlab("Depth (m)")+
   theme_bw()+
-  theme(legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
-#dev.off()
-
+  coord_cartesian(ylim = c(0,0.1))+
+  theme(legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14), strip.text = element_text(size = 14,  color = "black"))+
+  facet_grid(~group, labeller = labeller(group = sampling.labs))
 
 pred.mod7.a <- ggpredict(mod7.a, terms =c("inlet_dist", "Sampling"), type = "random") 
-#
-# "#2F4A4A","#588B9B", "#A9707F","#D1A6B2", "#CEB59B", "#C7C7C7"
 
-#png(filename = "4-Figures/eb-analysis-summary_inlet.png", width = 8, height = 5, units = "in", res = 300)
-ggplot(pred.mod7.a) +
-  #geom_ribbon(aes(fill = group, x = x, ymin = conf.low, ymax = conf.high), alpha = 0.2)+
- geom_line(aes(color = group, x = x, y = conf.low), lty = 2)+
-  geom_line(aes(color = group, x = x, y = conf.high), lty = 2)+
-  geom_point(data=ebullition_24, 
-             aes(x=inlet_dist, y = ch4_eb_g_m2_hr_24, color=Sampling),
-             size = 2.5, shape = 1, stroke = 1)+
-   geom_line(aes(x=x, y=predicted, color = group), lwd = 2)+
-  scale_color_manual(values = c("#DCE319FF","#CD984B","#55C667FF", "#143C1B", "#440154FF", "#2D708EFF"),
-                     labels = c("Catfish 09/06/22", "Catfish 09/18/22", "Deans 08/16/22", "Deans 08/30/22", "Pick 09/13/22", "Sister 08/22/22"))+
-  scale_fill_manual(values = c("#DCE319FF","#CD984B","#55C667FF", "#143C1B", "#440154FF", "#2D708EFF"),
-                     labels = c("Catfish 09/06/22", "Catfish 09/18/22", "Deans 08/16/22", "Deans 08/30/22", "Pick 09/13/22", "Sister 08/22/22"))+
-  ylab(expression(CH[4]~ flux ~ (g~m^-2~hr^-1)))+
-  xlab("Distance from the inlet (m)")+
-  theme_bw()+
-  coord_cartesian(ylim = c(0,0.1))+
-  theme(legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
-#dev.off()
-
-
-ggplot(pred.mod7.a) +
+dist_fig <- ggplot(pred.mod7.a) +
  geom_ribbon(aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.2)+
- #geom_line(aes(color = group, x = x, y = conf.low), lty = 2)+
-#  geom_line(aes(color = group, x = x, y = conf.high), lty = 2)+
   geom_point(data=ebullition_24, 
              aes(x=inlet_dist, y = ch4_eb_g_m2_hr_24),
              size = 2.5, shape = 1, stroke = 1)+
-   geom_line(aes(x=x, y=predicted), lwd = 2)+
-  #scale_color_manual(values = c("#DCE319FF","#CD984B","#55C667FF", "#143C1B", "#440154FF", "#2D708EFF"),
-  #                   labels = c("Catfish 09/06/22", "Catfish 09/18/22", "Deans 08/16/22", "Deans 08/30/22", "Pick 09/13/22", "Sister 08/22/22"))+
-  #scale_fill_manual(values = c("#DCE319FF","#CD984B","#55C667FF", "#143C1B", "#440154FF", "#2D708EFF"),
-  #                   labels = c("Catfish 09/06/22", "Catfish 09/18/22", "Deans 08/16/22", "Deans 08/30/22", "Pick 09/13/22", "Sister 08/22/22"))+
+   geom_line(aes(x=x, y=predicted), lwd = 2, color = "#94A7C5")+
   ylab(expression(CH[4]~ flux ~ (g~m^-2~hr^-1)))+
   xlab("Distance from the inlet (m)")+
   theme_bw()+
   coord_cartesian(ylim = c(0,0.1))+
-  theme(legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))+
-  facet_grid(~group)
+  theme(legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14), strip.text = element_text(size = 14,  color = "black"))+
+  facet_grid(~group, labeller = labeller(group = sampling.labs))
 
-
-# ylab(expression(CH[4]~ flux ~ (g~m^-2~hr^-1)))+
-#   xlab("Distance from the inlet (m)")+
-#   theme_bw()+
-#   coord_cartesian(ylim = c(0,0.1))+
-#   theme(legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), legend.text = element_text(size = 14))
+#png(filename = "4-Figures/eb-analysis-summary.png", width = 8, height = 8, units = "in", res = 300)
+plot_grid(depth_fig, dist_fig, labels = "AUTO", nrow = 2)
+#dev.off()
 ```
 
+```{r eb analysis rm, include = F}
+to_remove <- c("deans_pts_16_eb", "deans_pts_30_eb", "pick_pts_13_eb", "sister3_pts_22_eb", "catfish_pts_06_eb", "catfish_pts_18_eb", "cand.models", "mod1", "mod2", "mod2.a", "mod2.b", "mod3", "mod4", "mod4.a", "mod4.b", "mod5", "mod5.a", "mod5.b", "mod6", "mod7", "mod7.a", "mod7.b", "mod8", "pred.mod7.a", "pred.mod7.b")
+rm(list = to_remove)
+```
 

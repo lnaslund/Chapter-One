@@ -16,30 +16,12 @@ github-repo: "rstudio/bookdown-demo"
 # Sampling scheme
 
 ```{r load packages, include=F}
-library(tidyverse)
-library(mapview)
-library(lubridate)
-library(sf)
-library(data.table)
-library(dygraphs)
-library(xts)
-library(gstat)
-library(stars)
-library(automap)
-library(viridis)
-library(tmap)
-library(gridExtra)
-library(lme4)
-library(glmmTMB)
-library(AICcmodavg)
-library(ggeffects)
-library(lme4)
-require(lmerTest)
-library(plotly)
-library(performance)
-library(hms)
-library(cowplot)
-library(MuMIn)
+my_packages <- c("tidyverse", "mapview", "lubridate", "sf", "data.table", "dygraphs", "xts", "gstat", "stars", "automap", "viridis", "tmap", "gridExtra", "lme4", "AICcmodavg", "ggeffects", "lmerTest", "plotly", "performance", "hms", "cowplot", "MuMIn", "glmmTMB")
+lapply(my_packages, require, character.only = TRUE)
+
+source("data_munge_functions.R")
+
+options(dplyr.summarise.inform = FALSE)
 ```
 
 ```{r load dfs, include = F}
@@ -70,7 +52,7 @@ catfish <- read_sf("2-Clean Data/site_shapefiles/Catfish.shp") %>%
   st_transform(crs = 32617)
 sister3 <- read_sf("2-Clean Data/Site_Shapefiles/Sister3.shp") %>% 
   st_transform(crs = 32617)
-pick <- read_sf("2-Clean Data/Site_Shapefiles/Pick.shp") %>% 
+pick <- read_sf("2-Clean Data/Site_Shapefiles/Pick.shp") %>% # in published work called Blue Herron
   st_transform(crs = 32617)
 ```
 
@@ -128,17 +110,8 @@ for(i in 1:length(do_list)){
          )
 }
 
-do <- do %>%
-  mutate(site = if_else(site == "Pick", "Blue Herron", site)) %>% 
-  mutate(sampling = case_when(
-    (Date_Time > ymd_hms("2022-09-06 08:00:00", tz = "America/New_York") & Date_Time < ymd_hms("2022-09-07 08:00:00", tz = "America/New_York") & site == "Catfish") ~ "Catfish \n2022/09/06 - 2022/09/07",
-    (Date_Time > ymd_hms("2022-09-18 08:00:00", tz = "America/New_York") & Date_Time < ymd_hms("2022-09-19 08:00:00", tz = "America/New_York") & site == "Catfish") ~ "Catfish \n2022/09/18 - 2022/09/19",
-    (Date_Time > ymd_hms("2022-08-16 08:00:00", tz = "America/New_York") & Date_Time < ymd_hms("2022-08-17 08:00:00", tz = "America/New_York") & site == "Deans") ~ "Deans \n2022/08/16 - 2022/08/17",
-    (Date_Time > ymd_hms("2022-08-30 08:00:00", tz = "America/New_York") & Date_Time < ymd_hms("2022-08-31 08:00:00", tz = "America/New_York") & site == "Deans") ~ "Deans \n2022/08/30 - 2022/08/31",
-    (Date_Time > ymd_hms("2022-09-13 08:00:00", tz = "America/New_York") & Date_Time < ymd_hms("2022-09-14 08:00:00", tz = "America/New_York") & site == "Blue Herron") ~ "Blue Herron \n2022/09/13 - 2022/09/14",
-    (Date_Time > ymd_hms("2022-08-22 08:00:00", tz = "America/New_York") & Date_Time < ymd_hms("2022-08-23 08:00:00", tz = "America/New_York") & site == "Sister") ~ "Sister \n2022/08/22 - 2022/08/23",
-    TRUE ~ NA_character_
-  ))
+do <- sampling_filter_24hr(do %>%
+  mutate(site = if_else(site == "Pick", "Blue Herron", site)))
 ```
 
 ### Deans
@@ -155,7 +128,7 @@ dygraph(Catfish_DO_Top) %>%
   dyAxis("y", label = "Dissolved Oxygen (mg/L)")
 ```
 
-### Sister 3
+### Sister
 ```{r Sister DO plot, echo = F}
 Sister_DO <- cbind(Sister_DO_Top, Sister_DO_Bottom)
 
@@ -165,7 +138,7 @@ dygraph(Sister_DO) %>%
   dyAxis("y", label = "Dissolved Oxygen (mg/L)")
 ```
 
-### Pick
+### Blue Herron
 ```{r Pick DO plot, echo = F}
 Pick_DO <- cbind(Pick_DO_Top, Pick_DO_Bottom)
 
@@ -187,13 +160,21 @@ dygraph(all_DO) %>%
 
 ```{r do time series, echo = F}
 anno <- data.frame(
-  x1 = c(ymd_hms("2022-09-06 08:00:00", tz = "America/New_York"), ymd_hms("2022-09-18 08:00:00", tz = "America/New_York"), ymd_hms("2022-08-16 08:00:00", tz = "America/New_York"), ymd_hms("2022-08-30 08:00:00", tz = "America/New_York"), 
-         ymd_hms("2022-09-13 08:00:00", tz = "America/New_York"), ymd_hms("2022-08-22 08:00:00", tz = "America/New_York") ),
-                   x2 = c(ymd_hms("2022-09-07 08:00:00", tz = "America/New_York"), ymd_hms("2022-09-19 08:00:00", tz = "America/New_York"), ymd_hms("2022-08-17 08:00:00", tz = "America/New_York"), 
-                          ymd_hms("2022-08-31 08:00:00", tz = "America/New_York"), ymd_hms("2022-09-14 08:00:00", tz = "America/New_York"), ymd_hms("2022-08-23 08:00:00", tz = "America/New_York")),
-                   y1 = c(rep(0,6)),
-                   y2 = c(rep(11,6)),
-                   site = c("Catfish", "Catfish", "Deans", "Deans", "Blue Herron", "Sister"))
+  x1 = c(ymd_hms("2022-09-06 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-09-18 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-08-16 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-08-30 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-09-13 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-08-22 08:00:00", tz = "America/New_York") ),
+  x2 = c(ymd_hms("2022-09-07 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-09-19 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-08-17 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-08-31 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-09-14 08:00:00", tz = "America/New_York"), 
+         ymd_hms("2022-08-23 08:00:00", tz = "America/New_York")),
+  y1 = c(rep(0,6)),
+  y2 = c(rep(11,6)),
+  site = c("Catfish", "Catfish", "Deans", "Deans", "Blue Herron", "Sister"))
 
 do_crop <- do %>% filter(location == "Top") %>% 
   filter(Date_Time > ymd_hms("2022-08-01 08:00:00"), Date_Time < ymd_hms("2022-09-30 08:00:00"))
@@ -206,23 +187,23 @@ ggplot() +
   ylab("DO (mg/L)") + 
   theme(axis.title.x = element_blank(), axis.text = element_text(size = 14, color = "black"), 
         axis.title = element_text(size = 16, color = "black"), strip.text = element_text(size = 14,  color = "black"))+
- 
   facet_grid(rows = vars(site))
 dev.off()
 ```
 
 ```{r do during sampling, echo = F}
+time_vec <- c("10:00", "13:00", "16:00", "19:00", "22:00", "01:00", "04:00", "07:00")
+date_time_vec_1 <- do.call(c, map(time_vec[1:5], function(x) ymd_hm(paste(date(Sys.time()), x, sep = " "), tz = "America/New_York")))
+date_time_vec_2 <- do.call(c, map(time_vec[6:8], function(x) ymd_hm(paste(date(Sys.time()+days(1)), x, sep = " "), tz = "America/New_York")))
+date_time_vec <- c(date_time_vec_1, date_time_vec_2)
+
 png(filename = "4-Figures/do-sampling-summary.png", width = 8, height = 5, units = "in", res = 300)
-do %>% filter(location == "Top") %>% mutate(site = if_else(site == "Pick", "Blue Herron", site)) %>% 
+daily_trace_aes(do %>% filter(location == "Top") %>% mutate(site = if_else(site == "Pick", "Blue Herron", site)) %>% 
   filter(is.na(sampling)==F) %>% 
-  ggplot(aes(Date_Time, DO_mgL, group = sampling)) +
+     mutate(time = format(Date_Time, format = "%H:%M") %>% as.POSIXct(format = "%H:%M"), time_alt = if_else(hour(time) %in% c(24, 0:9), time + days(1), time)) %>% 
+  ggplot(aes(time_alt, DO_mgL, group = sampling)) +
   geom_line()+
-  theme_bw()+
-  ylab("DO (mg/L)") + 
-  theme(axis.title.x = element_blank(), axis.text = element_text(size = 14, color = "black"), 
-        axis.title = element_text(size = 16, color = "black"), strip.text = element_text(size = 14,  color = "black"))+
-  scale_x_datetime(date_labels = "%H:%M")+
-  facet_wrap(~sampling, scales = "free_x")
+  ylab("DO (mg/L)"), date_time_vec)
 dev.off()
 ```
 
@@ -236,7 +217,6 @@ do %>% filter(location == "Top") %>%
 ```
 
 ## Temperature
-
 ```{r read temperature data, echo = F}
 temp_list <- list.files("2-Clean Data/temperature")
 all_temps <- NULL
@@ -251,41 +231,20 @@ for(i in 1:length(temp_list)){
          )
 }
 
-all_temps <- all_temps %>% 
-    mutate(site = if_else(site == "Pick", "Blue Herron", if_else(site == "Sister3", "Sister", site))) %>% 
-  mutate(sampling = case_when(
-    (date > ymd_hms("2022-09-06 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-09-07 08:00:00", tz = "America/New_York") & site == "Catfish") ~ "Catfish \n2022/09/06 - 2022/09/07",
-    (date > ymd_hms("2022-09-18 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-09-19 08:00:00", tz = "America/New_York") & site == "Catfish") ~ "Catfish \n2022/09/18 - 2022/09/19",
-    (date > ymd_hms("2022-08-16 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-08-17 08:00:00", tz = "America/New_York") & site == "Deans") ~ "Deans \n2022/08/16 - 2022/08/17",
-    (date > ymd_hms("2022-08-30 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-08-31 08:00:00", tz = "America/New_York") & site == "Deans") ~ "Deans \n2022/08/30 - 2022/08/31",
-    (date > ymd_hms("2022-09-13 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-09-14 08:00:00", tz = "America/New_York") & site == "Blue Herron") ~ "Blue Herron \n2022/09/13 - 2022/09/14",
-    (date > ymd_hms("2022-08-22 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-08-23 08:00:00", tz = "America/New_York") & site == "Sister") ~ "Sister \n2022/08/22 - 2022/08/23",
-    TRUE ~ NA_character_
-  ))
+all_temps <- sampling_filter_24hr(all_temps %>% mutate(Date_Time = date) %>% 
+    mutate(site = if_else(site == "Pick", "Blue Herron", if_else(site == "Sister3", "Sister", site)))) %>% 
+  select(-Date_Time)
 
-ggplot(all_temps %>% filter(is.na(sampling) == F, depth == 0.25), aes(date, temp, group = sampling)) + 
-  geom_line() + 
-  facet_wrap(~sampling, scales = "free_x")+
-   scale_x_datetime(date_labels = "%H:%M")+
-  theme_bw()+
-  theme(axis.title.x = element_blank(), axis.text = element_text(size = 14, color = "black"), 
-        axis.title = element_text(size = 16, color = "black"), strip.text = element_text(size = 14,  color = "black"))
+png(filename = "4-Figures/daily-temp.png", width = 8, height = 5, units = "in", res = 300)
+daily_trace_aes(ggplot(all_temps %>% filter(is.na(sampling) == F, depth == 0.25) %>% mutate(time = format(date, format = "%H:%M") %>% as.POSIXct(format = "%H:%M"), time_alt = if_else(hour(time) %in% c(24, 0:9), time + days(1), time)), aes(time_alt, temp, group = sampling)) + 
+  geom_line() + ylab("Temperature (°C)"), date_time_vec)
+dev.off()
 
-
-top_temp <- all_temps %>% 
-  mutate(sampling = case_when(
-    (date > ymd_hms("2022-09-06 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-09-07 12:00:00", tz = "America/New_York") & site == "Catfish") ~ "Catfish 9/6 - 9/7",
-    (date > ymd_hms("2022-09-18 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-09-19 12:00:00", tz = "America/New_York") & site == "Catfish") ~ "Catfish 9/18 - 9/19",
-    (date > ymd_hms("2022-08-16 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-08-17 12:00:00", tz = "America/New_York") & site == "Deans") ~ "Deans 8/16 - 8/17",
-    (date > ymd_hms("2022-08-30 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-08-31 12:00:00", tz = "America/New_York") & site == "Deans") ~ "Deans 8/30 - 8/31",
-    (date > ymd_hms("2022-09-13 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-09-14 12:00:00", tz = "America/New_York") & site == "Blue Herron") ~ "Blue Herron 9/13 - 9/14",
-    (date > ymd_hms("2022-08-22 08:00:00", tz = "America/New_York") & date < ymd_hms("2022-08-23 12:00:00", tz = "America/New_York") & site == "Sister") ~ "Sister 8/22 - 8/23",
-    TRUE ~ NA_character_
-  )) %>% 
-  filter(is.na(sampling)==F, depth == 0.25)
+top_temp <- sampling_filter_28hr(all_temps %>% 
+  filter(is.na(sampling)==F, depth == 0.25))
 ```
 
-
+You are here for cleaning
 ### Deans
 ```{r Deans temp, echo = F}
 deans_vec <- temp_list %>% str_subset("deans") %>% str_extract(".*(?=\\.)")
@@ -303,13 +262,10 @@ for(i in 1:length(deans_vec)){
   assign(paste0(deans_vec[i], "_xts"), as.xts(temporary$temp, order.by = temporary$date))
 }
 
-
 deans_temp <- cbind(deans_0.25_xts, deans_0.75_xts, deans_1.25_xts, deans_2.75_xts)
 dygraph(deans_temp) %>% 
   dyOptions(connectSeparatedPoints = TRUE) %>% 
   dyAxis("y", label = "Temperature (C)")
-
-deans %>% filter()
 ```
 
 ### Catfish
@@ -360,7 +316,7 @@ dygraph(sister_temp) %>%
   dyAxis("y", label = "Temperature (C)")
 ```
 
-### Pick
+### Blue Herron
 ```{r Pick temp, echo = F}
 pick_vec <- temp_list %>% str_subset("pick") %>% str_extract(".*(?=\\.)")
 
@@ -392,7 +348,6 @@ All sensors were submerged ~0.25m below the water surface
 ```{r par set up, include = F}
 # need to confirm calibrated units, probably umol/m2/s
 par <- read.csv("2-Clean Data/par-data.csv") %>% mutate(date_time = ymd_hms(date_time, tz = "America/New_York"))
-
 
 deans.xts <- as.xts(par %>% filter(site == "Deans", date_time < ymd_hms("2022-08-17 09:50:00")) %>% pull(calibrated), order.by = par %>% filter(site == "Deans", date_time < ymd_hms("2022-08-17 09:50:00")) %>% pull(date_time))
 catfish.xts <- as.xts(par %>% filter(site == "Catfish") %>% pull(calibrated), order.by = par %>% filter(site == "Catfish") %>% pull(date_time))
@@ -598,4 +553,9 @@ res_time <- data.frame(
          res_time_d = res_time_s *(1/86400))
 ```
 
+```{r}
+to_remove <- ls()[!ls() %in% c("catfish", "deans", "pick", "sister3", "trap_locations", "inlet_locations", "top_temp")]
+
+rm(list = to_remove)
+```
 

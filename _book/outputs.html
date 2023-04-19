@@ -23,7 +23,7 @@
 <meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2023-04-14" />
+<meta name="date" content="2023-04-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,108 +52,8 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/proj4-2.6.2/proj4.min.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.2/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
-<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
-<script src="libs/HomeButton-0.0.1/home-button.js"></script>
-<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
-<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
-<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
-<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
-<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
-<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
-<script src="libs/dygraphs-1.1.1/shapes.js"></script>
-<script src="libs/moment-2.8.4/moment.js"></script>
-<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
-<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
-<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
-<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
-<script src="libs/co2.kriged.sim.sk[4, , , 1] - 1_1ac59b-1/data_stars_co2krigedsimsk41114bf9c.txt"></script>
-<script src="libs/joda-0.0.1/joda.js"></script>
-<script src="libs/joda-0.0.1/addImageQuery-bindings.js"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 2] - 1_c56490-1/data_stars_co2krigedsimsk421e8692b.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 3] - 1_c07239-1/data_stars_co2krigedsimsk431729354.txt"></script>
-<script src="libs/co2.kriged.sim.sk[4, , , 4] - 1_acf6e3-1/data_stars_co2krigedsimsk44192d81c.txt"></script>
-<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -178,22 +78,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#deans"><i class="fa fa-check"></i><b>1.1.1</b> Deans</a></li>
 <li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#catfish"><i class="fa fa-check"></i><b>1.1.2</b> Catfish</a></li>
-<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#sister-3"><i class="fa fa-check"></i><b>1.1.3</b> Sister 3</a></li>
-<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#pick"><i class="fa fa-check"></i><b>1.1.4</b> Pick</a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#sister"><i class="fa fa-check"></i><b>1.1.3</b> Sister</a></li>
+<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#blue-herron"><i class="fa fa-check"></i><b>1.1.4</b> Blue Herron</a></li>
 <li class="chapter" data-level="1.1.5" data-path="index.html"><a href="index.html#all-impoundments-top-do"><i class="fa fa-check"></i><b>1.1.5</b> All impoundments top DO</a></li>
 </ul></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#temperature"><i class="fa fa-check"></i><b>1.2</b> Temperature</a>
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#deans-1"><i class="fa fa-check"></i><b>1.2.1</b> Deans</a></li>
 <li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#catfish-1"><i class="fa fa-check"></i><b>1.2.2</b> Catfish</a></li>
-<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#sister-3-1"><i class="fa fa-check"></i><b>1.2.3</b> Sister 3</a></li>
-<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#pick-1"><i class="fa fa-check"></i><b>1.2.4</b> Pick</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#sister-3"><i class="fa fa-check"></i><b>1.2.3</b> Sister 3</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#blue-herron-1"><i class="fa fa-check"></i><b>1.2.4</b> Blue Herron</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#par"><i class="fa fa-check"></i><b>1.3</b> PAR</a>
 <ul>
 <li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#deans-2"><i class="fa fa-check"></i><b>1.3.1</b> Deans</a></li>
 <li class="chapter" data-level="1.3.2" data-path="index.html"><a href="index.html#catfish-2"><i class="fa fa-check"></i><b>1.3.2</b> Catfish</a></li>
-<li class="chapter" data-level="1.3.3" data-path="index.html"><a href="index.html#pick-2"><i class="fa fa-check"></i><b>1.3.3</b> Pick</a></li>
+<li class="chapter" data-level="1.3.3" data-path="index.html"><a href="index.html#pick"><i class="fa fa-check"></i><b>1.3.3</b> Pick</a></li>
 <li class="chapter" data-level="1.3.4" data-path="index.html"><a href="index.html#sister3"><i class="fa fa-check"></i><b>1.3.4</b> Sister3</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#dissolved-gas-concentrations"><i class="fa fa-check"></i><b>1.4</b> Dissolved gas concentrations</a></li>
@@ -254,7 +154,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="10" data-path="sunny-cloudy-analysis.html"><a href="sunny-cloudy-analysis.html"><i class="fa fa-check"></i><b>10</b> Sunny Cloudy Analysis</a></li>
 <li class="chapter" data-level="11" data-path="degassing-analysis.html"><a href="degassing-analysis.html"><i class="fa fa-check"></i><b>11</b> Degassing analysis</a></li>
-<li class="chapter" data-level="12" data-path="alternative-sampling-scheme-simulations.html"><a href="alternative-sampling-scheme-simulations.html"><i class="fa fa-check"></i><b>12</b> Alternative sampling scheme simulations</a></li>
+<li class="chapter" data-level="12" data-path="alternative-sampling-scheme-simulations.html"><a href="alternative-sampling-scheme-simulations.html"><i class="fa fa-check"></i><b>12</b> Alternative sampling scheme simulations</a>
+<ul>
+<li class="chapter" data-level="12.0.1" data-path="alternative-sampling-scheme-simulations.html"><a href="alternative-sampling-scheme-simulations.html#when-does-neon-collect-dissolved-gases"><i class="fa fa-check"></i><b>12.0.1</b> When does NEON collect dissolved gases?</a></li>
+</ul></li>
 <li class="chapter" data-level="13" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html"><i class="fa fa-check"></i><b>13</b> Analyses of patterns of diel diffusive emissions</a>
 <ul>
 <li class="chapter" data-level="13.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#diel-patterns-in-environmental-variables"><i class="fa fa-check"></i><b>13.1</b> Diel patterns in environmental variables</a>
@@ -304,420 +207,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="outputs" class="section level1 hasAnchor" number="14">
 <h1><span class="header-section-number">Chapter 14</span> Outputs<a href="outputs.html#outputs" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="outputs.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="co">#png(filename = &quot;4-Figures/co2-eq-summary.png&quot;, width = 8, height = 5, units = &quot;in&quot;, res = 300)</span></span>
-<span id="cb218-2"><a href="outputs.html#cb218-2" aria-hidden="true" tabindex="-1"></a>all_fluxes_pathways <span class="sc">%&gt;%</span> </span>
-<span id="cb218-3"><a href="outputs.html#cb218-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">flux_mean_g_m2_day_co2_eq =</span>  flux_mean_g_day_co2_eq<span class="sc">/</span>area,</span>
-<span id="cb218-4"><a href="outputs.html#cb218-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">flux_2.5_g_m2_day_co2_eq=</span> flux_2<span class="fl">.5</span>_g_day_co2_eq<span class="sc">/</span>area, </span>
-<span id="cb218-5"><a href="outputs.html#cb218-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">flux_97.5_g_m2_day_co2_eq=</span> flux_97<span class="fl">.5</span>_g_day_co2_eq<span class="sc">/</span>area, </span>
-<span id="cb218-6"><a href="outputs.html#cb218-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">pathway_gas =</span> <span class="fu">paste</span>(pathway, gas, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>() <span class="sc">%&gt;%</span> <span class="fu">fct_relevel</span>(<span class="st">&quot;diffusion CO2&quot;</span>, <span class="at">after =</span> <span class="dv">0</span>), </span>
-<span id="cb218-7"><a href="outputs.html#cb218-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">site_date =</span> <span class="fu">paste</span>(site, date, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb218-8"><a href="outputs.html#cb218-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(site_date, flux_mean_g_m2_day_co2_eq, <span class="at">fill =</span> pathway_gas)) <span class="sc">+</span> </span>
-<span id="cb218-9"><a href="outputs.html#cb218-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(), <span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>)<span class="sc">+</span></span>
-<span id="cb218-10"><a href="outputs.html#cb218-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Catfish 09/06/22&quot;</span> <span class="ot">=</span> <span class="st">&quot;Catfish 06 Sept&quot;</span>, <span class="st">&quot;Catfish 09/18/22&quot;</span> <span class="ot">=</span> <span class="st">&quot;Catfish 18 Sept&quot;</span>, <span class="st">&quot;Deans 08/16/22&quot;</span> <span class="ot">=</span> <span class="st">&quot;Deans 16 Aug&quot;</span>, <span class="st">&quot;Deans 08/30/22&quot;</span> <span class="ot">=</span> <span class="st">&quot;Deans 30 Aug&quot;</span>, <span class="st">&quot;Pick 09/13/22&quot;</span> <span class="ot">=</span> <span class="st">&quot;Blue Herron 13 Sept&quot;</span>, <span class="st">&quot;Sister3 08/22/22&quot;</span> <span class="ot">=</span> <span class="st">&quot;Sister 22 Aug&quot;</span>))<span class="sc">+</span></span>
-<span id="cb218-11"><a href="outputs.html#cb218-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymax=</span>flux_97<span class="fl">.5</span>_g_m2_day_co2_eq, <span class="at">ymin=</span>flux_2<span class="fl">.5</span>_g_m2_day_co2_eq), <span class="at">position =</span> <span class="fu">position_dodge</span>())<span class="sc">+</span></span>
-<span id="cb218-12"><a href="outputs.html#cb218-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#BFDBC0&quot;</span>,<span class="st">&quot;#94A7C5&quot;</span>, <span class="st">&quot;#3D5170&quot;</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="fu">expression</span>(diffusion<span class="sc">~</span>CO[<span class="dv">2</span>]), <span class="fu">expression</span>(diffusion<span class="sc">~</span>CH[<span class="dv">4</span>]), <span class="fu">expression</span>(ebullition<span class="sc">~</span>CH[<span class="dv">4</span>])))<span class="sc">+</span></span>
-<span id="cb218-13"><a href="outputs.html#cb218-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(CO[<span class="dv">2</span>]<span class="sc">-</span>equivalent <span class="sc">~</span> flux <span class="sc">~</span> (g<span class="sc">~</span>m<span class="sc">^-</span><span class="dv">2</span><span class="sc">~</span>day<span class="sc">^-</span><span class="dv">1</span>)))<span class="sc">+</span></span>
-<span id="cb218-14"><a href="outputs.html#cb218-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb218-15"><a href="outputs.html#cb218-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.text.align =</span> <span class="dv">0</span>, <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(), <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">45</span>, <span class="at">hjust=</span><span class="dv">1</span>), <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/fig%201%20co2-eq-1.png" width="672" /></p>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="outputs.html#cb219-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dev.off()</span></span></code></pre></div>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="outputs.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="co">#png(filename = &quot;4-Figures/do-all-summary.png&quot;, width = 8, height = 7, units = &quot;in&quot;, res = 300)</span></span>
-<span id="cb220-2"><a href="outputs.html#cb220-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb220-3"><a href="outputs.html#cb220-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_rect</span>(<span class="at">data =</span> anno, <span class="fu">aes</span>(<span class="at">xmin =</span> x1, <span class="at">xmax =</span> x2, <span class="at">ymin =</span> y1, <span class="at">ymax =</span> y2), <span class="at">fill =</span> <span class="st">&quot;#a3cdff&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
-<span id="cb220-4"><a href="outputs.html#cb220-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> do_crop, <span class="fu">aes</span>(Date_Time, DO_mgL))<span class="sc">+</span></span>
-<span id="cb220-5"><a href="outputs.html#cb220-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb220-6"><a href="outputs.html#cb220-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;DO (mg/L)&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb220-7"><a href="outputs.html#cb220-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), </span>
-<span id="cb220-8"><a href="outputs.html#cb220-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>,  <span class="at">color =</span> <span class="st">&quot;black&quot;</span>))<span class="sc">+</span></span>
-<span id="cb220-9"><a href="outputs.html#cb220-9" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb220-10"><a href="outputs.html#cb220-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(site))</span></code></pre></div>
-<p><img src="_main_files/figure-html/fig%202%20do%20time%20series-1.png" width="672" /></p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="outputs.html#cb221-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dev.off()</span></span></code></pre></div>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="outputs.html#cb222-1" aria-hidden="true" tabindex="-1"></a>co2_diel <span class="ot">&lt;-</span> all_fluxes_periods <span class="sc">%&gt;%</span> </span>
-<span id="cb222-2"><a href="outputs.html#cb222-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(gas <span class="sc">==</span> <span class="st">&quot;CO2&quot;</span>, pathway <span class="sc">==</span> <span class="st">&quot;diffusion&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-3"><a href="outputs.html#cb222-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(sampling <span class="sc">==</span> <span class="st">&quot;Deans1&quot;</span> <span class="sc">&amp;</span> period <span class="sc">==</span> <span class="dv">8</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-4"><a href="outputs.html#cb222-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">period =</span> <span class="fu">as.numeric</span>(period), <span class="at">trip_wr =</span><span class="fu">factor</span>(<span class="fu">case_when</span>(period <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;10AM&quot;</span>, </span>
-<span id="cb222-5"><a href="outputs.html#cb222-5" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;1PM&quot;</span>, </span>
-<span id="cb222-6"><a href="outputs.html#cb222-6" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;4PM&quot;</span>, </span>
-<span id="cb222-7"><a href="outputs.html#cb222-7" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;7PM&quot;</span>, </span>
-<span id="cb222-8"><a href="outputs.html#cb222-8" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;10PM&quot;</span>, </span>
-<span id="cb222-9"><a href="outputs.html#cb222-9" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;1AM&quot;</span>, </span>
-<span id="cb222-10"><a href="outputs.html#cb222-10" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">&quot;4AM&quot;</span>, </span>
-<span id="cb222-11"><a href="outputs.html#cb222-11" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">&quot;7AM&quot;</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;10AM&quot;</span>, <span class="st">&quot;1PM&quot;</span>, <span class="st">&quot;4PM&quot;</span>, <span class="st">&quot;7PM&quot;</span>, <span class="st">&quot;10PM&quot;</span>, <span class="st">&quot;1AM&quot;</span>, <span class="st">&quot;4AM&quot;</span>, <span class="st">&quot;7AM&quot;</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-12"><a href="outputs.html#cb222-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">sampling =</span> <span class="fu">case_when</span>(sampling <span class="sc">==</span> <span class="st">&quot;Catfish1&quot;</span> <span class="sc">~</span><span class="st">&quot;Catfish 06 Sept&quot;</span>,</span>
-<span id="cb222-13"><a href="outputs.html#cb222-13" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Catfish2&quot;</span> <span class="sc">~</span> <span class="st">&quot;Catfish 18 Sept&quot;</span>,</span>
-<span id="cb222-14"><a href="outputs.html#cb222-14" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Deans1&quot;</span> <span class="sc">~</span> <span class="st">&quot;Deans 16 Aug&quot;</span>,</span>
-<span id="cb222-15"><a href="outputs.html#cb222-15" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Deans2&quot;</span> <span class="sc">~</span> <span class="st">&quot;Deans 30 Aug&quot;</span>, </span>
-<span id="cb222-16"><a href="outputs.html#cb222-16" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Pick1&quot;</span> <span class="sc">~</span> <span class="st">&quot;Blue Herron 13 Sept&quot;</span>,</span>
-<span id="cb222-17"><a href="outputs.html#cb222-17" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Sister31&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sister 22 Aug&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-18"><a href="outputs.html#cb222-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(period, flux_mean_g_m2_hr))<span class="sc">+</span></span>
-<span id="cb222-19"><a href="outputs.html#cb222-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb222-20"><a href="outputs.html#cb222-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> flux_2<span class="fl">.5</span>_g_m2_hr, <span class="at">ymax =</span> flux_97<span class="fl">.5</span>_g_m2_hr))<span class="sc">+</span></span>
-<span id="cb222-21"><a href="outputs.html#cb222-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb222-22"><a href="outputs.html#cb222-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sampling)<span class="sc">+</span></span>
-<span id="cb222-23"><a href="outputs.html#cb222-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>)), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;10:00&quot;</span>, <span class="st">&quot;13:00&quot;</span>, <span class="st">&quot;16:00&quot;</span>, <span class="st">&quot;19:00&quot;</span>, <span class="st">&quot;22:00&quot;</span>, <span class="st">&quot;01:00&quot;</span>, <span class="st">&quot;04:00&quot;</span>, <span class="st">&quot;07:00&quot;</span>))<span class="sc">+</span></span>
-<span id="cb222-24"><a href="outputs.html#cb222-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb222-25"><a href="outputs.html#cb222-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(Diffusive <span class="sc">~</span> Flux <span class="sc">~</span> (g<span class="sc">~</span>CO[<span class="dv">2</span>]<span class="sc">~</span>m<span class="sc">^-</span><span class="dv">2</span><span class="sc">~</span>hr<span class="sc">^-</span><span class="dv">1</span>)))<span class="sc">+</span></span>
-<span id="cb222-26"><a href="outputs.html#cb222-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(), </span>
-<span id="cb222-27"><a href="outputs.html#cb222-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), </span>
-<span id="cb222-28"><a href="outputs.html#cb222-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>), </span>
-<span id="cb222-29"><a href="outputs.html#cb222-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), </span>
-<span id="cb222-30"><a href="outputs.html#cb222-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>))</span>
-<span id="cb222-31"><a href="outputs.html#cb222-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb222-32"><a href="outputs.html#cb222-32" aria-hidden="true" tabindex="-1"></a>ch4_diel <span class="ot">&lt;-</span> all_fluxes_periods <span class="sc">%&gt;%</span> </span>
-<span id="cb222-33"><a href="outputs.html#cb222-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(sampling <span class="sc">==</span> <span class="st">&quot;Deans1&quot;</span> <span class="sc">&amp;</span> period <span class="sc">==</span> <span class="dv">8</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-34"><a href="outputs.html#cb222-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(gas <span class="sc">==</span> <span class="st">&quot;CH4&quot;</span>, pathway <span class="sc">==</span> <span class="st">&quot;diffusion&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-35"><a href="outputs.html#cb222-35" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">period =</span> <span class="fu">as.numeric</span>(period), <span class="at">trip_wr =</span><span class="fu">factor</span>(<span class="fu">case_when</span>(period <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;10AM&quot;</span>, </span>
-<span id="cb222-36"><a href="outputs.html#cb222-36" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">&quot;1PM&quot;</span>, </span>
-<span id="cb222-37"><a href="outputs.html#cb222-37" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;4PM&quot;</span>, </span>
-<span id="cb222-38"><a href="outputs.html#cb222-38" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">&quot;7PM&quot;</span>, </span>
-<span id="cb222-39"><a href="outputs.html#cb222-39" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;10PM&quot;</span>, </span>
-<span id="cb222-40"><a href="outputs.html#cb222-40" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;1AM&quot;</span>, </span>
-<span id="cb222-41"><a href="outputs.html#cb222-41" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">&quot;4AM&quot;</span>, </span>
-<span id="cb222-42"><a href="outputs.html#cb222-42" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">&quot;7AM&quot;</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;10AM&quot;</span>, <span class="st">&quot;1PM&quot;</span>, <span class="st">&quot;4PM&quot;</span>, <span class="st">&quot;7PM&quot;</span>, <span class="st">&quot;10PM&quot;</span>, <span class="st">&quot;1AM&quot;</span>, <span class="st">&quot;4AM&quot;</span>, <span class="st">&quot;7AM&quot;</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-43"><a href="outputs.html#cb222-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sampling =</span> <span class="fu">case_when</span>(sampling <span class="sc">==</span> <span class="st">&quot;Catfish1&quot;</span> <span class="sc">~</span><span class="st">&quot;Catfish 06 Sept&quot;</span>,</span>
-<span id="cb222-44"><a href="outputs.html#cb222-44" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Catfish2&quot;</span> <span class="sc">~</span> <span class="st">&quot;Catfish 18 Sept&quot;</span>,</span>
-<span id="cb222-45"><a href="outputs.html#cb222-45" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Deans1&quot;</span> <span class="sc">~</span> <span class="st">&quot;Deans 16 Aug&quot;</span>,</span>
-<span id="cb222-46"><a href="outputs.html#cb222-46" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Deans2&quot;</span> <span class="sc">~</span> <span class="st">&quot;Deans 30 Aug&quot;</span>, </span>
-<span id="cb222-47"><a href="outputs.html#cb222-47" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Pick1&quot;</span> <span class="sc">~</span> <span class="st">&quot;Blue Herron 13 Sept&quot;</span>,</span>
-<span id="cb222-48"><a href="outputs.html#cb222-48" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Sister31&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sister 22 Aug&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-49"><a href="outputs.html#cb222-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(period, flux_mean_g_m2_hr))<span class="sc">+</span></span>
-<span id="cb222-50"><a href="outputs.html#cb222-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb222-51"><a href="outputs.html#cb222-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> flux_2<span class="fl">.5</span>_g_m2_hr, <span class="at">ymax =</span> flux_97<span class="fl">.5</span>_g_m2_hr))<span class="sc">+</span></span>
-<span id="cb222-52"><a href="outputs.html#cb222-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb222-53"><a href="outputs.html#cb222-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sampling)<span class="sc">+</span></span>
-<span id="cb222-54"><a href="outputs.html#cb222-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>)), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;10:00&quot;</span>, <span class="st">&quot;13:00&quot;</span>, <span class="st">&quot;16:00&quot;</span>, <span class="st">&quot;19:00&quot;</span>, <span class="st">&quot;22:00&quot;</span>, <span class="st">&quot;01:00&quot;</span>, <span class="st">&quot;04:00&quot;</span>, <span class="st">&quot;07:00&quot;</span>))<span class="sc">+</span></span>
-<span id="cb222-55"><a href="outputs.html#cb222-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb222-56"><a href="outputs.html#cb222-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(Diffusive <span class="sc">~</span> Flux <span class="sc">~</span> (g<span class="sc">~</span>CH[<span class="dv">4</span>]<span class="sc">~</span>m<span class="sc">^-</span><span class="dv">2</span><span class="sc">~</span>hr<span class="sc">^-</span><span class="dv">1</span>)))<span class="sc">+</span></span>
-<span id="cb222-57"><a href="outputs.html#cb222-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(), </span>
-<span id="cb222-58"><a href="outputs.html#cb222-58" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), </span>
-<span id="cb222-59"><a href="outputs.html#cb222-59" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>), </span>
-<span id="cb222-60"><a href="outputs.html#cb222-60" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), </span>
-<span id="cb222-61"><a href="outputs.html#cb222-61" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>))</span>
-<span id="cb222-62"><a href="outputs.html#cb222-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb222-63"><a href="outputs.html#cb222-63" aria-hidden="true" tabindex="-1"></a>eb_diel <span class="ot">&lt;-</span> all_fluxes_periods <span class="sc">%&gt;%</span> </span>
-<span id="cb222-64"><a href="outputs.html#cb222-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(gas <span class="sc">==</span> <span class="st">&quot;CH4&quot;</span>, pathway <span class="sc">==</span> <span class="st">&quot;ebullition&quot;</span>, period <span class="sc">!=</span> <span class="st">&quot;8~9&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-65"><a href="outputs.html#cb222-65" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">trip =</span> <span class="fu">case_when</span>(period <span class="sc">==</span> <span class="st">&quot;0~1&quot;</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb222-66"><a href="outputs.html#cb222-66" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="st">&quot;1~2&quot;</span> <span class="sc">~</span> <span class="dv">2</span>, </span>
-<span id="cb222-67"><a href="outputs.html#cb222-67" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="st">&quot;2~3&quot;</span> <span class="sc">~</span> <span class="dv">3</span>, </span>
-<span id="cb222-68"><a href="outputs.html#cb222-68" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="st">&quot;3~4&quot;</span> <span class="sc">~</span> <span class="dv">4</span>, </span>
-<span id="cb222-69"><a href="outputs.html#cb222-69" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="st">&quot;4~5&quot;</span> <span class="sc">~</span> <span class="dv">5</span>, </span>
-<span id="cb222-70"><a href="outputs.html#cb222-70" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="st">&quot;5~6&quot;</span> <span class="sc">~</span> <span class="dv">6</span>, </span>
-<span id="cb222-71"><a href="outputs.html#cb222-71" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="st">&quot;6~7&quot;</span> <span class="sc">~</span> <span class="dv">7</span>, </span>
-<span id="cb222-72"><a href="outputs.html#cb222-72" aria-hidden="true" tabindex="-1"></a>                             period <span class="sc">==</span> <span class="st">&quot;7~8&quot;</span> <span class="sc">~</span> <span class="dv">8</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-73"><a href="outputs.html#cb222-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sampling =</span> <span class="fu">case_when</span>(sampling <span class="sc">==</span> <span class="st">&quot;Catfish1&quot;</span> <span class="sc">~</span><span class="st">&quot;Catfish 06 Sept&quot;</span>,</span>
-<span id="cb222-74"><a href="outputs.html#cb222-74" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Catfish2&quot;</span> <span class="sc">~</span> <span class="st">&quot;Catfish 18 Sept&quot;</span>,</span>
-<span id="cb222-75"><a href="outputs.html#cb222-75" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Deans1&quot;</span> <span class="sc">~</span> <span class="st">&quot;Deans 16 Aug&quot;</span>,</span>
-<span id="cb222-76"><a href="outputs.html#cb222-76" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Deans2&quot;</span> <span class="sc">~</span> <span class="st">&quot;Deans 30 Aug&quot;</span>, </span>
-<span id="cb222-77"><a href="outputs.html#cb222-77" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Pick1&quot;</span> <span class="sc">~</span> <span class="st">&quot;Blue Herron 13 Sept&quot;</span>,</span>
-<span id="cb222-78"><a href="outputs.html#cb222-78" aria-hidden="true" tabindex="-1"></a>                              sampling <span class="sc">==</span> <span class="st">&quot;Sister31&quot;</span> <span class="sc">~</span> <span class="st">&quot;Sister 22 Aug&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb222-79"><a href="outputs.html#cb222-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(trip, flux_mean_g_m2_hr))<span class="sc">+</span></span>
-<span id="cb222-80"><a href="outputs.html#cb222-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb222-81"><a href="outputs.html#cb222-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> flux_2<span class="fl">.5</span>_g_m2_hr, <span class="at">ymax =</span> flux_97<span class="fl">.5</span>_g_m2_hr))<span class="sc">+</span></span>
-<span id="cb222-82"><a href="outputs.html#cb222-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
-<span id="cb222-83"><a href="outputs.html#cb222-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>sampling)<span class="sc">+</span></span>
-<span id="cb222-84"><a href="outputs.html#cb222-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>)), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;10:00&quot;</span>, <span class="st">&quot;13:00&quot;</span>, <span class="st">&quot;16:00&quot;</span>, <span class="st">&quot;19:00&quot;</span>, <span class="st">&quot;22:00&quot;</span>, <span class="st">&quot;01:00&quot;</span>, <span class="st">&quot;04:00&quot;</span>, <span class="st">&quot;07:00&quot;</span>))<span class="sc">+</span></span>
-<span id="cb222-85"><a href="outputs.html#cb222-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb222-86"><a href="outputs.html#cb222-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(Ebullitive <span class="sc">~</span> Flux <span class="sc">~</span> (g<span class="sc">~</span>CH[<span class="dv">4</span>]<span class="sc">~</span>m<span class="sc">^-</span><span class="dv">2</span><span class="sc">~</span>hr<span class="sc">^-</span><span class="dv">1</span>)))<span class="sc">+</span></span>
-<span id="cb222-87"><a href="outputs.html#cb222-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(), </span>
-<span id="cb222-88"><a href="outputs.html#cb222-88" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), </span>
-<span id="cb222-89"><a href="outputs.html#cb222-89" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>), </span>
-<span id="cb222-90"><a href="outputs.html#cb222-90" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), </span>
-<span id="cb222-91"><a href="outputs.html#cb222-91" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">14</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>))</span>
-<span id="cb222-92"><a href="outputs.html#cb222-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb222-93"><a href="outputs.html#cb222-93" aria-hidden="true" tabindex="-1"></a><span class="co">#png(filename = &quot;4-Figures/periods.png&quot;, width = 7.5, height = 11.5, units = &quot;in&quot;, res = 300)</span></span>
-<span id="cb222-94"><a href="outputs.html#cb222-94" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(co2_diel, ch4_diel, eb_diel, <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">labels =</span> <span class="st">&quot;AUTO&quot;</span>, <span class="at">label_size =</span> <span class="dv">18</span>, <span class="at">vjust =</span> <span class="fl">1.3</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/fig%203%20diel%20patterns-1.png" width="672" /></p>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="outputs.html#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dev.off()</span></span></code></pre></div>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="outputs.html#cb224-1" aria-hidden="true" tabindex="-1"></a>sc_ch4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(suncloud, <span class="fu">aes</span>(time <span class="sc">%&gt;%</span> <span class="fu">as.POSIXct</span>(), flux_ch4_g_hr)) <span class="sc">+</span> </span>
-<span id="cb224-2"><a href="outputs.html#cb224-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> sampling,<span class="at">shape =</span> wolffia), <span class="at">size =</span><span class="dv">3</span>, <span class="at">stroke =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb224-3"><a href="outputs.html#cb224-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">21</span>, <span class="dv">24</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="fu">expression</span>(No<span class="sc">~</span><span class="fu">italic</span>(Wolffia)), <span class="fu">expression</span>(<span class="fu">italic</span>(Wolffia))))<span class="sc">+</span></span>
-<span id="cb224-4"><a href="outputs.html#cb224-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#595864&quot;</span>, <span class="st">&quot;#DCAE27&quot;</span>))<span class="sc">+</span></span>
-<span id="cb224-5"><a href="outputs.html#cb224-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb224-6"><a href="outputs.html#cb224-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(Diffusive <span class="sc">~</span> CH[<span class="dv">4</span>]<span class="sc">~</span> flux <span class="sc">~</span> (g<span class="sc">~</span>m<span class="sc">^-</span><span class="dv">2</span><span class="sc">~</span>hr<span class="sc">^-</span><span class="dv">1</span>)))<span class="sc">+</span></span>
-<span id="cb224-7"><a href="outputs.html#cb224-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.text.align =</span> <span class="dv">0</span>, <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>), <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb224-8"><a href="outputs.html#cb224-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_labels =</span> <span class="st">&quot;%H:%M&quot;</span>)</span>
-<span id="cb224-9"><a href="outputs.html#cb224-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb224-10"><a href="outputs.html#cb224-10" aria-hidden="true" tabindex="-1"></a>sc_co2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(suncloud, <span class="fu">aes</span>(time <span class="sc">%&gt;%</span> <span class="fu">as.POSIXct</span>(), flux_co2_g_hr)) <span class="sc">+</span> </span>
-<span id="cb224-11"><a href="outputs.html#cb224-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> sampling,<span class="at">shape =</span> wolffia), <span class="at">size =</span><span class="dv">3</span>, <span class="at">stroke =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb224-12"><a href="outputs.html#cb224-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">21</span>, <span class="dv">24</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="fu">expression</span>(No<span class="sc">~</span><span class="fu">italic</span>(Wolffia)), <span class="fu">expression</span>(<span class="fu">italic</span>(Wolffia))))<span class="sc">+</span></span>
-<span id="cb224-13"><a href="outputs.html#cb224-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#595864&quot;</span>, <span class="st">&quot;#DCAE27&quot;</span>))<span class="sc">+</span></span>
-<span id="cb224-14"><a href="outputs.html#cb224-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb224-15"><a href="outputs.html#cb224-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(Diffusive <span class="sc">~</span> CO[<span class="dv">2</span>]<span class="sc">~</span> flux <span class="sc">~</span> (g<span class="sc">~</span>m<span class="sc">^-</span><span class="dv">2</span><span class="sc">~</span>hr<span class="sc">^-</span><span class="dv">1</span>)))<span class="sc">+</span></span>
-<span id="cb224-16"><a href="outputs.html#cb224-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.text.align =</span> <span class="dv">0</span>, <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>), <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>), <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb224-17"><a href="outputs.html#cb224-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_labels =</span> <span class="st">&quot;%H:%M&quot;</span>)</span>
-<span id="cb224-18"><a href="outputs.html#cb224-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb224-19"><a href="outputs.html#cb224-19" aria-hidden="true" tabindex="-1"></a>sc_legend <span class="ot">&lt;-</span> <span class="fu">get_legend</span>(sc_co2)</span>
-<span id="cb224-20"><a href="outputs.html#cb224-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb224-21"><a href="outputs.html#cb224-21" aria-hidden="true" tabindex="-1"></a><span class="co">#png(filename = &quot;4-Figures/sunny-cloudy.png&quot;, width = 12, height = 5, units = &quot;in&quot;, res = 300)</span></span>
-<span id="cb224-22"><a href="outputs.html#cb224-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(sc_ch4 <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>), sc_co2<span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>), sc_legend, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="fl">0.425</span>,<span class="fl">0.425</span>, <span class="fl">0.15</span>), <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/fig%204%20sunny%20cloudy-1.png" width="672" /></p>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="outputs.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dev.off()</span></span></code></pre></div>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="outputs.html#cb226-1" aria-hidden="true" tabindex="-1"></a>gc_summarized <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">mdy</span>(Collection.Date)<span class="sc">&gt;</span><span class="fu">mdy</span>(<span class="st">&quot;08/15/22&quot;</span>), Collection.Date<span class="sc">!=</span><span class="st">&quot;9/19/2022&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(Location, <span class="fu">desc</span>(CH4_avg_umol)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(Site, Collection.Date, Location, CH4_avg_umol, CH4_sd, CO2_avg_umol, CO2_sd) </span></code></pre></div>
-<pre><code>## # A tibble: 20 × 7
-## # Groups:   Site, Collection.Date [5]
-##    Site    Collection.Date Location CH4_avg_umol     CH4_sd CO2_avg_umol CO2_sd
-##    &lt;chr&gt;   &lt;chr&gt;           &lt;fct&gt;           &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;  &lt;dbl&gt;
-##  1 Pick    9/13/2022       top           98.7     3.09             560.    8.69
-##  2 Deans   8/31/2022       top            0.980   1.32              62.3   7.88
-##  3 Sister3 8/23/2022       top            0.849   0.0111            40.3   4.55
-##  4 Catfish 9/6/2022        top            0.586   0.00180          138.    5.69
-##  5 Deans   8/16/2022       top            0.583   0.0476           107.    3.11
-##  6 Pick    9/13/2022       bottom       126.     60.7              635.  161.  
-##  7 Sister3 8/23/2022       bottom         2.89    0.985             70.0  15.2 
-##  8 Deans   8/16/2022       bottom         0.883   0.0543            88.9  16.4 
-##  9 Catfish 9/6/2022        bottom         0.557   0.0686           164.   49.1 
-## 10 Deans   8/31/2022       bottom         0.290   0.0597            36.6   6.79
-## 11 Deans   8/31/2022       inlet         16.9     4.77             377.   99.1 
-## 12 Pick    9/13/2022       inlet          9.98    1.34             168.    9.29
-## 13 Deans   8/16/2022       inlet          9.95    2.86             234.   46.0 
-## 14 Catfish 9/6/2022        inlet          0.598   0.197            141.    6.10
-## 15 Sister3 8/23/2022       inlet          0.0229  0.0000664         75.2   7.54
-## 16 Deans   8/31/2022       outlet         4.31    0.936            153.   44.1 
-## 17 Sister3 8/23/2022       outlet         2.62    0.0720            81.8   8.42
-## 18 Catfish 9/6/2022        outlet         1.47    0.410            142.    9.15
-## 19 Pick    9/13/2022       outlet         0.365   0.170            160.   25.6 
-## 20 Deans   8/16/2022       outlet         0.311   0.106             50.2   5.51</code></pre>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="outputs.html#cb228-1" aria-hidden="true" tabindex="-1"></a>all_fluxes_pathways  <span class="sc">%&gt;%</span> <span class="fu">select</span>(site, date, pathway, gas, flux_mean_g_m2_day) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">flux_round =</span> <span class="fu">round</span>(flux_mean_g_m2_day, <span class="at">digits =</span> <span class="dv">4</span>)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>flux_mean_g_m2_day) <span class="sc">%&gt;%</span>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="fu">c</span>(pathway, gas), <span class="at">values_from =</span> <span class="st">&quot;flux_round&quot;</span>)  <span class="sc">%&gt;%</span> <span class="fu">select</span>(site, date, diffusion_CO2, diffusion_CH4, ebullition_CH4)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 5
-##   site    date     diffusion_CO2 diffusion_CH4 ebullition_CH4
-##   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
-## 1 Catfish 09/06/22        3.14          0.0117         0.122 
-## 2 Catfish 09/18/22        2.42          0.0112         0.0379
-## 3 Deans   08/16/22        3.22          0.0121         0.0232
-## 4 Deans   08/30/22        1.19          0.0064         0.038 
-## 5 Pick    09/13/22        3.62          0.295          0.229 
-## 6 Sister3 08/22/22       -0.0744        0.0114         0.0692</code></pre>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="outputs.html#cb230-1" aria-hidden="true" tabindex="-1"></a>all_fluxes_pathways  <span class="sc">%&gt;%</span> <span class="fu">select</span>(site, date, pathway, gas, flux_2<span class="fl">.5</span>_g_m2_day) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">flux_round =</span> <span class="fu">round</span>(flux_2<span class="fl">.5</span>_g_m2_day, <span class="at">digits =</span> <span class="dv">4</span>)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>flux_2<span class="fl">.5</span>_g_m2_day) <span class="sc">%&gt;%</span>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="fu">c</span>(pathway, gas), <span class="at">values_from =</span> <span class="st">&quot;flux_round&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(site, date, diffusion_CO2, diffusion_CH4, ebullition_CH4)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 5
-##   site    date     diffusion_CO2 diffusion_CH4 ebullition_CH4
-##   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
-## 1 Catfish 09/06/22         2.73         0.0075         0.0682
-## 2 Catfish 09/18/22         2.08         0.0068         0.021 
-## 3 Deans   08/16/22         2.76         0.009          0.0065
-## 4 Deans   08/30/22         1.02         0.0052         0.0189
-## 5 Pick    09/13/22         2.94         0.248          0.154 
-## 6 Sister3 08/22/22        -0.126        0.0098         0.0498</code></pre>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="outputs.html#cb232-1" aria-hidden="true" tabindex="-1"></a>all_fluxes_pathways  <span class="sc">%&gt;%</span> <span class="fu">select</span>(site, date, pathway, gas, flux_97<span class="fl">.5</span>_g_m2_day) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">flux_round =</span> <span class="fu">round</span>(flux_97<span class="fl">.5</span>_g_m2_day, <span class="at">digits =</span> <span class="dv">4</span>)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>flux_97<span class="fl">.5</span>_g_m2_day) <span class="sc">%&gt;%</span>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="fu">c</span>(pathway, gas), <span class="at">values_from =</span> <span class="st">&quot;flux_round&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(site, date, diffusion_CO2, diffusion_CH4, ebullition_CH4)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 5
-##   site    date     diffusion_CO2 diffusion_CH4 ebullition_CH4
-##   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
-## 1 Catfish 09/06/22        3.63          0.0164         0.204 
-## 2 Catfish 09/18/22        2.83          0.0173         0.0657
-## 3 Deans   08/16/22        3.75          0.0151         0.0484
-## 4 Deans   08/30/22        1.37          0.0077         0.0616
-## 5 Pick    09/13/22        4.33          0.348          0.324 
-## 6 Sister3 08/22/22       -0.0221        0.0133         0.0915</code></pre>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="outputs.html#cb234-1" aria-hidden="true" tabindex="-1"></a>all_fluxes_pathways <span class="sc">%&gt;%</span> </span>
-<span id="cb234-2"><a href="outputs.html#cb234-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">flux_mean_g_m2_day_co2_eq =</span>  flux_mean_g_day_co2_eq<span class="sc">/</span>area,</span>
-<span id="cb234-3"><a href="outputs.html#cb234-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">flux_2.5_g_m2_day_co2_eq=</span> flux_2<span class="fl">.5</span>_g_day_co2_eq<span class="sc">/</span>area, </span>
-<span id="cb234-4"><a href="outputs.html#cb234-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">flux_97.5_g_m2_day_co2_eq=</span> flux_97<span class="fl">.5</span>_g_day_co2_eq<span class="sc">/</span>area)<span class="sc">%&gt;%</span> </span>
-<span id="cb234-5"><a href="outputs.html#cb234-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(site, date, pathway, gas, flux_mean_g_m2_day_co2_eq) <span class="sc">%&gt;%</span> </span>
-<span id="cb234-6"><a href="outputs.html#cb234-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="fu">c</span>(<span class="st">&quot;site&quot;</span>, <span class="st">&quot;date&quot;</span>), <span class="at">names_from =</span> <span class="fu">c</span>(<span class="st">&quot;pathway&quot;</span>, <span class="st">&quot;gas&quot;</span>), <span class="at">values_from =</span> <span class="st">&quot;flux_mean_g_m2_day_co2_eq&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb234-7"><a href="outputs.html#cb234-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total =</span> diffusion_CH4 <span class="sc">+</span> diffusion_CO2 <span class="sc">+</span> ebullition_CH4, <span class="at">prop_co2 =</span> (diffusion_CO2<span class="sc">/</span>total)<span class="sc">*</span><span class="dv">100</span>, <span class="at">prop_ch4_diff =</span> (diffusion_CH4<span class="sc">/</span>total)<span class="sc">*</span><span class="dv">100</span>, <span class="at">prop_ch4_eb =</span> (ebullition_CH4<span class="sc">/</span>total)<span class="sc">*</span><span class="dv">100</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 9
-##   site    date     diffusion_CH4 diffusion_CO2 ebullition_CH4 total prop_co2 prop_ch4_diff prop_ch4_eb
-##   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
-## 1 Catfish 09/06/22         0.316        3.14            3.30   6.75    46.4           4.67        48.9
-## 2 Catfish 09/18/22         0.303        2.42            1.02   3.75    64.7           8.08        27.3
-## 3 Deans   08/16/22         0.326        3.22            0.627  4.17    77.2           7.81        15.0
-## 4 Deans   08/30/22         0.172        1.19            1.03   2.39    49.8           7.20        43.0
-## 5 Pick    09/13/22         7.96         3.62            6.19  17.8     20.4          44.8         34.8
-## 6 Sister3 08/22/22         0.309       -0.0744          1.87   2.10    -3.54         14.7         88.9</code></pre>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="outputs.html#cb236-1" aria-hidden="true" tabindex="-1"></a>do <span class="sc">%&gt;%</span> <span class="fu">filter</span>(location <span class="sc">==</span> <span class="st">&quot;Top&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb236-2"><a href="outputs.html#cb236-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">site =</span> <span class="fu">if_else</span>(site <span class="sc">==</span> <span class="st">&quot;Pick&quot;</span>, <span class="st">&quot;Blue Herron&quot;</span>, site)) <span class="sc">%&gt;%</span> </span>
-<span id="cb236-3"><a href="outputs.html#cb236-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(sampling)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> </span>
-<span id="cb236-4"><a href="outputs.html#cb236-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(site) <span class="sc">%&gt;%</span> </span>
-<span id="cb236-5"><a href="outputs.html#cb236-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">min_do =</span> <span class="fu">min</span>(DO_mgL), <span class="at">max_do =</span> <span class="fu">max</span>(DO_mgL), <span class="at">mean_do =</span> <span class="fu">mean</span>(DO_mgL))</span></code></pre></div>
-<pre><code>## # A tibble: 4 × 4
-##   site        min_do max_do mean_do
-##   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Blue Herron  0.043  0.141  0.0495
-## 2 Catfish      0.359  7.64   5.54  
-## 3 Deans        4.91   7.93   6.32  
-## 4 Sister       7.19   9.26   8.40</code></pre>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="outputs.html#cb238-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ch4_ws &lt;- lmer(flux_ch4_g_hr ~ ws_mean + (1|sampling), data = diffusion_ws)</span></span>
-<span id="cb238-2"><a href="outputs.html#cb238-2" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(ch4_ws)</span></span>
-<span id="cb238-3"><a href="outputs.html#cb238-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb238-4"><a href="outputs.html#cb238-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ch4_ws_b &lt;- lm(flux_ch4_g_hr ~ ws_mean, data = diffusion_ws %&gt;% filter(site == &quot;Picks&quot;))</span></span>
-<span id="cb238-5"><a href="outputs.html#cb238-5" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(ch4_ws_b)</span></span>
-<span id="cb238-6"><a href="outputs.html#cb238-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb238-7"><a href="outputs.html#cb238-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb238-8"><a href="outputs.html#cb238-8" aria-hidden="true" tabindex="-1"></a><span class="co"># co2_ws &lt;- lmer(flux_co2_g_hr ~ ws_mean + (1|sampling), data = diffusion_ws)</span></span>
-<span id="cb238-9"><a href="outputs.html#cb238-9" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(co2_ws)</span></span>
-<span id="cb238-10"><a href="outputs.html#cb238-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb238-11"><a href="outputs.html#cb238-11" aria-hidden="true" tabindex="-1"></a><span class="co"># co2_ws_b &lt;- lm(flux_co2_g_hr ~ ws_mean, data = diffusion_ws %&gt;% filter(site == &quot;Picks&quot;))</span></span>
-<span id="cb238-12"><a href="outputs.html#cb238-12" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(co2_ws_b)</span></span>
-<span id="cb238-13"><a href="outputs.html#cb238-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb238-14"><a href="outputs.html#cb238-14" aria-hidden="true" tabindex="-1"></a><span class="co"># co2_ws_c &lt;- lmer(flux_co2_g_hr ~ ws_mean + (1|sampling), data = diffusion_ws %&gt;% filter(site != &quot;Picks&quot;))</span></span>
-<span id="cb238-15"><a href="outputs.html#cb238-15" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(co2_ws_c)</span></span>
-<span id="cb238-16"><a href="outputs.html#cb238-16" aria-hidden="true" tabindex="-1"></a><span class="co"># r2_nakagawa(co2_ws_c)</span></span></code></pre></div>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="outputs.html#cb239-1" aria-hidden="true" tabindex="-1"></a>mod7 <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr_24 <span class="sc">~</span> Depth <span class="sc">+</span> inlet_dist <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Sampling) , <span class="at">data =</span> ebullition_24 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr_24 <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
-<span id="cb239-2"><a href="outputs.html#cb239-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod7)</span></code></pre></div>
-<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
-##  Family: Gamma  ( log )
-## Formula: ch4_eb_g_m2_hr_24 ~ Depth + inlet_dist + (1 | Sampling)
-##    Data: ebullition_24 %&gt;% filter(ch4_eb_g_m2_hr_24 &gt; 0)
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##  -1361.9  -1347.1    686.0  -1371.9      137 
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -0.6933 -0.4869 -0.3106  0.0965  8.5753 
-## 
-## Random effects:
-##  Groups   Name        Variance Std.Dev.
-##  Sampling (Intercept) 1.293    1.137   
-##  Residual             1.989    1.410   
-## Number of obs: 142, groups:  Sampling, 6
-## 
-## Fixed effects:
-##              Estimate Std. Error t value Pr(&gt;|z|)    
-## (Intercept) -5.437752   0.374383 -14.525   &lt;2e-16 ***
-## Depth       -0.298416   0.124667  -2.394   0.0167 *  
-## inlet_dist  -0.001263   0.003096  -0.408   0.6832    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Correlation of Fixed Effects:
-##            (Intr) Depth 
-## Depth      -0.126       
-## inlet_dist -0.231 -0.635</code></pre>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="outputs.html#cb241-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_nakagawa</span>(mod7)</span></code></pre></div>
-<pre><code>## # R2 for Mixed Models
-## 
-##   Conditional R2: 0.411
-##      Marginal R2: 0.028</code></pre>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="outputs.html#cb243-1" aria-hidden="true" tabindex="-1"></a>mod7.a <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr_24 <span class="sc">~</span> inlet_dist <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Sampling) , <span class="at">data =</span> ebullition_24 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr_24 <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
-<span id="cb243-2"><a href="outputs.html#cb243-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod7.a)</span></code></pre></div>
-<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
-##  Family: Gamma  ( log )
-## Formula: ch4_eb_g_m2_hr_24 ~ inlet_dist + (1 | Sampling)
-##    Data: ebullition_24 %&gt;% filter(ch4_eb_g_m2_hr_24 &gt; 0)
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##  -1365.1  -1353.2    686.5  -1373.1      139 
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -0.7281 -0.5353 -0.3365  0.1224  7.4056 
-## 
-## Random effects:
-##  Groups   Name        Variance Std.Dev.
-##  Sampling (Intercept) 1.525    1.235   
-##  Residual             1.791    1.338   
-## Number of obs: 143, groups:  Sampling, 6
-## 
-## Fixed effects:
-##              Estimate Std. Error t value Pr(&gt;|z|)    
-## (Intercept) -5.558643   0.412348 -13.480   &lt;2e-16 ***
-## inlet_dist  -0.005532   0.002316  -2.388   0.0169 *  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Correlation of Fixed Effects:
-##            (Intr)
-## inlet_dist -0.352</code></pre>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="outputs.html#cb245-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_nakagawa</span>(mod7.a)</span></code></pre></div>
-<pre><code>## # R2 for Mixed Models
-## 
-##   Conditional R2: 0.475
-##      Marginal R2: 0.028</code></pre>
-<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="outputs.html#cb247-1" aria-hidden="true" tabindex="-1"></a>mod7.b <span class="ot">&lt;-</span> <span class="fu">glmer</span>(ch4_eb_g_m2_hr_24 <span class="sc">~</span> Depth <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Sampling) , <span class="at">data =</span> ebullition_24 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ch4_eb_g_m2_hr_24 <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>))</span>
-<span id="cb247-2"><a href="outputs.html#cb247-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod7.b)</span></code></pre></div>
-<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
-##  Family: Gamma  ( log )
-## Formula: ch4_eb_g_m2_hr_24 ~ Depth + (1 | Sampling)
-##    Data: ebullition_24 %&gt;% filter(ch4_eb_g_m2_hr_24 &gt; 0)
-## 
-##      AIC      BIC   logLik deviance df.resid 
-##  -1363.8  -1351.9    685.9  -1371.8      138 
-## 
-## Scaled residuals: 
-##     Min      1Q  Median      3Q     Max 
-## -0.7000 -0.4970 -0.2949  0.0948  8.4736 
-## 
-## Random effects:
-##  Groups   Name        Variance Std.Dev.
-##  Sampling (Intercept) 1.101    1.049   
-##  Residual             1.954    1.398   
-## Number of obs: 142, groups:  Sampling, 6
-## 
-## Fixed effects:
-##             Estimate Std. Error t value Pr(&gt;|z|)    
-## (Intercept) -5.47156    0.05698 -96.031  &lt; 2e-16 ***
-## Depth       -0.33127    0.04623  -7.166 7.74e-13 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Correlation of Fixed Effects:
-##       (Intr)
-## Depth -0.036</code></pre>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="outputs.html#cb249-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_nakagawa</span>(mod7.b)</span></code></pre></div>
-<pre><code>## # R2 for Mixed Models
-## 
-##   Conditional R2: 0.380
-##      Marginal R2: 0.030</code></pre>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="outputs.html#cb251-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(ebullition_24 <span class="sc">%&gt;%</span> <span class="fu">select</span>(Depth, inlet_dist, ch4_eb_g_m2_hr_24) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(), <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
-<pre><code>##                         Depth inlet_dist ch4_eb_g_m2_hr_24
-## Depth              1.00000000  0.3384937       -0.07818617
-## inlet_dist         0.33849373  1.0000000        0.22664523
-## ch4_eb_g_m2_hr_24 -0.07818617  0.2266452        1.00000000</code></pre>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="outputs.html#cb253-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(ebullition_24 <span class="sc">%&gt;%</span> <span class="fu">select</span>(Depth, inlet_dist, ch4_eb_g_m2_hr_24) <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>(), <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span></code></pre></div>
-<pre><code>##                        Depth inlet_dist ch4_eb_g_m2_hr_24
-## Depth              1.0000000  0.3805896        -0.3615451
-## inlet_dist         0.3805896  1.0000000        -0.1231408
-## ch4_eb_g_m2_hr_24 -0.3615451 -0.1231408         1.0000000</code></pre>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="outputs.html#cb255-1" aria-hidden="true" tabindex="-1"></a>cand.models <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;mod7&quot;</span><span class="ot">=</span> mod7, </span>
-<span id="cb255-2"><a href="outputs.html#cb255-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;mod7.a&quot;</span><span class="ot">=</span> mod7.a,</span>
-<span id="cb255-3"><a href="outputs.html#cb255-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;mod7.b&quot;</span><span class="ot">=</span> mod7.b)</span></code></pre></div>
-<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="outputs.html#cb256-1" aria-hidden="true" tabindex="-1"></a>suncloud.mod.ch4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(flux_ch4_g_hr <span class="sc">~</span> time.num <span class="sc">+</span> wolffia <span class="sc">+</span> sampling, <span class="at">data =</span> suncloud)</span>
-<span id="cb256-2"><a href="outputs.html#cb256-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(suncloud.mod.ch4)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = flux_ch4_g_hr ~ time.num + wolffia + sampling, data = suncloud)
-## 
-## Residuals:
-##       Min        1Q    Median        3Q       Max 
-## -0.263193 -0.003096  0.000610  0.003832  0.170841 
-## 
-## Coefficients:
-##                              Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)                -1.252e-02  5.722e-03  -2.188   0.0298 *
-## time.num                    7.832e-08  6.972e-08   1.123   0.2626  
-## wolffiayes                  9.684e-03  4.411e-03   2.195   0.0293 *
-## samplingSunny\n6/20 - 6/21  5.120e-03  3.743e-03   1.368   0.1729  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.0229 on 202 degrees of freedom
-## Multiple R-squared:  0.03131,    Adjusted R-squared:  0.01692 
-## F-statistic: 2.176 on 3 and 202 DF,  p-value: 0.09199</code></pre>
-<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="outputs.html#cb258-1" aria-hidden="true" tabindex="-1"></a>suncloud.mod.co2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(flux_co2_g_hr <span class="sc">~</span> time.num <span class="sc">+</span> time.num.sq <span class="sc">+</span> wolffia <span class="sc">+</span> sampling, <span class="at">data =</span> suncloud)</span>
-<span id="cb258-2"><a href="outputs.html#cb258-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(suncloud.mod.co2)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = flux_co2_g_hr ~ time.num + time.num.sq + wolffia + 
-##     sampling, data = suncloud)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.64703 -0.12636  0.03493  0.14631  1.00110 
-## 
-## Coefficients:
-##                              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)                 6.266e-01  8.087e-02   7.748 4.52e-13 ***
-## time.num                   -2.726e-05  3.057e-06  -8.917 2.96e-16 ***
-## time.num.sq                 2.958e-10  3.502e-11   8.446 6.00e-15 ***
-## wolffiayes                 -2.161e-01  4.868e-02  -4.439 1.49e-05 ***
-## samplingSunny\n6/20 - 6/21  7.863e-02  4.119e-02   1.909   0.0577 .  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.2504 on 201 degrees of freedom
-## Multiple R-squared:  0.3732, Adjusted R-squared:  0.3607 
-## F-statistic: 29.92 on 4 and 201 DF,  p-value: &lt; 2.2e-16</code></pre>
 
 </div>
             </section>

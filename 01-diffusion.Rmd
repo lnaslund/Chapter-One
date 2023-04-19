@@ -1,6 +1,8 @@
 # Diffusive emissions
 
 ```{r diffusive visualization setup, echo = F, warning = F}
+source("data_munge_functions.R")
+
 # Read in diffusive flux data and convert estimates from g/m2/day to g/m2/hr
 diffusion <- read.csv("2-Clean Data/diffusive-flux-estimates.csv") %>% 
   mutate(start_time = ymd_hms(start_time, tz = "America/New_York"), 
@@ -14,7 +16,8 @@ diffusion <- read.csv("2-Clean Data/diffusive-flux-estimates.csv") %>%
                              trip == 6 ~ "1AM", 
                              trip == 7 ~ "4AM", 
                              trip == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
-  select(-X)
+  select(-X) %>% 
+  mutate(date = date(start_time))
 
 # Create sf objects with just traps in a given site
 deans_pts <- trap_locations %>% 
@@ -252,5 +255,9 @@ r2_nakagawa(diff.mod.co2)
 ggplot(diffusion_loc %>% filter(Site != "Pick"), aes(Transect, flux_ch4_g_hr, color = sampling))+geom_smooth(method = "lm")
 ```
 
+```{r remove diffusion obj, include = F}
+to_remove <- c("deans_16", "sister3_22", "sister3_pts_22", "deans_pts_16", "deans_30", "deans_pts_30", "catfish_06", "catfish_pts_06", "catfish_18", "catfish_pts_18", "diffusion_loc", "diff.mod.ch4", "diff.mod.co2")
+rm(list = to_remove)
+```
 
 

@@ -1,0 +1,49 @@
+"site","date","flux_round_2.5_ebullition_CH4","flux_round_ebullition_CH4","flux_round_97.5_ebullition_CH4","type","sampling"
+"Catfish","2022-09-06",0.0682,0.1223,0.2035,"calculated","Catfish
+06 Sept"
+"Catfish","2022-09-18",0.021,0.0379,0.0657,"calculated","Catfish
+18 Sept"
+"Deans","2022-08-16",0.0065,0.0232,0.0484,"calculated","Deans
+16 Aug"
+"Deans","2022-08-30",0.0189,0.038,0.0616,"calculated","Deans
+30 Aug"
+"Pick","2022-09-13",0.1536,0.2294,0.3244,"calculated","Blue Herron
+13 Sept"
+"Sister3","2022-08-22",0.0498,0.0692,0.0915,"calculated","Sister
+22 Aug"
+"Catfish","2022-09-06",0,0.0498701436975919,0.178578135675839,"four random","Catfish
+06 Sept"
+"Catfish","2022-09-18",0,0.019890528147197,0.0599139124214102,"four random","Catfish
+18 Sept"
+"Deans","2022-08-16",0,0.031239078917083,0.1216522151187,"four random","Deans
+16 Aug"
+"Deans","2022-08-30",0.00203170073700476,0.0406689585894028,0.17608347361655,"four random","Deans
+30 Aug"
+"Pick","2022-09-13",0.00794709109358775,0.287968964321735,1.07242103336409,"four random","Blue Herron
+13 Sept"
+"Sister3","2022-08-22",0,0.0110277380327236,0.0327539641511589,"four random","Sister
+22 Aug"
+"Catfish","2022-09-06",0,0.0487390864253021,0.176741253759132,"two_edge_center","Catfish
+06 Sept"
+"Catfish","2022-09-18",0,0.0193180440972402,0.0516325918307989,"two_edge_center","Catfish
+18 Sept"
+"Deans","2022-08-16",0.000381116685381302,0.0307574332206058,0.107994687533605,"two_edge_center","Deans
+16 Aug"
+"Deans","2022-08-30",0.00387874849489873,0.0447601814628404,0.182302863450547,"two_edge_center","Deans
+30 Aug"
+"Pick","2022-09-13",0.00701030926514492,0.26910870418203,1.11535627111455,"two_edge_center","Blue Herron
+13 Sept"
+"Sister3","2022-08-22",0,0.0111916839376703,0.0340855792922773,"two_edge_center","Sister
+22 Aug"
+"Catfish","2022-09-06",0.00426047311138485,0.0576848421918173,0.158684199385398,"two_edge_center_times","Catfish
+06 Sept"
+"Catfish","2022-09-18",0,0.0204530064430382,0.0687379587304654,"two_edge_center_times","Catfish
+18 Sept"
+"Deans","2022-08-16",0.00076035227577601,0.0459551476563465,0.265721073479817,"two_edge_center_times","Deans
+16 Aug"
+"Deans","2022-08-30",0,0.0393470002839926,0.179196790924226,"two_edge_center_times","Deans
+30 Aug"
+"Pick","2022-09-13",0.0130911989875235,0.240181422561671,0.964885265808535,"two_edge_center_times","Blue Herron
+13 Sept"
+"Sister3","2022-08-22",0,0.0362007762369541,0.223845044059952,"two_edge_center_times","Sister
+22 Aug"

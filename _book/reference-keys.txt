@@ -2,18 +2,17 @@ sampling-scheme
 dissolved-oxygen
 deans
 catfish
-sister-3
-pick
+sister
+blue-herron
 all-impoundments-top-do
 temperature
-deans-1
 catfish-1
-sister-3-1
-pick-1
+sister-3
+blue-herron-1
 par
-deans-2
+deans-1
 catfish-2
-pick-2
+pick
 sister3
 dissolved-gas-concentrations
 wind-speed
@@ -63,6 +62,7 @@ diel-ebullition
 sunny-cloudy-analysis
 degassing-analysis
 alternative-sampling-scheme-simulations
+when-does-neon-collect-dissolved-gases
 analyses-of-patterns-of-diel-diffusive-emissions
 diel-patterns-in-environmental-variables
 weather-station-hourly-windspeed-from-aug-14---sept-19
@@ -82,3 +82,4 @@ multiple-predictors-1
 ch4-plots
 co2-plots
 outputs
+deans-2

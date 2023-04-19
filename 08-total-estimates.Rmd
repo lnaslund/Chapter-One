@@ -3,14 +3,7 @@
 ```{r total estimates set up, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-all_fluxes_pathways <- read.csv("5-Results/1-kriged-estimates/all_fluxes_pathways.csv") %>% select(-X)%>% mutate(site = str_sub(sampling, 1, -2), 
-         date = case_when(sampling == "Catfish1" ~ "09/06/22", 
-                          sampling == "Catfish2" ~ "09/18/22",
-                          sampling == "Deans1" ~ "08/16/22",
-                          sampling == "Deans2" ~ "08/30/22",
-                          sampling == "Pick1" ~ "09/13/22",
-                          sampling == "Sister31" ~ "08/22/22"
-         ))
+all_fluxes_pathways <- date_from_sampling(read.csv("5-Results/1-kriged-estimates/all_fluxes_pathways.csv") %>% select(-X)%>% mutate(site = str_sub(sampling, 1, -2)))
 
 all_fluxes_periods <- read.csv("5-Results/1-kriged-estimates/all_fluxes_periods.csv")%>% 
   select(-X) %>% 
@@ -41,27 +34,6 @@ all_fluxes_pathways %>%
   pivot_wider(id_cols = c("site", "date"), names_from = c("pathway", "gas"), values_from = "flux_mean_g_m2_day_co2_eq") %>% 
   mutate(total = diffusion_CH4 + diffusion_CO2 + ebullition_CH4, prop_co2 = (diffusion_CO2/total)*100, prop_ch4_diff = (diffusion_CH4/total)*100, prop_ch4_eb = (ebullition_CH4/total)*100)
 ```
-
-```{r, include = F}
-# flux_rate_summary <- all_fluxes_pathways %>% 
-#   mutate(flux_mean_g_m2_day_co2_eq=flux_mean_g_day_co2_eq/area) %>% 
-#   select(site, date, pathway, gas, flux_mean_g_m2_day_co2_eq) %>% group_by(site,date,gas) %>% 
-#   summarize(flux_mean_mg_m2_day=sum(flux_mean_g_m2_day_co2_eq)*1e3) %>% group_by(site, date) %>% summarize(sum = sum(flux_mean_mg_m2_day))
-# 
-# flux_rate_summary
-# 
-# 120 *(16.04/12.01)
-# 329 * (44.01/12.01)
-# 
-# names(all_fluxes_pathways)
-# 
-# flux_rate_summary_2 <- all_fluxes_pathways %>% 
-#   select(site, date, pathway, gas, flux_mean_g_m2_day) %>% group_by(site,date,gas) %>% 
-#   summarize(flux_mean_mg_m2_day=sum(flux_mean_g_m2_day)*1e3) 
-# 
-# flux_rate_summary_2 %>% pivot_wider(id_cols = c("site", "date"), names_from = gas, values_from = flux_mean_mg_m2_day) 
-```
-
 
 ```{r summary co2 eq table, include = F}
 all_fluxes_pathways %>% 
@@ -112,87 +84,12 @@ dev.off()
 ```
 
 ## Diel Diffusive CH4 
-Log-transformed axis
-```{r log diel ch4, echo = F}
-# note log transformation of the y axis
-all_fluxes_periods %>% 
-  filter(gas == "CH4", pathway == "diffusion") %>% 
-   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
-                             period == 2 ~ "1PM", 
-                             period == 3 ~ "4PM", 
-                             period == 4 ~ "7PM", 
-                             period == 5 ~ "10PM", 
-                             period == 6 ~ "1AM", 
-                             period == 7 ~ "4AM", 
-                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
-    mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
-                              sampling == "Catfish2" ~ "Catfish 9/18/22",
-                              sampling == "Deans1" ~ "Deans 8/16/22",
-                              sampling == "Deans2" ~ "Deans 8/30/22", 
-                              sampling == "Pick1" ~ "Pick 9/13/22",
-                              sampling == "Sister31" ~ "Sister3 8/22/22")) %>% 
-  ggplot(aes(period, flux_g_mean))+
-  geom_point()+
-  geom_errorbar(aes(ymin = flux_g_2.5, ymax = flux_g_97.5))+
-  geom_line()+
-  scale_y_continuous(trans = "log10")+
-  facet_wrap(~sampling) +
-  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))+
-  theme_bw()+
-  ylab("Diffusive Flux (g CH4/day)")+
-  theme(axis.title.x = element_blank())
-```
-
-Untransformed axis
-```{r diel ch4, echo = F}
-all_fluxes_periods %>% 
-  filter(gas == "CH4", pathway == "diffusion") %>% 
-   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
-                             period == 2 ~ "1PM", 
-                             period == 3 ~ "4PM", 
-                             period == 4 ~ "7PM", 
-                             period == 5 ~ "10PM", 
-                             period == 6 ~ "1AM", 
-                             period == 7 ~ "4AM", 
-                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
-  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
-                              sampling == "Catfish2" ~ "Catfish 9/18/22",
-                              sampling == "Deans1" ~ "Deans 8/16/22",
-                              sampling == "Deans2" ~ "Deans 8/30/22", 
-                              sampling == "Pick1" ~ "Pick 9/13/22",
-                              sampling == "Sister31" ~ "Sister3 8/22/22")) %>% 
-  ggplot(aes(period, flux_g_mean))+
-  geom_point()+
-  geom_errorbar(aes(ymin = flux_g_2.5, ymax = flux_g_97.5))+
-  geom_line()+
-  facet_wrap(~sampling)+
-  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))+
-  theme_bw()+
-  ylab("Diffusive Flux (g CH4/day)")+
-  theme(axis.title.x = element_blank())
-  
-```
-
 Untransformed rate
 ```{r diel ch4 rate, echo = F}
 #png(filename = "4-Figures/ch4-diffusion-periods.png", width = 9, height = 5, units = "in", res = 300)
-ch4_diel <- all_fluxes_periods %>% 
+ch4_diel <- add_sampling_period(all_fluxes_periods %>% 
   filter(!(sampling == "Deans1" & period == 8)) %>% 
-  filter(gas == "CH4", pathway == "diffusion") %>% 
-   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
-                             period == 2 ~ "1PM", 
-                             period == 3 ~ "4PM", 
-                             period == 4 ~ "7PM", 
-                             period == 5 ~ "10PM", 
-                             period == 6 ~ "1AM", 
-                             period == 7 ~ "4AM", 
-                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
-  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 06 Sept",
-                              sampling == "Catfish2" ~ "Catfish 18 Sept",
-                              sampling == "Deans1" ~ "Deans 16 Aug",
-                              sampling == "Deans2" ~ "Deans 30 Aug", 
-                              sampling == "Pick1" ~ "Blue Herron 13 Sept",
-                              sampling == "Sister31" ~ "Sister 22 Aug")) %>% 
+  filter(gas == "CH4", pathway == "diffusion")) %>% 
   ggplot(aes(period, flux_mean_g_m2_hr))+
   geom_point()+
   geom_errorbar(aes(ymin = flux_2.5_g_m2_hr, ymax = flux_97.5_g_m2_hr))+
@@ -206,27 +103,14 @@ ch4_diel <- all_fluxes_periods %>%
         axis.text.x = element_text(angle = 45, hjust = 1), 
         axis.title.y = element_text(size=16, color = "black"), 
         strip.text = element_text(size=14, color = "black"))
+ch4_diel
 #dev.off()
 ```
 
 Untransformed without Picks
 ```{r diel ch4 no pick, echo = F}
-all_fluxes_periods %>% 
-  filter(gas == "CH4", pathway == "diffusion", site != "Pick") %>% 
-   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
-                             period == 2 ~ "1PM", 
-                             period == 3 ~ "4PM", 
-                             period == 4 ~ "7PM", 
-                             period == 5 ~ "10PM", 
-                             period == 6 ~ "1AM", 
-                             period == 7 ~ "4AM", 
-                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
-  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
-                              sampling == "Catfish2" ~ "Catfish 9/18/22",
-                              sampling == "Deans1" ~ "Deans 8/16/22",
-                              sampling == "Deans2" ~ "Deans 8/30/22", 
-                              sampling == "Pick1" ~ "Pick 9/13/22",
-                              sampling == "Sister31" ~ "Sister3 8/22/22")) %>% 
+add_sampling_period(all_fluxes_periods %>% 
+  filter(gas == "CH4", pathway == "diffusion", site != "Pick")) %>% 
   ggplot(aes(period, flux_g_mean))+
   geom_point()+
   geom_errorbar(aes(ymin = flux_g_2.5, ymax = flux_g_97.5))+
@@ -238,60 +122,15 @@ all_fluxes_periods %>%
   theme(axis.title.x = element_blank())
 ```
 
-
 ## Diel Diffusive CO2 
-
-Untransformed
-```{r diel co2, echo = F}
-# note log transformation of the y axis
-all_fluxes_periods %>% 
-  filter(gas == "CO2", pathway == "diffusion") %>% 
-   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
-                             period == 2 ~ "1PM", 
-                             period == 3 ~ "4PM", 
-                             period == 4 ~ "7PM", 
-                             period == 5 ~ "10PM", 
-                             period == 6 ~ "1AM", 
-                             period == 7 ~ "4AM", 
-                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
-    mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 06 Sept",
-                              sampling == "Catfish2" ~ "Catfish 18 Sept",
-                              sampling == "Deans1" ~ "Deans 16 Aug",
-                              sampling == "Deans2" ~ "Deans 30 Aug", 
-                              sampling == "Pick1" ~ "Blue Herron 13 Sept",
-                              sampling == "Sister31" ~ "Sister 22 Aug")) %>% 
-  ggplot(aes(period, flux_g_mean))+
-  geom_point()+
-  geom_errorbar(aes(ymin = flux_g_2.5, ymax = flux_g_97.5))+
-  geom_line()+
-  facet_wrap(~sampling) +
-  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10:00", "13:00", "16:00", "19:00", "22:00", "01:00", "04:00", "07:00"))+
-  theme_bw()+
-  ylab("Diffusive Flux (g CO2/day)")+
-  theme(axis.title.x = element_blank())
-```
 
 ```{r diel co2 rate, echo = F}
 #Deans 16 final sampling was actually at 9 AM so excluding
 
 #png(filename = "4-Figures/co2-diffusion-periods.png", width = 9, height = 5, units = "in", res = 300)
-co2_diel <- all_fluxes_periods %>% 
+co2_diel <- add_sampling_period(all_fluxes_periods %>% 
   filter(gas == "CO2", pathway == "diffusion") %>% 
-  filter(!(sampling == "Deans1" & period == 8)) %>% 
-   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
-                             period == 2 ~ "1PM", 
-                             period == 3 ~ "4PM", 
-                             period == 4 ~ "7PM", 
-                             period == 5 ~ "10PM", 
-                             period == 6 ~ "1AM", 
-                             period == 7 ~ "4AM", 
-                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
-   mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 06 Sept",
-                              sampling == "Catfish2" ~ "Catfish 18 Sept",
-                              sampling == "Deans1" ~ "Deans 16 Aug",
-                              sampling == "Deans2" ~ "Deans 30 Aug", 
-                              sampling == "Pick1" ~ "Blue Herron 13 Sept",
-                              sampling == "Sister31" ~ "Sister 22 Aug")) %>% 
+  filter(!(sampling == "Deans1" & period == 8))) %>% 
   ggplot(aes(period, flux_mean_g_m2_hr))+
   geom_point()+
   geom_errorbar(aes(ymin = flux_2.5_g_m2_hr, ymax = flux_97.5_g_m2_hr))+
@@ -310,99 +149,26 @@ co2_diel <- all_fluxes_periods %>%
 
 ```{r diel co2 rate no pick, echo = F}
 #png(filename = "4-Figures/co2-diffusion-periods-no-pick.png", width = 9, height = 5, units = "in", res = 300)
-all_fluxes_periods %>% 
+add_sampling_period(all_fluxes_periods %>% 
   filter(gas == "CO2", pathway == "diffusion", site != "Pick") %>% 
-   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
-                             period == 2 ~ "1PM", 
-                             period == 3 ~ "4PM", 
-                             period == 4 ~ "7PM", 
-                             period == 5 ~ "10PM", 
-                             period == 6 ~ "1AM", 
-                             period == 7 ~ "4AM", 
-                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
-  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
-                              sampling == "Catfish2" ~ "Catfish 9/18/22",
-                              sampling == "Deans1" ~ "Deans 8/16/22",
-                              sampling == "Deans2" ~ "Deans 8/30/22", 
-                              sampling == "Pick1" ~ "Pick 9/13/22",
-                              sampling == "Sister31" ~ "Sister 8/22/22")) %>% 
+  filter(!(sampling == "Deans1" & period == 8))) %>% 
   ggplot(aes(period, flux_mean_g_m2_hr))+
   geom_point()+
   geom_errorbar(aes(ymin = flux_2.5_g_m2_hr, ymax = flux_97.5_g_m2_hr))+
   geom_line()+
   facet_wrap(~sampling)+
-  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))+
+  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10:00", "13:00", "16:00", "19:00", "22:00", "01:00", "04:00", "07:00"))+
   theme_bw()+
   ylab(expression(Diffusive ~ Flux ~ (g~CO[2]~m^-2~hr^-1)))+
   theme(axis.title.x = element_blank(), 
         axis.text = element_text(size=14, color = "black"), 
-        axis.text.x = element_text(angle = 45, hjust = 1), 
+        axis.text.x = element_text(angle = 60, hjust = 1), 
         axis.title.y = element_text(size=16, color = "black"), 
         strip.text = element_text(size=14, color = "black"))
 #dev.off()
 ```
 
-Untransformed without Picks
-```{r diel co2 no pick, echo = F}
-# note log transformation of the y axis
-all_fluxes_periods %>% 
-  filter(gas == "CO2", pathway == "diffusion", site != "Pick") %>% 
-   mutate(period = as.numeric(period), trip_wr =factor(case_when(period == 1 ~ "10AM", 
-                             period == 2 ~ "1PM", 
-                             period == 3 ~ "4PM", 
-                             period == 4 ~ "7PM", 
-                             period == 5 ~ "10PM", 
-                             period == 6 ~ "1AM", 
-                             period == 7 ~ "4AM", 
-                             period == 8 ~ "7AM"), levels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))) %>% 
-    mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
-                              sampling == "Catfish2" ~ "Catfish 9/18/22",
-                              sampling == "Deans1" ~ "Deans 8/16/22",
-                              sampling == "Deans2" ~ "Deans 8/30/22", 
-                              sampling == "Pick1" ~ "Pick 9/13/22",
-                              sampling == "Sister31" ~ "Sister3 8/22/22")) %>% 
-  ggplot(aes(period, flux_g_mean))+
-  geom_point()+
-  geom_errorbar(aes(ymin = flux_g_2.5, ymax = flux_g_97.5))+
-  geom_line()+
-  facet_wrap(~sampling) +
-  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7,8)), labels = c("10AM", "1PM", "4PM", "7PM", "10PM", "1AM", "4AM", "7AM"))+
-  theme_bw()+
-  ylab("Diffusive Flux (g CO2/day)")+
-  theme(axis.title.x = element_blank())
-```
-
 ## Diel ebullition
-Untransformed
-```{r diel eb, echo = F}
-# note log transformation of the y axis
-all_fluxes_periods %>% 
-  filter(gas == "CH4", pathway == "ebullition", period != "0~1", period != "8~9") %>% 
-   mutate(trip = case_when(
-                             period == "1~2" ~ 1, 
-                             period == "2~3" ~ 2, 
-                             period == "3~4" ~ 3, 
-                             period == "4~5" ~ 4, 
-                             period == "5~6" ~ 5, 
-                             period == "6~7" ~ 6, 
-                             period == "7~8" ~ 7)) %>% 
-    mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
-                              sampling == "Catfish2" ~ "Catfish 9/18/22",
-                              sampling == "Deans1" ~ "Deans 8/16/22",
-                              sampling == "Deans2" ~ "Deans 8/30/22", 
-                              sampling == "Pick1" ~ "Pick 9/13/22",
-                              sampling == "Sister31" ~ "Sister3 8/22/22")) %>% 
-  ggplot(aes(trip, flux_g_mean))+
-  geom_point()+
-  geom_errorbar(aes(ymin = flux_g_2.5, ymax = flux_g_97.5))+
-  geom_line()+
-  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7)), labels = c("10AM-1PM","1PM-4PM","4PM-7PM","7PM-10PM","10PM-1AM","1AM-4AM","4AM-7AM"))+
-  facet_wrap(~sampling) +
-  theme_bw()+
-  ylab("Ebullitive Flux (g CH4/day)")+
-  theme(axis.title.x = element_blank(), axis.text.x = element_text(angle =45, hjust = 1))
-```
-
 Untransformed rate
 ```{r diel eb rate, echo = F}
 #png(filename = "4-Figures/ch4-ebullition-periods.png", width = 9, height = 5, units = "in", res = 300)
@@ -416,12 +182,12 @@ eb_diel <- all_fluxes_periods %>%
                              period == "5~6" ~ 6, 
                              period == "6~7" ~ 7, 
                              period == "7~8" ~ 8)) %>% 
-  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 06 Sept",
-                              sampling == "Catfish2" ~ "Catfish 18 Sept",
-                              sampling == "Deans1" ~ "Deans 16 Aug",
-                              sampling == "Deans2" ~ "Deans 30 Aug", 
-                              sampling == "Pick1" ~ "Blue Herron 13 Sept",
-                              sampling == "Sister31" ~ "Sister 22 Aug")) %>% 
+  mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 06-07 Sept",
+                              sampling == "Catfish2" ~ "Catfish 18-19 Sept",
+                              sampling == "Deans1" ~ "Deans 16-17 Aug",
+                              sampling == "Deans2" ~ "Deans 30-31 Aug", 
+                              sampling == "Pick1" ~ "Blue Herron 13-14 Sept",
+                              sampling == "Sister31" ~ "Sister 22-23 Aug")) %>% 
   ggplot(aes(trip, flux_mean_g_m2_hr))+
   geom_point()+
   geom_errorbar(aes(ymin = flux_2.5_g_m2_hr, ymax = flux_97.5_g_m2_hr))+
@@ -438,36 +204,6 @@ eb_diel <- all_fluxes_periods %>%
 #dev.off()
 ```
 
-
-Untransformed without Picks
-```{r diel eb no pick, echo = F}
-all_fluxes_periods %>% 
-  filter(gas == "CH4", pathway == "ebullition", period != "0~1", period != "8~9", site != "Pick") %>% 
-   mutate(trip = case_when(
-                             period == "1~2" ~ 1, 
-                             period == "2~3" ~ 2, 
-                             period == "3~4" ~ 3, 
-                             period == "4~5" ~ 4, 
-                             period == "5~6" ~ 5, 
-                             period == "6~7" ~ 6, 
-                             period == "7~8" ~ 7)) %>% 
-    mutate(sampling = case_when(sampling == "Catfish1" ~"Catfish 9/06/22",
-                              sampling == "Catfish2" ~ "Catfish 9/18/22",
-                              sampling == "Deans1" ~ "Deans 8/16/22",
-                              sampling == "Deans2" ~ "Deans 8/30/22", 
-                              sampling == "Pick1" ~ "Pick 9/13/22",
-                              sampling == "Sister31" ~ "Sister3 8/22/22")) %>% 
-  ggplot(aes(trip, flux_g_mean))+
-  geom_point()+
-  geom_errorbar(aes(ymin = flux_g_2.5, ymax = flux_g_97.5))+
-  geom_line()+
-  scale_x_discrete(limits = factor(c(1,2,3,4,5,6,7)), labels = c("10AM-1PM","1PM-4PM","4PM-7PM","7PM-10PM","10PM-1AM","1AM-4AM","4AM-7AM"))+
-  facet_wrap(~sampling) +
-  theme_bw()+
-  ylab("Ebullitive Flux (g CH4/day)")+
-  theme(axis.title.x = element_blank(), axis.text.x = element_text(angle =65, hjust = 1))
-```
-
 ```{r include = F}
 # all_fluxes_periods %>% filter(gas == "CO2") %>% 
 #   mutate(tod = case_when(period %in% c(1,2,3,8) ~ "day",
@@ -477,8 +213,7 @@ all_fluxes_periods %>%
 #   pivot_wider(id_cols = sampling, names_from = tod, values_from = mean_flux_sum) %>% mutate(tod_diff = day/night)
 ```
 
-
-```{r}
+```{r knit diel figs, echo = F}
 png(filename = "4-Figures/periods.png", width = 7.5, height = 11.5, units = "in", res = 300)
 plot_grid(co2_diel, ch4_diel, eb_diel, ncol = 1, labels = "AUTO", label_size = 18, vjust = 1.3)
 dev.off()

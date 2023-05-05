@@ -155,11 +155,14 @@ sampling.labs <- c("Catfish\n9/6 - 9/7", "Catfish\n9/18 - 9/19", "Deans\n8/16 - 
 names(sampling.labs) <- c("Catfish1", "Catfish2", "Deans1", "Deans2", "Pick1", "Sister31")
 
 pred.mod7.b <- ggpredict(mod7.b, terms =c("Depth", "Sampling"), type = "random") 
+pred.mod7.b
+
+names(ebullition_24)
 
 depth_fig <- ggplot(pred.mod7.b) +
   geom_ribbon(aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.2)+
-  geom_point(data=ebullition_24, 
-             aes(x=Depth, y = ch4_eb_g_m2_hr_24),
+  geom_point(data=ebullition_24 %>% rename("group" = "Sampling"), 
+             aes(x=Depth, y = ch4_eb_g_m2_hr_24, group = group),
              size = 2.5, shape = 1, stroke = 1)+
    geom_line(aes(x=x, y=predicted), lwd = 2, color = "#94A7C5")+
   ylab(expression(CH[4]~ flux ~ (g~m^-2~hr^-1)))+
@@ -173,8 +176,8 @@ pred.mod7.a <- ggpredict(mod7.a, terms =c("inlet_dist", "Sampling"), type = "ran
 
 dist_fig <- ggplot(pred.mod7.a) +
  geom_ribbon(aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.2)+
-  geom_point(data=ebullition_24, 
-             aes(x=inlet_dist, y = ch4_eb_g_m2_hr_24),
+  geom_point(data=ebullition_24 %>% rename("group" = "Sampling"), 
+             aes(x=inlet_dist, y = ch4_eb_g_m2_hr_24, group = group),
              size = 2.5, shape = 1, stroke = 1)+
    geom_line(aes(x=x, y=predicted), lwd = 2, color = "#94A7C5")+
   ylab(expression(CH[4]~ flux ~ (g~m^-2~hr^-1)))+

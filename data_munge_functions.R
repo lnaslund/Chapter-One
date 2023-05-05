@@ -11,6 +11,19 @@ sampling_filter_24hr <- function(df){
     )))
 }
 
+sampling_filter_24hr_other <- function(df){
+  return(df %>% 
+           mutate(sampling = case_when(
+             (Date_Time >= ymd_hms("2022-09-06 08:00:00", tz = "America/New_York") & Date_Time <= ymd_hms("2022-09-07 08:00:00", tz = "America/New_York")) ~ "Catfish 06-07 Sept",
+             (Date_Time >= ymd_hms("2022-09-18 08:00:00", tz = "America/New_York") & Date_Time <= ymd_hms("2022-09-19 08:00:00", tz = "America/New_York")) ~ "Catfish 18-19 Sept",
+             (Date_Time >= ymd_hms("2022-08-16 08:00:00", tz = "America/New_York") & Date_Time <= ymd_hms("2022-08-17 08:00:00", tz = "America/New_York")) ~ "Deans 16-17 Aug",
+             (Date_Time >= ymd_hms("2022-08-30 08:00:00", tz = "America/New_York") & Date_Time <= ymd_hms("2022-08-31 08:00:00", tz = "America/New_York")) ~ "Deans 30-31 Aug",
+             (Date_Time >= ymd_hms("2022-09-13 08:00:00", tz = "America/New_York") & Date_Time <= ymd_hms("2022-09-14 08:00:00", tz = "America/New_York")) ~ "Blue Herron 13-14 Sept",
+             (Date_Time >= ymd_hms("2022-08-22 08:00:00", tz = "America/New_York") & Date_Time <= ymd_hms("2022-08-23 08:00:00", tz = "America/New_York")) ~ "Sister 22-23 Aug",
+             TRUE ~ NA_character_
+           )))
+}
+
 sampling_filter_28hr <- function(df){
   return(df %>% 
   mutate(sampling = case_when(

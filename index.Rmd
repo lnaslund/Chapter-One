@@ -16,7 +16,7 @@ github-repo: "rstudio/bookdown-demo"
 # Sampling scheme
 
 ```{r load packages, include=F}
-my_packages <- c("tidyverse", "mapview", "lubridate", "sf", "data.table", "dygraphs", "xts", "gstat", "stars", "automap", "viridis", "tmap", "gridExtra", "lme4", "AICcmodavg", "ggeffects", "lmerTest", "plotly", "performance", "hms", "cowplot", "MuMIn", "glmmTMB")
+my_packages <- c("tidyverse", "mapview", "lubridate", "sf", "data.table", "dygraphs", "xts", "gstat", "stars", "automap", "viridis", "tmap", "gridExtra", "lme4", "AICcmodavg", "ggeffects", "lmerTest", "plotly", "performance", "hms", "cowplot", "MuMIn", "glmmTMB", "ape", "report")
 lapply(my_packages, require, character.only = TRUE)
 
 source("data_munge_functions.R")

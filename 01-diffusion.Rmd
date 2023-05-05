@@ -94,6 +94,23 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 
 #breaks for g/m2day  breaks = c(-0.04, -0.02, 0, 0.02, 0.04, 0.06))
+
+trips <- unique(deans_pts_16$trip_wr)
+deans_16_moran_ch4 <- NULL
+
+for(i in 1:length(trips)){
+  ch4_fluxes <- deans_pts_16 %>% filter(trip_wr == trips[i]) %>% pull(flux_ch4_g_hr)
+  deans_16_dist <- as.matrix(dist(cbind((st_coordinates(deans_pts_16 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(deans_pts_16 %>% filter(trip_wr == trips[i])))[,2])))
+  deans_16_dist_inv <- 1/deans_16_dist
+  diag(deans_16_dist_inv) <- 0
+  
+  temp <- Moran.I(ch4_fluxes, deans_16_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  deans_16_moran_ch4 <- deans_16_moran_ch4 %>% bind_rows(temp_row)
+}
+
+deans_16_moran_ch4
 ```
 
 ```{r deans diff co2 8.16, echo = F}
@@ -105,6 +122,22 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 
 # breaks for g/m2day , breaks = c(0,2,4,6,8,10,12)
+
+deans_16_moran_co2 <- NULL
+
+for(i in 1:length(trips)){
+  co2_fluxes <- deans_pts_16 %>% filter(trip_wr == trips[i]) %>% pull(flux_co2_g_hr)
+  deans_16_dist <- as.matrix(dist(cbind((st_coordinates(deans_pts_16 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(deans_pts_16 %>% filter(trip_wr == trips[i])))[,2])))
+  deans_16_dist_inv <- 1/deans_16_dist
+  diag(deans_16_dist_inv) <- 0
+  
+  temp <- Moran.I(co2_fluxes, deans_16_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  deans_16_moran_co2 <- deans_16_moran_co2 %>% bind_rows(temp_row)
+}
+
+deans_16_moran_co2
 ```
 
 ## Deans Diffusive 8/30/22-8/31/22
@@ -117,6 +150,23 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 
 # , breaks = c(-0.04, -0.02, 0, 0.02, 0.04, 0.06)
+
+trips <- unique(deans_pts_30$trip_wr)
+deans_30_moran_ch4 <- NULL
+
+for(i in 1:length(trips)){
+  ch4_fluxes <- deans_pts_30 %>% filter(trip_wr == trips[i]) %>% pull(flux_ch4_g_hr)
+  deans_30_dist <- as.matrix(dist(cbind((st_coordinates(deans_pts_30 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(deans_pts_30 %>% filter(trip_wr == trips[i])))[,2])))
+  deans_30_dist_inv <- 1/deans_30_dist
+  diag(deans_30_dist_inv) <- 0
+  
+  temp <- Moran.I(ch4_fluxes, deans_30_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  deans_30_moran_ch4 <- deans_30_moran_ch4 %>% bind_rows(temp_row)
+}
+
+deans_30_moran_ch4
 ```
 
 ```{r deans diff co2 8.30, echo = F}
@@ -128,6 +178,22 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T)
 
 #, breaks = c(0,2,4,6,8,10,12)
+
+deans_30_moran_co2 <- NULL
+
+for(i in 1:length(trips)){
+  co2_fluxes <- deans_pts_30 %>% filter(trip_wr == trips[i]) %>% pull(flux_co2_g_hr)
+  deans_30_dist <- as.matrix(dist(cbind((st_coordinates(deans_pts_30 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(deans_pts_30 %>% filter(trip_wr == trips[i])))[,2])))
+  deans_30_dist_inv <- 1/deans_30_dist
+  diag(deans_30_dist_inv) <- 0
+  
+  temp <- Moran.I(co2_fluxes, deans_30_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  deans_30_moran_co2 <- deans_30_moran_co2 %>% bind_rows(temp_row)
+}
+
+deans_30_moran_co2
 ```
 
 ## Deans Cloud Comparison
@@ -146,6 +212,23 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
 
 #, breaks = c(-0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2)
+
+trips <- unique(catfish_pts_06$trip_wr)
+catfish_06_moran_ch4 <- NULL
+
+for(i in 1:length(trips)){
+  ch4_fluxes <- catfish_pts_06 %>% filter(trip_wr == trips[i]) %>% pull(flux_ch4_g_hr)
+  catfish_06_dist <- as.matrix(dist(cbind((st_coordinates(catfish_pts_06 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(catfish_pts_06 %>% filter(trip_wr == trips[i])))[,2])))
+  catfish_06_dist_inv <- 1/catfish_06_dist
+  diag(catfish_06_dist_inv) <- 0
+  
+  temp <- Moran.I(ch4_fluxes, catfish_06_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  catfish_06_moran_ch4 <- catfish_06_moran_ch4 %>% bind_rows(temp_row)
+}
+
+catfish_06_moran_ch4
 ```
 
 ```{r catfish diff co2 9.6, echo = F}
@@ -157,6 +240,22 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
 
 #, breaks = c(0,2,4,6,8,10,12,14)
+
+catfish_06_moran_co2 <- NULL
+
+for(i in 1:length(trips)){
+  co2_fluxes <- catfish_pts_06 %>% filter(trip_wr == trips[i]) %>% pull(flux_co2_g_hr)
+  catfish_06_dist <- as.matrix(dist(cbind((st_coordinates(catfish_pts_06 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(catfish_pts_06 %>% filter(trip_wr == trips[i])))[,2])))
+  catfish_06_dist_inv <- 1/catfish_06_dist
+  diag(catfish_06_dist_inv) <- 0
+  
+  temp <- Moran.I(co2_fluxes, catfish_06_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  catfish_06_moran_co2 <- catfish_06_moran_co2 %>% bind_rows(temp_row)
+}
+
+catfish_06_moran_co2
 ```
 
 ## Catfish Diffusive 9/18/22-9/19/22 
@@ -169,6 +268,23 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
 
 # , breaks = c(-0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2)
+
+trips <- unique(catfish_pts_18$trip_wr)
+catfish_18_moran_ch4 <- NULL
+
+for(i in 1:length(trips)){
+  ch4_fluxes <- catfish_pts_18 %>% filter(trip_wr == trips[i]) %>% pull(flux_ch4_g_hr)
+  catfish_18_dist <- as.matrix(dist(cbind((st_coordinates(catfish_pts_18 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(catfish_pts_18 %>% filter(trip_wr == trips[i])))[,2])))
+  catfish_18_dist_inv <- 1/catfish_18_dist
+  diag(catfish_18_dist_inv) <- 0
+  
+  temp <- Moran.I(ch4_fluxes, catfish_18_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  catfish_18_moran_ch4 <- catfish_18_moran_ch4 %>% bind_rows(temp_row)
+}
+
+catfish_18_moran_ch4
 ```
 
 ```{r catfish diff co2 9.18, echo = F}
@@ -180,6 +296,22 @@ tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
 
 # , breaks = c(0,2,4,6,8,10,12,14)
+
+catfish_18_moran_co2 <- NULL
+
+for(i in 1:length(trips)){
+  co2_fluxes <- catfish_pts_18 %>% filter(trip_wr == trips[i]) %>% pull(flux_co2_g_hr)
+  catfish_18_dist <- as.matrix(dist(cbind((st_coordinates(catfish_pts_18 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(catfish_pts_18 %>% filter(trip_wr == trips[i])))[,2])))
+  catfish_18_dist_inv <- 1/catfish_18_dist
+  diag(catfish_18_dist_inv) <- 0
+  
+  temp <- Moran.I(co2_fluxes, catfish_18_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  catfish_18_moran_co2 <- catfish_18_moran_co2 %>% bind_rows(temp_row)
+}
+
+catfish_18_moran_co2
 ```
 
 ## Catfish Cloud Comparison
@@ -195,6 +327,23 @@ tm_shape(pick_pts_13, bbox = st_bbox(catfish) %>% st_as_sfc())+
   tm_dots("flux_ch4_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CH4 flux (g/m2/hr)")+
 tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
+
+trips <- unique(pick_pts_13$trip_wr)
+pick_13_moran_ch4 <- NULL
+
+for(i in 1:length(trips)){
+  ch4_fluxes <- pick_pts_13 %>% filter(trip_wr == trips[i]) %>% pull(flux_ch4_g_hr)
+  pick_13_dist <- as.matrix(dist(cbind((st_coordinates(pick_pts_13 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(pick_pts_13 %>% filter(trip_wr == trips[i])))[,2])))
+  pick_13_dist_inv <- 1/pick_13_dist
+  diag(pick_13_dist_inv) <- 0
+  
+  temp <- Moran.I(ch4_fluxes, pick_13_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  pick_13_moran_ch4 <- pick_13_moran_ch4 %>% bind_rows(temp_row)
+}
+
+pick_13_moran_ch4
 ```
 
 ```{r pick diff co2, echo = F}
@@ -204,6 +353,23 @@ tm_shape(pick_pts_13, bbox = st_bbox(catfish) %>% st_as_sfc())+
   tm_dots("flux_co2_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CO2 flux (g/m2/hr)")+
 tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=4)
+
+trips <- unique(pick_pts_13$trip_wr)
+pick_13_moran_co2 <- NULL
+
+for(i in 1:length(trips)){
+  co2_fluxes <- pick_pts_13 %>% filter(trip_wr == trips[i]) %>% pull(flux_co2_g_hr)
+  pick_13_dist <- as.matrix(dist(cbind((st_coordinates(pick_pts_13 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(pick_pts_13 %>% filter(trip_wr == trips[i])))[,2])))
+  pick_13_dist_inv <- 1/pick_13_dist
+  diag(pick_13_dist_inv) <- 0
+  
+  temp <- Moran.I(co2_fluxes, pick_13_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  pick_13_moran_co2 <- pick_13_moran_co2 %>% bind_rows(temp_row)
+}
+
+pick_13_moran_co2
 ```
 
 ## Sister3 Diffusive 8/22/22-8/23/22
@@ -214,6 +380,23 @@ tm_shape(sister3_pts_22, bbox = st_bbox(catfish) %>% st_as_sfc())+
   tm_dots("flux_ch4_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CH4 flux (g/m2/hr)")+
 tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=2)
+
+trips <- unique(sister3_pts_22$trip_wr)
+sister3_22_moran_ch4 <- NULL
+
+for(i in 1:length(trips)){
+  ch4_fluxes <- sister3_pts_22 %>% filter(trip_wr == trips[i]) %>% pull(flux_ch4_g_hr)
+  sister3_22_dist <- as.matrix(dist(cbind((st_coordinates(sister3_pts_22 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(sister3_pts_22 %>% filter(trip_wr == trips[i])))[,2])))
+  sister3_22_dist_inv <- 1/sister3_22_dist
+  diag(sister3_22_dist_inv) <- 0
+  
+  temp <- Moran.I(ch4_fluxes, sister3_22_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  sister3_22_moran_ch4 <- sister3_22_moran_ch4 %>% bind_rows(temp_row)
+}
+
+sister3_22_moran_ch4
 ```
 
 ```{r sister diff co2, echo = F}
@@ -223,6 +406,23 @@ tm_shape(sister3_pts_22, bbox = st_bbox(catfish) %>% st_as_sfc())+
   tm_dots("flux_co2_g_hr", size = 0.5, shape = 21, palette = "-RdYlBu", midpoint = NA, title = "CO2 flux (g/m2/hr)")+
 tm_layout(scale = 1.5, legend.outside = T)+
 tm_facets(by = "trip_wr", free.coords = F, inside.original.bbox = T, nrow=2) 
+
+trips <- unique(sister3_pts_22$trip_wr)
+sister3_22_moran_co2 <- NULL
+
+for(i in 1:length(trips)){
+  co2_fluxes <- sister3_pts_22 %>% filter(trip_wr == trips[i]) %>% pull(flux_co2_g_hr)
+  sister3_22_dist <- as.matrix(dist(cbind((st_coordinates(sister3_pts_22 %>% filter(trip_wr == trips[i])))[,1], (st_coordinates(sister3_pts_22 %>% filter(trip_wr == trips[i])))[,2])))
+  sister3_22_dist_inv <- 1/sister3_22_dist
+  diag(sister3_22_dist_inv) <- 0
+  
+  temp <- Moran.I(co2_fluxes, sister3_22_dist_inv, scaled = T, na.rm = T)
+  temp_row <- as.data.frame(temp)
+  
+  sister3_22_moran_co2 <- sister3_22_moran_co2 %>% bind_rows(temp_row)
+}
+
+sister3_22_moran_co2
 ```
 
 ```{r}

@@ -23,7 +23,7 @@
 <meta name="author" content="Laura Naslund" />
 
 
-<meta name="date" content="2023-04-19" />
+<meta name="date" content="2023-05-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -247,10 +247,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="10" data-path="sunny-cloudy-analysis.html"><a href="sunny-cloudy-analysis.html"><i class="fa fa-check"></i><b>10</b> Sunny Cloudy Analysis</a></li>
 <li class="chapter" data-level="11" data-path="degassing-analysis.html"><a href="degassing-analysis.html"><i class="fa fa-check"></i><b>11</b> Degassing analysis</a></li>
-<li class="chapter" data-level="12" data-path="alternative-sampling-scheme-simulations.html"><a href="alternative-sampling-scheme-simulations.html"><i class="fa fa-check"></i><b>12</b> Alternative sampling scheme simulations</a>
-<ul>
-<li class="chapter" data-level="12.0.1" data-path="alternative-sampling-scheme-simulations.html"><a href="alternative-sampling-scheme-simulations.html#when-does-neon-collect-dissolved-gases"><i class="fa fa-check"></i><b>12.0.1</b> When does NEON collect dissolved gases?</a></li>
-</ul></li>
+<li class="chapter" data-level="12" data-path="alternative-sampling-scheme-simulations.html"><a href="alternative-sampling-scheme-simulations.html"><i class="fa fa-check"></i><b>12</b> Alternative sampling scheme simulations</a></li>
 <li class="chapter" data-level="13" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html"><i class="fa fa-check"></i><b>13</b> Analyses of patterns of diel diffusive emissions</a>
 <ul>
 <li class="chapter" data-level="13.1" data-path="analyses-of-patterns-of-diel-diffusive-emissions.html"><a href="analyses-of-patterns-of-diel-diffusive-emissions.html#diel-patterns-in-environmental-variables"><i class="fa fa-check"></i><b>13.1</b> Diel patterns in environmental variables</a>
@@ -324,8 +321,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="sister-ebullitive-3-82222-82322" class="section level2 hasAnchor" number="3.6">
 <h2><span class="header-section-number">3.6</span> Sister Ebullitive 3 8/22/22-8/23/22<a href="ebullition.html#sister-ebullitive-3-82222-82322" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="ebullition.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sister3)<span class="sc">+</span></span>
+<span id="cb30-2"><a href="ebullition.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">&quot;white&quot;</span>)<span class="sc">+</span></span>
+<span id="cb30-3"><a href="ebullition.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(sister3_pts_22_eb, <span class="at">bbox =</span> <span class="fu">st_bbox</span>(catfish) <span class="sc">%&gt;%</span> <span class="fu">st_as_sfc</span>())<span class="sc">+</span></span>
+<span id="cb30-4"><a href="ebullition.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="st">&quot;ch4_eb_g_m2_hr&quot;</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">palette =</span> <span class="st">&quot;-RdYlBu&quot;</span>, <span class="at">midpoint =</span> <span class="cn">NA</span>, <span class="at">title =</span> <span class="st">&quot;CH4 flux (g/m2/hr)&quot;</span>)<span class="sc">+</span></span>
+<span id="cb30-5"><a href="ebullition.html#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_layout</span>(<span class="at">scale =</span> <span class="fl">1.5</span>, <span class="at">legend.outside =</span> T)<span class="sc">+</span></span>
+<span id="cb30-6"><a href="ebullition.html#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_facets</span>(<span class="at">by =</span> <span class="st">&quot;trip_wr&quot;</span>, <span class="at">free.coords =</span> F, <span class="at">inside.original.bbox =</span> T)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre><code>## Warning: Removed 99 rows containing non-finite values (`stat_bin()`).</code></pre>
 <p><img src="_main_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="ebullition.html#cb32-1" aria-hidden="true" tabindex="-1"></a>to_remove <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;conc&quot;</span>, <span class="st">&quot;conc_match&quot;</span>, <span class="st">&quot;deans_16_eb&quot;</span>, <span class="st">&quot;deans_30_eb&quot;</span>, <span class="st">&quot;pick_13_eb&quot;</span>, <span class="st">&quot;sister3_22_eb&quot;</span>, <span class="st">&quot;catfish_06_eb&quot;</span>, <span class="st">&quot;catfish_18_eb&quot;</span>)</span>
+<span id="cb32-2"><a href="ebullition.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> to_remove)</span></code></pre></div>
 
 </div>
 </div>

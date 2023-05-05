@@ -1,7 +1,7 @@
 # Degassing analysis
 
 ```{r degassing calculation}
-pick_conc <- 98.66104183 -0.36507263
+pick_conc <- 98.66104183 -0.36507263	
 pick_q_0913 <- 4/c(270, 214, 245)
 
 degas_ch4 <-pick_conc * mean(pick_q_0913) * 86400 * 1e-6 *16.04 *(1/as.numeric(st_area(pick)))
@@ -9,5 +9,19 @@ degas_co2_eq <- degas_ch4 *27
 
 degas_ch4
 degas_co2_eq
+
+
+deans1_conc <- 0.58316848-0.31061833
+deans_q_0817 <- 4/c(13.85,13.8,13.37)
+deans1_conc * mean(deans_q_0817) * 86400 * 1e-6 *16.04 *(1/as.numeric(st_area(deans)))
+
+deans2_conc <- 0.97972334-4.31144339
+
+sister_conc <- 0.84857216-2.61846733
+sister_q_0822 <- 4/c(24.86,24.80,24.68)
+sister_conc * mean(sister_q_0822) * 86400 * 1e-6 *16.04 *(1/as.numeric(st_area(sister3)))
+
+catfish <- 0.58556370-1.46883969
+
 ```
 

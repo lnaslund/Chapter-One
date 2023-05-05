@@ -311,9 +311,42 @@ diff_ch4_alt_sims_plot
 
 alt_sim_legend <- get_legend(diff_co2_alt_sims_plot)
 alt_sim_col1 <- plot_grid(diff_co2_alt_sims_plot + theme(legend.position = "none"), diff_ch4_alt_sims_plot+ theme(legend.position = "none"), eb_alt_sims_plot+ theme(legend.position = "none"), ncol = 1)
+
 #png(filename = "4-Figures/alt-sims.png", width = 9, height = 12, units = "in", res = 300)
 #plot_grid(alt_sim_col1, alt_sim_legend, rel_widths = c(0.7, 0.3))
 #dev.off()
+
+names(diff_alt_sims)
+
+diff_alt_sims %>% 
+  select(site, date, type, flux_round_diffusion_CO2) %>% 
+  mutate(type_class = if_else(type == "calculated", "calc", "sim")) %>% 
+  pivot_wider(id_cols = c("site", "date"), names_from = "type", values_from = "flux_round_diffusion_CO2") %>% mutate(
+    four_rand_diff = `four random` - calculated, two_edge_diff = two_edge_center - calculated, two_edge_time_diff = two_edge_center_times - calculated
+  ) %>% select(site, date, four_rand_diff, two_edge_diff, two_edge_time_diff)
+
+# ch4
+# two edge time, catfish 1, catfish 2, deans 2, pick
+# two edge diff deans 1
+# sister four rand
+
+# CO2
+# two edge time catfish 1, deans 1, deans2, pick
+# two edge catfish 2, 
+# four rand sister
+
+eb_alt_sims %>% 
+  select(site, date, type, flux_round_ebullition_CH4) %>% 
+  mutate(type_class = if_else(type == "calculated", "calc", "sim")) %>% 
+  pivot_wider(id_cols = c("site", "date"), names_from = "type", values_from = "flux_round_ebullition_CH4") %>% mutate(
+    four_rand_diff = `four random` - calculated, two_edge_diff = two_edge_center - calculated, two_edge_time_diff = two_edge_center_times - calculated
+  ) %>% select(site, date, four_rand_diff, two_edge_diff, two_edge_time_diff)
+
+# two edge diff catfish1, catfish2, sister
+
+getwd()
+
+# four rand deans 1, deans 2, pick 
 ```
 
 ```{r alternative edge method, include = F}
@@ -479,6 +512,7 @@ time_eb
 ```
 
 ```{r space sim eb, include = F}
+# set.seed(16)
 # site_vec <- c("Deans", "Deans", "Catfish", "Catfish", "Pick", "Sister3")
 # start_date_vec <- c("2022-08-16", "2022-08-30", "2022-09-06", "2022-09-18", "2022-09-13", "2022-08-22")
 # end_date_vec <- c("2022-08-17", "2022-08-31", "2022-09-07", "2022-09-19", "2022-09-14", "2022-08-23")
@@ -488,7 +522,7 @@ time_eb
 # space_sim_eb <- data.frame()
 # 
 # for(j in 1:length(sampling_vec)){
-#   for(v in 1:11){
+#   for(v in 1:24){
 #       for(i in 1:100){
 #       trap_vec <- (map_chr(c("1A","1B","1C","1D","1E", "2A","2B", "2C", "2D", "2E","3A","3B","3C","3D", "3E", "4A", "4B","4C", "4D","4E", "5A", "5B","5C", "5D","5E"), ~ paste0(str_sub(site_vec[j], 1,1), .x)))
 #       tl <- sample(trap_vec,v,replace = FALSE)
@@ -577,21 +611,21 @@ space_eb
 ```
 
 ```{r, echo = F}
-sampcol1 <- plot_grid(time_co2 + theme(legend.position = "none", axis.title.x = element_blank()), 
-          space_co2+ theme(legend.position = "none", axis.title.x = element_blank()), 
-          time_ch4 + theme(legend.position = "none", axis.title.x = element_blank()),
-          space_ch4 + theme(legend.position = "none", axis.title.x = element_blank()), 
-          time_eb + theme(legend.position = "none"),
-          space_eb + theme(legend.position = "none"), 
+sampcol1 <- plot_grid(time_co2 + scale_y_continuous(breaks = seq(0,100, by = 20), limits = c(0, 100)) + theme(legend.position = "none", axis.title.x = element_blank()), 
+          space_co2 + scale_y_continuous(breaks = seq(0,100, by = 20), limits = c(0, 100))+ theme(legend.position = "none", axis.title.x = element_blank()), 
+          time_ch4+ scale_y_continuous(breaks = seq(0,100, by = 20), limits = c(0, 100)) + theme(legend.position = "none", axis.title.x = element_blank()),
+          space_ch4+ scale_y_continuous(breaks = seq(0,100, by = 20), limits = c(0, 100)) + theme(legend.position = "none", axis.title.x = element_blank()), 
+          time_eb+ scale_y_continuous(breaks = seq(0,100, by = 20), limits = c(0, 100)) + theme(legend.position = "none"),
+          space_eb+ scale_y_continuous(breaks = seq(0,100, by = 20), limits = c(0, 100)) + theme(legend.position = "none"), 
           ncol = 2, labels = "AUTO")
 
 samp_legend <- get_legend(time_co2)
 
 # you may want to force the ranges to be the same for eb and diff
 
-#png(filename = "4-Figures/sampling.png", width = 12, height = 12, units = "in", res = 300)
+png(filename = "4-Figures/sampling.png", width = 12, height = 12, units = "in", res = 300)
 plot_grid(sampcol1, samp_legend, ncol = 2, rel_widths = c(0.8, 0.2))
-#dev.off()
+dev.off()
 ```
 
 ```{r neon mode, include = F}

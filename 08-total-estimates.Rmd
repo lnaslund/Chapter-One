@@ -16,7 +16,7 @@ all_fluxes_periods <- read.csv("5-Results/1-kriged-estimates/all_fluxes_periods.
 ```{r summary flux pathways, echo = F}
 all_fluxes_pathways  %>% select(site, date, pathway, gas, flux_mean_g_m2_day:flux_97.5_g_day_co2_eq)  
 
-all_fluxes_pathways  %>% select(site, date, pathway, gas, flux_mean_g_m2_day) %>% mutate(flux_round = round(flux_mean_g_m2_day, digits = 4)) %>% select(-flux_mean_g_m2_day) %>%  pivot_wider(names_from = c(pathway, gas), values_from = "flux_round")  %>% select(site, date, diffusion_CO2, diffusion_CH4, ebullition_CH4)
+all_fluxes_pathways  %>% select(site, date, pathway, gas, flux_mean_g_m2_day) %>% mutate(flux_round = round(flux_mean_g_m2_day, digits = 4)) %>% select(-flux_mean_g_m2_day) %>%  pivot_wider(names_from = c(pathway, gas), values_from = "flux_round")  %>% select(site, date, diffusion_CO2, diffusion_CH4, ebullition_CH4) %>% mutate(total_ch4 = diffusion_CH4 + ebullition_CH4)
 
 all_fluxes_pathways  %>% select(site, date, pathway, gas, flux_2.5_g_m2_day) %>% mutate(flux_round = round(flux_2.5_g_m2_day, digits = 4)) %>% select(-flux_2.5_g_m2_day) %>%  pivot_wider(names_from = c(pathway, gas), values_from = "flux_round") %>% select(site, date, diffusion_CO2, diffusion_CH4, ebullition_CH4)
 
@@ -32,16 +32,43 @@ all_fluxes_pathways %>%
          flux_97.5_g_m2_day_co2_eq= flux_97.5_g_day_co2_eq/area)%>% 
   select(site, date, pathway, gas, flux_mean_g_m2_day_co2_eq) %>% 
   pivot_wider(id_cols = c("site", "date"), names_from = c("pathway", "gas"), values_from = "flux_mean_g_m2_day_co2_eq") %>% 
-  mutate(total = diffusion_CH4 + diffusion_CO2 + ebullition_CH4, prop_co2 = (diffusion_CO2/total)*100, prop_ch4_diff = (diffusion_CH4/total)*100, prop_ch4_eb = (ebullition_CH4/total)*100)
+  mutate(total = diffusion_CH4 + diffusion_CO2 + ebullition_CH4, prop_ch4_diff = (diffusion_CH4/total)*100, prop_ch4_eb = (ebullition_CH4/total)*100, prop_co2 = (diffusion_CO2/total)*100, prop_ch4 = prop_ch4_diff + prop_ch4_eb)
 ```
 
 ```{r summary co2 eq table, include = F}
-all_fluxes_pathways %>% 
+green_comp <- all_fluxes_pathways %>% 
   group_by(sampling, site, date) %>% 
-  summarize(co2_eq_total_mean = sum(flux_mean_g_day_co2_eq), co2_eq_total_2.5 = sum(flux_2.5_g_day_co2_eq), co2_eq_total_97.5 = sum(flux_97.5_g_day_co2_eq)) %>% 
-  mutate(co2_eq_total_mean_kg = co2_eq_total_mean * 1e-3, co2_eq_total_2.5_kg = co2_eq_total_2.5 *1e-3, co2_eq_total_97.5_kg = co2_eq_total_97.5 *1e-3) %>% 
-  ungroup() %>% 
-  select(site, date, co2_eq_total_mean_kg:co2_eq_total_97.5_kg)
+  mutate(flux_mean_g_m2_day_co2_eq =  flux_mean_g_day_co2_eq/area,
+         flux_2.5_g_m2_day_co2_eq= flux_2.5_g_day_co2_eq/area, 
+         flux_97.5_g_m2_day_co2_eq= flux_97.5_g_day_co2_eq/area) %>% 
+  summarize(co2_eq_total_mean = sum(flux_mean_g_m2_day_co2_eq), co2_eq_total_2.5 = sum(flux_2.5_g_m2_day_co2_eq), co2_eq_total_97.5 = sum(flux_97.5_g_m2_day_co2_eq)) %>% 
+  select(site, date, co2_eq_total_mean:co2_eq_total_97.5) %>% 
+  mutate(green = if_else(site == "Pick", "green", "not green")) %>% 
+  group_by(green) %>% 
+  summarize(mean_co2_eq = mean(co2_eq_total_mean))
+  
+clarke_ponds <- st_read("2-Clean Data/clarke_ponds.shp") %>% filter(AreSqKm < 0.1)
+clarke_area <- sum(clarke_ponds$AreSqKm)
+
+green_avg <- green_comp$mean_co2_eq[1]
+not_green_avg <- green_comp$mean_co2_eq[2]
+
+df <- data.frame(intercept = (sum(clarke_ponds$AreSqKm)* not_green_avg), slope = ((sum(clarke_ponds$AreSqKm)* green_avg) - (sum(clarke_ponds$AreSqKm)* not_green_avg)))
+
+ggplot(df, aes(intercept, slope)) +theme_bw()+xlab("Proportion of green ponds") + ylab("MG CO2-eq/day")+geom_abline(aes(intercept = intercept, slope = slope)) + ylim(c(df$intercept, (df$intercept+df$slope)))+xlim(c(0,1))
+
+green_avg/not_green_avg
+
+temp <- all_fluxes_pathways %>% 
+  group_by(sampling, site, date) %>% 
+  mutate(flux_mean_g_m2_day_co2_eq =  flux_mean_g_day_co2_eq/area,
+         flux_2.5_g_m2_day_co2_eq= flux_2.5_g_day_co2_eq/area, 
+         flux_97.5_g_m2_day_co2_eq= flux_97.5_g_day_co2_eq/area) %>% 
+  summarize(co2_eq_total_mean = sum(flux_mean_g_m2_day_co2_eq), co2_eq_total_2.5 = sum(flux_2.5_g_m2_day_co2_eq), co2_eq_total_97.5 = sum(flux_97.5_g_m2_day_co2_eq)) %>% 
+  select(site, date, co2_eq_total_mean:co2_eq_total_97.5) %>% 
+  mutate(green = if_else(site == "Pick", "green", "not green"))
+
+green_avg / temp$co2_eq_total_mean
 ```
 
 ### Pathway
@@ -145,6 +172,8 @@ co2_diel <- add_sampling_period(all_fluxes_periods %>%
         axis.title.y = element_text(size=16, color = "black"), 
         strip.text = element_text(size=14, color = "black"))
 #dev.off()
+
+co2_diel
 ```
 
 ```{r diel co2 rate no pick, echo = F}
@@ -202,6 +231,8 @@ eb_diel <- all_fluxes_periods %>%
         axis.title.y = element_text(size=16, color = "black"), 
         strip.text = element_text(size=14, color = "black"))
 #dev.off()
+
+eb_diel
 ```
 
 ```{r include = F}

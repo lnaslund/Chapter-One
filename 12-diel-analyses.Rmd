@@ -29,6 +29,21 @@ diffusion_env <- diffusion_env %>%
     sampling == "Sister 8/22 - 8/23" ~ "Sister 22-23 Aug"
   )) %>% select(-date, -site), by = c("sampling", "location", "trip")) %>% 
   drop_na()
+
+lux_daily <- sampling_filter_24hr(lux) %>% filter(is.na(sampling)==F)
+
+time_vec <- c("10:00", "13:00", "16:00", "19:00", "22:00", "01:00", "04:00", "07:00")
+date_time_vec_1 <- do.call(c, map(time_vec[1:5], function(x) ymd_hm(paste(date(Sys.time()), x, sep = " "), tz = "America/New_York")))
+date_time_vec_2 <- do.call(c, map(time_vec[6:8], function(x) ymd_hm(paste(date(Sys.time()+days(1)), x, sep = " "), tz = "America/New_York")))
+date_time_vec <- c(date_time_vec_1, date_time_vec_2)
+
+png(filename = "4-Figures/lux-sampling-summary.png", width = 8, height = 5, units = "in", res = 300)
+daily_trace_aes(lux_daily %>% 
+     mutate(time = format(Date_Time, format = "%H:%M") %>% as.POSIXct(format = "%H:%M"), time_alt = if_else(hour(time) %in% c(24, 0:9), time + days(1), time)) %>% 
+  ggplot(aes(time_alt, Lux, group = sampling)) +
+  geom_line()+
+  ylab("Lux"), date_time_vec)
+dev.off()
 ```
 
 ## Diel patterns in environmental variables
@@ -70,16 +85,22 @@ date_time_vec_1 <- do.call(c, map(time_vec[1:5], function(x) ymd_hm(paste(date(S
 date_time_vec_2 <- do.call(c, map(time_vec[6:8], function(x) ymd_hm(paste(date(Sys.time()+days(1)), x, sep = " "), tz = "America/New_York")))
 date_time_vec <- c(date_time_vec_1, date_time_vec_2)
 
+# this ws is in miles per hour
 bot_ws %>% 
   mutate(time = format(date_time, format = "%H:%M") %>% as.POSIXct(format = "%H:%M"), time_alt = if_else(hour(time) %in% c(24, 0:9), time + days(1), time)) %>% 
   ggplot(aes(time_alt, Anemometer, group = time_alt))+
   geom_boxplot()+
-  geom_point()+
+  #geom_point()+
   theme(axis.text = element_text(angle = 45, hjust = 1, size = 14, color = "black"))+
   scale_x_datetime(date_labels = "%H:%M", breaks = date_time_vec)
 
+temporary <- sampling_filter_24hr_other(bot_ws %>% rename("Date_Time" = "date_time")) %>% filter(is.na(sampling)==F)
+
 bot_ws.xts <- as.xts(bot_ws$Anemometer, order.by = bot_ws$date_time)
 dygraph(bot_ws.xts)
+
+1911.1- (118.11*25) + (3.4527*(25^2)) -(0.04132*(25^3))
+1897.8- (114.28*25) + (3.2902*(25^2)) -(0.039061*(25^3))
 ```
 
 ### Dissolved oxygen 
@@ -128,6 +149,8 @@ diffusion_env <- diffusion_env %>%  left_join(ysi %>% filter(name == "YSI Bottom
   sampling == "Blue Herron 13-14 Sept" ~ ymd("2022-09-13"),
   sampling == "Sister 22-23 Aug" ~ ymd("2022-08-23")
 ))
+
+cor.test(diffusion_env$temp, diffusion_env$mean_top_do)
 ```
 
 ## CH4 models
@@ -177,6 +200,7 @@ summary(ch4_bottom_do)
 ch4_top_do <- lmer(flux_ch4_g_hr ~ mean_top_do + (1|sampling), data = diffusion_env)
 summary(ch4_top_do)
 r2_nakagawa(ch4_top_do)
+report(ch4_top_do)
 
 diffusion_env %>% group_by(sampling) %>% summarize(slope_percentage_of_range = (0.00084/(max(flux_ch4_g_hr)-min(flux_ch4_g_hr)))*100)
 ```
@@ -186,7 +210,12 @@ diffusion_env %>% group_by(sampling) %>% summarize(slope_percentage_of_range = (
 ch4_all <- lmer(flux_ch4_g_hr ~ scale(mean_top_do) + scale(mean_bottom_do) + scale(temp) + scale(Lux) + scale(ws_mean) + (1|sampling), data = diffusion_env, na.action = "na.fail")
 summary(ch4_all)
 
+bh <- diffusion_env %>% filter(site == "Blue Herron")
+
+# how to describe this?
+ch4_bh <-lm (flux_ch4_g_hr ~ scale(mean_top_do) + scale(mean_bottom_do) + scale(temp) + scale(Lux) + scale(ws_mean), data = bh, na.action = "na.fail")
 dredge(global.model = ch4_all)
+dredge(global.model = ch4_bh)
 ```
 
 ## CO2 models
@@ -221,6 +250,7 @@ r2_nakagawa(co2_lux_c)
 co2_temp <- lmer(flux_co2_g_hr ~ temp + (1|sampling), data = diffusion_env)
 summary(co2_temp)
 r2_nakagawa(co2_temp)
+report(co2_temp)
 
 co2_temp_b <- lm(flux_co2_g_hr ~ temp, data = diffusion_env %>% filter(site == "Blue Herron"))
 summary(co2_temp_b)
@@ -228,6 +258,7 @@ summary(co2_temp_b)
 co2_temp_c <- lmer(flux_co2_g_hr ~ temp + (1|sampling), data = diffusion_env %>% filter(site != "Blue Herron"))
 summary(co2_temp_c)
 r2_nakagawa(co2_temp_c)
+report(co2_temp_c)
 
 diffusion_env %>% filter(site != "Blue Herron") %>% group_by(sampling) %>% summarize(slope_percentage_of_range = (0.0337/(max(flux_co2_g_hr)-min(flux_co2_g_hr)))*100)
 ```
@@ -240,6 +271,7 @@ summary(co2_bottom_do)
 co2_top_do <- lmer(flux_co2_g_hr ~ mean_top_do + (1|sampling), data = diffusion_env)
 summary(co2_top_do)
 r2_nakagawa(co2_top_do)
+report(co2_top_do)
 ```
 
 ### Multiple predictors
@@ -263,6 +295,57 @@ ggplotly(ggplot(diffusion_env, aes(Lux, flux_ch4_g_hr, color = sampling)) + geom
 ggplotly(ggplot(diffusion_env, aes(ws_mean, flux_ch4_g_hr, color = sampling)) + geom_point()+ geom_smooth(method = "lm"))
 ```
 
+
+```{r env mod figs}
+pred.ch4.do <- ggpredict(ch4_top_do, terms =c("mean_top_do", "sampling"), type = "random") 
+
+facet.lab <- c("Blue Herron\n13-14 Sept", "Catfish\n06-07 Sept", "Catfish\n18-19 Sept", "Deans\n16-17 Aug","Deans\n30-31 Aug", "Sister\n22-23 Aug")
+names(facet.lab) <- c("Blue Herron 13-14 Sept", "Catfish 06-07 Sept", "Catfish 18-19 Sept", "Deans 16-17 Aug","Deans 30-31 Aug", "Sister 22-23 Aug")
+
+#png(filename = "4-Figures/do-ch4.png", width = 8, height = 4, units = "in", res = 300)
+ggplot(pred.ch4.do) + 
+  geom_ribbon(aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.2)+ 
+  geom_point(data = diffusion_env %>% rename("group" = "sampling"), aes(mean_top_do, flux_ch4_g_hr, group = group))+ 
+  geom_line(aes(x=x, y=predicted))+
+  facet_grid(~group, labeller = labeller(group = facet.lab))+
+  ylab(expression(Diffusive ~ CH[4]~ flux ~ (g~m^-2~hr^-1)))+
+  xlab("Dissolved Oxygen (mg/L)")+
+  theme_bw()+ 
+  theme(legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), strip.text = element_text(size = 14,  color = "black"))
+#dev.off()
+
+pred.co2.temp <- ggpredict(co2_temp, terms =c("temp", "sampling"), type = "random") 
+
+png(filename = "4-Figures/temp-co2.png", width = 8, height = 4, units = "in", res = 300)
+ggplot(pred.co2.temp) + 
+  geom_ribbon(aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.2)+ 
+  geom_point(data = diffusion_env %>% rename("group" = "sampling"), aes(temp, flux_co2_g_hr, group = group))+ 
+  geom_line(aes(x=x, y=predicted))+
+  facet_grid(~group, labeller = labeller(group = facet.lab))+
+  ylab(expression(Diffusive ~ CO[2]~ flux ~ (g~m^-2~hr^-1)))+
+  scale_x_continuous(breaks = c(20,24,28))+
+  xlab("Temperature (°C)")+
+  theme_bw()+ 
+  theme(legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), strip.text = element_text(size = 14,  color = "black"))
+dev.off()
+
+pred.co2.do <- ggpredict(co2_top_do, terms =c("mean_top_do", "sampling"), type = "random") 
+
+png(filename = "4-Figures/do-co2.png", width = 8, height = 4, units = "in", res = 300)
+ggplot(pred.co2.do) + 
+  geom_ribbon(aes(x = x, ymin = conf.low, ymax = conf.high), alpha = 0.2)+ 
+  geom_point(data = diffusion_env %>% rename("group" = "sampling"), aes(mean_top_do, flux_co2_g_hr, group = group))+ 
+  geom_line(aes(x=x, y=predicted))+
+  facet_grid(~group, labeller = labeller(group = facet.lab))+
+  ylab(expression(Diffusive ~ CO[2]~ flux ~ (g~m^-2~hr^-1)))+
+  xlab("Dissolved Oxygen (mg/L)")+
+  theme_bw()+ 
+  theme(legend.title = element_blank(), axis.text = element_text(size = 14, color = "black"), axis.title = element_text(size = 16, color = "black"), strip.text = element_text(size = 14,  color = "black"))
+dev.off()
+
+```
+
+
 ## CO2 plots
 ```{r co2 env plots}
 ggplotly(ggplot(diffusion_env, aes(temp, flux_co2_g_hr, color = sampling)) + geom_point()+geom_smooth(method = "lm"))
@@ -274,8 +357,27 @@ ggplotly(ggplot(diffusion_env, aes(mean_top_do, flux_co2_g_hr, color = sampling)
 ggplotly(ggplot(diffusion_env, aes(Lux, flux_co2_g_hr, color = sampling)) + geom_point()+ geom_smooth(method = "lm"))
 
 ggplotly(ggplot(diffusion_env, aes(ws_mean, flux_co2_g_hr, color = sampling)) + geom_point()+ geom_smooth(method = "lm"))
+
+png(filename = "4-Figures/temp-co2.png", width = 8, height = 5, units = "in", res = 300)
+ggplot(diffusion_env, aes(temp, flux_co2_g_hr, color = sampling)) + geom_point()+geom_smooth(method = "lm")+labs(x = "Temperature (°C)", y = "CO2 Diffusion (g/m2/hr)") + theme_bw()
+dev.off()
 ```
 
+```{r raw values diel, echo = F}
+ggplot(diffusion_env, aes(trip, flux_ch4_g_hr, group = trip))+geom_point()+ geom_boxplot() + facet_wrap(~sampling)
+
+ggplot(diffusion_env %>% filter(site == "Blue Herron"), aes(start_time, flux_ch4_g_hr, group = trip))+geom_point()
+
+ggplot(diffusion_env %>% filter(site != "Blue Herron"), aes(trip, flux_co2_g_hr, group = trip))+geom_point()+ geom_boxplot() + facet_wrap(~sampling)
+```
+
+```{r}
+k <- 8.617e-5
+stand <- 273.15 + 12
+
+
+diffusion_env %>% mutate(temp_k = temp + 273.15, botz = (1/(temp_k * k))) %>% ggplot(aes(temp, flux_co2_g_hr)) + geom_point() + geom_smooth(method = "lm") + facet_wrap(~sampling, scales = "free_x")
+```
 
 
 ```{r ws models, include = F}
